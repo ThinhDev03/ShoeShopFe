@@ -34,7 +34,7 @@ const palette = {
       primary: {
          light: '#5BE584',
          main: '#F15E2C', // color default
-         dark: '#007B55' // color hover
+         dark: '#F15E2C' // color hover
       },
       secondary: {
          light: '#5BE584',

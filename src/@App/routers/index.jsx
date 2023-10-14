@@ -9,25 +9,19 @@ import CommonLayout from '@App/components/layouts/common';
 import PublicRouter from './components/PublicRouter';
 import PrivateRouter from './components/PrivateRouter';
 import Home from '@App/pages/Admin/Home';
+import { routerPath } from '@App/configs/routerConfig';
 
-// const Signin = Loadable(lazy(() => import('@App/pages/Signin')));
+import categoryProductRouter from './admin/categoryProduct.router';
+import brandRouter from './admin/brand.router';
+import productRouter from './admin/product.router';
+
+const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
+const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
+const Product = Loadable(lazy(() => import('@App/pages/Views/Product')));
+const ProductDetail = Loadable(lazy(() => import('@App/pages/Views/ProductDetail')));
 // const GetCurrentUser = lazy(() => import('@App/pages/Signin/GetCurrentUser'));
 
 const routers = [
-   {
-      path: 'signin',
-      element: <PublicRouter />,
-      children: [
-         // {
-         //    index: true,
-         //    element: <Signin />
-         // },
-         // {
-         //    path: 'success',
-         //    element: <GetCurrentUser />
-         // }
-      ]
-   },
    {
       path: '/',
       element: (
@@ -39,7 +33,33 @@ const routers = [
          {
             index: true,
             element: <Home />
+         },
+         {
+            path: routerPath.PRODUCTS,
+            element: <Product />
+         },
+         {
+            path: routerPath.PRODUCTDETAIL,
+            element: <ProductDetail />
+         },
+         {
+            path: '/',
+            element: <PublicRouter />,
+            children: [
+               {
+                  path: 'signin',
+                  element: <Signin />
+               },
+               {
+                  path: 'register',
+                  element: <Register />
+               }
+            ]
          }
+         // {
+         //    path: 'success',
+         //    element: <GetCurrentUser />
+         // }
       ]
    },
    {
@@ -54,6 +74,9 @@ const routers = [
             index: true,
             element: <Outlet />
          },
+         categoryProductRouter,
+         brandRouter,
+         productRouter
       ]
    }
 ];

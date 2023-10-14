@@ -8,7 +8,7 @@ import { useRequest } from 'ahooks';
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Classes() {
+export default function Color() {
    const navigate = useNavigate()
    const classRequests = useRequest(classesService.list, {
       manual: true,
@@ -64,7 +64,7 @@ export default function Classes() {
    }, []);
 
    return (
-      <BasicPage currentPage='Classes'>
+      <BasicPage currentPage='Classes' createTitle='Tạo mới'>
          <CoreTable columns={columns} {...classTableHandler} data={classTableHandler?.data?.classes} />
       </BasicPage>
    );

@@ -1,14 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import BaseFormClasses from './components/BaseFormClasses';
-import yupClasses from './utils/yupClasses';
+import BaseFormClasses from './components/BaseFormColor';
+import yupClasses from './utils/yupColor';
 import { gradeList, headTeacher } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
 import classesService from '@App/services/classes.service';
 import { useSetNotifyState } from '@App/redux/slices/toastMessage.slice';
 
-export default function CreateClasses() {
+export default function CreateColor() {
    const { setToastInformation } = useSetNotifyState();
 
    const form = useForm({

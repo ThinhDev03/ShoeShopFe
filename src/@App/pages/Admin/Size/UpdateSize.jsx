@@ -1,12 +1,12 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import BaseFormClasses from './components/BaseFormClasses';
-import yupClasses from './utils/yupClasses';
+import BaseFormClasses from './components/BaseFormSize';
+import yupClasses from './utils/yupColor';
 import { gradeList } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
 
-export default function UpdateClasses() {
+export default function UpdateColor() {
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupClasses),

@@ -7,19 +7,22 @@ yup.setLocale({
    }
 });
 const yupClasses = yup.object().shape({
-   className: yup
+   color_name: yup
       .string()
       .trim('Vui lòng bỏ khoảng trống')
       .strict(true)
-      .required('Vui lòng nhập tên lớp')
-      .matches(Regex.className, 'Tên lớp không hợp lệ')
+      .required('Vui lòng nhập tên màu')
       .default(''),
    headTeacher: yup
       .string()
       .trim('Vui lòng bỏ khoảng trống')
       .strict(true)
-      .required('Vui lòng nhập tên giáo viên chủ nhiệm')
       .default(''),
-   grade: yup.string().required('Vui lòng chọn cấp học').default('1')
+   color_code: yup
+      .string()
+      .trim('Vui lòng bỏ khoảng trống')
+      .strict(true)
+      .required('Vui lòng nhập mã màu')
+      .default('')
 });
 export default yupClasses;
