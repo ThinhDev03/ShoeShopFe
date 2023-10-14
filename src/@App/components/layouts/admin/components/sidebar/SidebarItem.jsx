@@ -36,6 +36,7 @@ export default function SidebarItem({ setOpenSidebar }) {
                if (!menu?.children) {
                   return (
                      <ListItemButton
+                        key={index}
                         component={LinkSidebar}
                         onClick={handleCloseSidebar}
                         to={menu.path}
@@ -48,7 +49,11 @@ export default function SidebarItem({ setOpenSidebar }) {
                   );
                }
                return (
-                  <Accordion square={false} expanded={expanded.includes(index)} onChange={handleChange(index)}>
+                  <Accordion
+                     key={index}
+                     square={false}
+                     expanded={expanded.includes(index)}
+                     onChange={handleChange(index)}>
                      <AccordionSummary
                         component={ListItemButton}
                         sx={{ height: '40px !important' }}

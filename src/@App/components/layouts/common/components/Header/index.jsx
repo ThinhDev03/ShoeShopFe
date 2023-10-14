@@ -97,26 +97,26 @@ export default function Header() {
                         key={index}
                         component={NavLink}
                         to={item.path}
-                        sx={{
+                        sx={({ palette }) => ({
                            padding: '20px',
                            fontSize: '21px',
                            fontWeight: 600,
                            lineHeight: '20px',
                            textDecoration: 'none',
                            textTransform: 'uppercase',
-                           color: '#000',
+                           color: palette.education.text.black,
                            ':hover': {
-                              color: '#f15e2c'
+                              color: palette.primary.main
                            }
-                        }}
+                        })}
                         onMouseOver={() => console.log('hover menu')}>
                         {item.title}
                      </Box>
                   );
                })}
-               <NavLink>
+               <Link to="">
                   <img src={discoveryou} alt='' />
-               </NavLink>
+               </Link>
             </Box>
             <Box>
                <TextField

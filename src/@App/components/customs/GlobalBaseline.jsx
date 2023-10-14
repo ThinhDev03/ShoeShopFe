@@ -4,7 +4,7 @@ import { memo } from 'react';
 const GlobalBaseline = () => {
    return (
       <GlobalStyles
-         styles={{
+         styles={({ palette }) => ({
             'html, body, #root': {
                boxSizing: 'border-box'
             },
@@ -12,7 +12,7 @@ const GlobalBaseline = () => {
                pointerEvents: 'none'
             },
             '#nprogress .bar': {
-               backgroundColor: '#00AB55',
+               backgroundColor: '#F15E2C',
                position: 'fixed',
                zIndex: 1998,
                top: 0,
@@ -20,7 +20,7 @@ const GlobalBaseline = () => {
                width: '100%',
                height: 3
             }
-         }}
+         })}
       />
    );
 };
