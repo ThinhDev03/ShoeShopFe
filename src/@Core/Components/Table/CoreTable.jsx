@@ -13,18 +13,11 @@
  */
 
 import { useTheme } from '@emotion/react';
-import { Box, Button, Pagination, Table, TableContainer, TablePagination } from '@mui/material';
+import { Box, Button, Table, TableContainer, TablePagination } from '@mui/material';
 import { rankItem } from '@tanstack/match-sorter-utils';
-import {
-   createColumnHelper,
-   getCoreRowModel,
-   getFilteredRowModel,
-   getPaginationRowModel,
-   getSortedRowModel,
-   useReactTable
-} from '@tanstack/react-table';
+import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CoreTableBody from './components/CoreTableBody';
 import CoreTableHeader from './components/CoreTableHeader';
 import { FilterAltOffOutlined } from '@mui/icons-material';
@@ -32,20 +25,7 @@ import Scrollbar from '@App/components/customs/Scrollbar';
 
 export const columnHelper = createColumnHelper();
 
-const fuzzyFilter = (row, columnId, value, addMeta) => {
-   const itemRank = rankItem(row.getValue(columnId), value);
-
-   addMeta({
-      itemRank
-   });
-   return itemRank.passed;
-};
-
 const CoreTable = (props) => {
-   const rerender = React.useReducer(() => ({}), {})[1];
-
-   const [rowSelection, setRowSelection] = useState({});
-
    const {
       data,
       columns,
@@ -56,9 +36,7 @@ const CoreTable = (props) => {
       loading,
       isPagination,
       query,
-      clientPanigation = true,
-      getSelectedRows,
-      clearSelect
+      clientPanigation = true
    } = props;
 
    const defaultData = React.useMemo(() => []);
@@ -69,8 +47,6 @@ const CoreTable = (props) => {
       }),
       [page, limit]
    );
-   const [sorting, setSorting] = useState([]);
-   const [columnFilters, setColumnFilters] = useState([]);
    const [paginationState, setPaginationState] = useState({ pageIndex: 0, pageSize: 10, totalPage: 1 });
 
    const {
@@ -79,31 +55,13 @@ const CoreTable = (props) => {
    const table = useReactTable({
       data: data ?? defaultData,
       columns: columns,
-      filterFns: {
-         fuzzy: fuzzyFilter
-      },
-      state: {
-         pagination: clientPanigation ? paginationState : pagination,
-         sorting: sorting,
-         rowSelection: rowSelection
-      },
-      enableRowSelection: true,
-      onRowSelectionChange: setRowSelection,
-      onSortingChange: setSorting,
       getCoreRowModel: getCoreRowModel(),
-      getFilteredRowModel: getFilteredRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      getPaginationRowModel: getPaginationRowModel(),
-      debugTable: false,
-      manualPagination: clientPanigation === false
+      state: {
+         pagination
+      },
+      manualPagination: true,
+      debugTable: true
    });
-   useEffect(() => {
-      if (getSelectedRows) getSelectedRows(table.getSelectedRowModel().flatRows.map((row) => row.original));
-   }, [rowSelection]);
-
-   useEffect(() => {
-      setRowSelection({});
-   }, [clearSelect]);
 
    return (
       <TableContainer
@@ -119,7 +77,7 @@ const CoreTable = (props) => {
                flex: 1
             }}>
             <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%', height: '100%' }} size='small'>
-               <CoreTableHeader columns={columns} table={table} sorting={sorting} />
+               <CoreTableHeader columns={columns} table={table} />
                <CoreTableBody table={table} loading={loading} />
             </Table>
          </Scrollbar>
@@ -168,16 +126,6 @@ const CoreTable = (props) => {
                      else handleFetchData({ limit: e.target.value, ...query });
                   }}
                />
-               {table.getState().columnFilters?.length > 0 && (
-                  <Button
-                     startIcon={<FilterAltOffOutlined />}
-                     color='neutral'
-                     variant='text'
-                     size='small'
-                     onClick={table.resetColumnFilters}>
-                     Xóa lọc
-                  </Button>
-               )}
             </Box>
          )}
       </TableContainer>
