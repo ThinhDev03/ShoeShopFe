@@ -6,14 +6,17 @@ const education = {
    },
    text: {
       white: '#FFFFFF',
-      gray: 'hsla(0,0%,100%,.6)'
+      black: '#000',
+      main: '#F15E2C'
    },
    sidebar: {
       bg: '#fff',
       width: 265
    },
    header: {
-      height: 58
+      height: 202,
+      heightAdmin: 68,
+      zIndex: 99999,
    }
 };
 
@@ -30,6 +33,11 @@ const palette = {
       },
       primary: {
          light: '#5BE584',
+         main: '#F15E2C', // color default
+         dark: '#007B55' // color hover
+      },
+      secondary: {
+         light: '#5BE584',
          main: '#00AB55',
          dark: '#007B55'
       },
@@ -39,7 +47,8 @@ const palette = {
          dark: '#334155',
          main: '#1f2937',
          contrastText: '#fff'
-      }
+      },
+
    },
    shadows: [
       'none',

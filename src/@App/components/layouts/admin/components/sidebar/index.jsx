@@ -31,7 +31,7 @@ const Wrap = styled('div')(({ theme }) => ({
 }));
 const Aside = styled('aside')(({ theme }) => ({
    position: 'fixed',
-   top: theme.palette.education.header.height,
+   top: theme.palette.education.header.heightAdmin,
    width: theme.palette.education.sidebar.width,
    left: 0,
    zIndex: 600
