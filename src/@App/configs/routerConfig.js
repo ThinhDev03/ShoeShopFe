@@ -1,9 +1,13 @@
 export const routerPath = {
-   CLASSES: 'classes',
    USER: 'user',
-   SUBJECT: 'subject',
-   TEACHER: 'teacher',
-   TIME_TABLE: 'time_table',
-   SCHOOLYEAR:'schoolYear',
-   PRODUCT:'product'
+   SCHOOLYEAR: 'schoolYear',
+   PRODUCTS: 'products',
+
+   CATEGORYPRODUCTS: 'categories',
+   COLOR: 'colors',
+   BRAND: 'brands',
+   SIZE: 'size',
+   CART: 'cart',
+   SHIPPING: 'shipping'
 };
+
