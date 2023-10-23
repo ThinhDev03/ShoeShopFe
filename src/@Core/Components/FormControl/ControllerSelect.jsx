@@ -14,52 +14,39 @@ import FormHelperText from '@mui/material/FormHelperText';
  */
 
 const ControllerSelect = (props) => {
-   const { label, options } = props;
-   const { control, name, placeholder, disabled, ...rest } = props;
-   return (
-      <Controller
-         render={({ field, fieldState: { error } }) => (
-            <FormControl fullWidth>
-               <InputLabel size='small' id='demo-simple-select-label'>
-                  {label}
-               </InputLabel>
-               <Select
-                  id={name}
-                  fullWidth
-                  error={Boolean(error)}
-                  placeholder={disabled ? void 0 : placeholder}
-                  disabled={disabled}
-                  {...field}
-                  {...rest}
-                  labelId='demo-simple-select-label'
-                  label={label}>
-                  {options.map((item, index) => (
-                     <MenuItem key={index} value={item.value}>
-                        {item.label}
-                     </MenuItem>
-                  ))}
-               </Select>
-               {error?.message && (
-                  <FormHelperText sx={{ color: '#d32f2f' }} variant='outlined'>
-                     {error.message}
-                  </FormHelperText>
-               )}
-            </FormControl>
-         )}
-         name={name}
-         control={control}
-      />
-   );
-};
-ControllerSelect.propTypes = {
-   options: PropTypes.array.isRequired,
-   label: PropTypes.string
+    const { options, _value, _title } = props;
+    const { control, name, placeholder, disabled, defaultValue, ...rest } = props;
+
+    return (
+        <Controller
+            render={({ field, fieldState: { error } }) => (
+                <FormControl fullWidth>
+                    <Select
+                        id={name}
+                        fullWidth
+                        error={Boolean(error)}
+                        placeholder={disabled ? void 0 : placeholder}
+                        disabled={disabled}
+                        {...field}
+                        {...rest}>
+                        {options?.map((item, index) => (
+                            <MenuItem key={index} value={item[_value]}>
+                                {item[_title]}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    {error?.message && (
+                        <FormHelperText sx={{ color: '#d32f2f' }} variant='outlined'>
+                            {error.message}
+                        </FormHelperText>
+                    )}
+                </FormControl>
+            )}
+            name={name}
+            defaultValue={defaultValue || ''}
+            control={control}
+        />
+    );
 };
 
-export const PropTypeSelect = PropTypes.arrayOf(
-   PropTypes.shape({
-      label: PropTypes.string,
-      value: PropTypes.string
-   })
-).isRequired;
 export default ControllerSelect;
