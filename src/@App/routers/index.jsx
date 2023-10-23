@@ -8,12 +8,14 @@ import CommonLayout from '@App/components/layouts/common';
 
 import PublicRouter from './components/PublicRouter';
 import PrivateRouter from './components/PrivateRouter';
-import Home from '@App/pages/Admin/Home';
 import { routerPath } from '@App/configs/routerConfig';
 
-import categoryProductRouter from './admin/categoryProduct.router';
 import brandRouter from './admin/brand.router';
 import productRouter from './admin/product.router';
+import Home from '@App/pages/Views/Home';
+import Cart from '@App/pages/Views/Cart';
+import Shipping from '@App/pages/Views/Shipping';
+import categoryRouter from './admin/category.router';
 
 const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
 const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
@@ -24,11 +26,7 @@ const ProductDetail = Loadable(lazy(() => import('@App/pages/Views/ProductDetail
 const routers = [
    {
       path: '/',
-      element: (
-         // <PrivateRouter>
-         <CommonLayout />
-         // </PrivateRouter>
-      ),
+      element: <CommonLayout />,
       children: [
          {
             index: true,
@@ -39,8 +37,16 @@ const routers = [
             element: <Product />
          },
          {
-            path: routerPath.PRODUCTDETAIL,
+            path: routerPath.PRODUCTS + '/:id',
             element: <ProductDetail />
+         },
+         {
+            path: routerPath.CART,
+            element: <Cart />
+         },
+         {
+            path: routerPath.SHIPPING,
+            element: <Shipping />
          },
          {
             path: '/',
@@ -65,19 +71,23 @@ const routers = [
    {
       path: '/admin',
       element: (
-         // <PrivateRouter>
-         <AdminLayout />
-         // </PrivateRouter>
+         <PrivateRouter>
+            <AdminLayout />
+         </PrivateRouter>
       ),
       children: [
          {
             index: true,
             element: <Outlet />
          },
-         categoryProductRouter,
+         categoryRouter,
          brandRouter,
          productRouter
       ]
+   },
+   {
+      path: '*',
+      element: <h1>Đường đãn không tồn tại</h1>
    }
 ];
 

@@ -1,51 +1,51 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import BaseFormClasses from './components/BaseFormColor';
-import yupClasses from './utils/yupColor';
-import { gradeList, headTeacher } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
-import classesService from '@App/services/classes.service';
-import { useSetNotifyState } from '@App/redux/slices/toastMessage.slice';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
+import { useMutation } from '@tanstack/react-query';
+import colorService from '@App/services/color.service';
+import BaseFormColor from './components/BaseFormColor';
+import { routerPath } from '@App/configs/routerConfig';
+import yupColor from './utils/yupColor';
+
+const breadcrumbs = [
+   {
+      name: 'Trang chủ',
+      link: '/'
+   },
+   {
+      name: 'Color',
+      link: '/admin/' + routerPath.PRODUCTS + '/' + routerPath.COLOR
+   }
+];
 
 export default function CreateColor() {
-   const { setToastInformation } = useSetNotifyState();
-
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses),
-      defaultValues: yupClasses.getDefault()
+      resolver: yupResolver(yupColor),
+      defaultValues: yupColor.getDefault()
+   });
+
+   const { isLoading, mutate } = useMutation({
+      mutationFn: async (data) => {
+         return await colorService.createColor(data);
+      },
+      onSuccess: () => {
+         form.reset();
+         successMessage('Thêm thương hiệu thành công');
+      },
+      onError: (error) => {
+         errorMessage(error);
+      }
    });
 
    const onSubmit = async (data) => {
-      const className = data.grade + data.className;
-
-      try {
-         await classesService.create({ ...data, className });
-         setToastInformation({ message: 'Thêm lớp thành công' });
-      } catch (error) {
-         setToastInformation({ message: response?.data?.message || 'Thêm lớp không thành công', status: 'error' });
-      }
+      mutate(data);
    };
-   const props = {
-      gradeList,
-      headTeacher,
-      form,
-      onSubmit
-   };
-   const breadcrumbs = [
-      {
-         name: 'Trang chủ',
-         link: '/'
-      },
-      {
-         name: 'Lớp học',
-         link: '/classes'
-      }
-   ];
    return (
-      <BasicPage currentPage='Thêm lớp học' breadcrumbs={breadcrumbs}>
-         <BaseFormClasses {...props} />
+      <BasicPage currentPage='Thêm mới' breadcrumbs={breadcrumbs}>
+         <BaseFormColor form={form} onSubmit={onSubmit} isLoading={isLoading} />
       </BasicPage>
    );
 }

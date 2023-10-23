@@ -9,12 +9,11 @@ import FormGroup from '@Core/Components/FormControl/FormGroup';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import { Box } from '@mui/system';
-import CoreAutoComplete from '@Core/Components/Input/CoreAutoComplete';
 import ControllerColor from './ControllerColor';
+import ControllerTextarea from '@Core/Components/FormControl/ControllerTextarea';
 
-export default function BaseFormClasses(props) {
-   // TODO: remove hardcorded headTeacher list, once BE updated
-   const { gradeList, form, onSubmit } = props;
+export default function BaseFormColor(props) {
+   const { form, onSubmit } = props;
    const { control, handleSubmit, setValue } = form;
 
    return (
@@ -25,12 +24,12 @@ export default function BaseFormClasses(props) {
                <ControllerTextField name='color_name' control={control} />
             </Grid>
             <Grid item xs={6} sx={{ minHeight: '120px' }}>
-               <FormLabel title='Mô tả' name='description' gutterBottom />
-               <ControllerTextField name='description' control={control} />
-            </Grid>
-            <Grid item xs={6} sx={{ minHeight: '120px' }}>
                <FormLabel required title='Mã màu' name='color_code' gutterBottom />
                <ControllerColor name='color_code' setValue={setValue} control={control} />
+            </Grid>
+            <Grid item xs={12} sx={{ minHeight: '120px' }}>
+               <FormLabel title='Mô tả' name='description' gutterBottom />
+               <ControllerTextarea name='description' control={control} />
             </Grid>
             <Grid item xs={12} sx={{ mt: 3 }}>
                <LoadingButton
@@ -39,7 +38,7 @@ export default function BaseFormClasses(props) {
                   variant='contained'
                   startIcon={<SaveIcon />}
                   type='submit'>
-                  Thêm lớp
+                  {props.title || 'Thêm mới'}
                </LoadingButton>
             </Grid>
          </Grid>
@@ -47,8 +46,8 @@ export default function BaseFormClasses(props) {
    );
 }
 
-BaseFormClasses.propTypes = {
-   gradeList: PropTypeSelect,
+BaseFormColor.propTypes = {
    form: PropTypes.object.isRequired,
-   onSubmit: PropTypes.func.isRequired
+   onSubmit: PropTypes.func.isRequired,
+   isLoading: PropTypes.bool
 };

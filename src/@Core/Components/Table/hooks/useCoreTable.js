@@ -24,6 +24,7 @@ const DEFAULT_RESPONSE = {
 
 const useCoreTable = (requests) => {
    const { data = DEFAULT_RESPONSE, loading, runAsync } = requests;
+   console.log(data)
    const handleFetchData = useCallback((params) => {
       const query = {
          ...params,

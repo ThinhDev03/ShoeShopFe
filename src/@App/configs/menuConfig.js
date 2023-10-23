@@ -5,6 +5,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import { ROLE } from './role';
 import Brand from '@App/assets/svg/brand';
 import ColorLensIcon from '@mui/icons-material/ColorLens';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
 
 const menuCofig = [
    {
@@ -41,7 +42,7 @@ const menuCofig = [
       id: 6,
       role: [ROLE[1], ROLE[2]],
       title: 'Sản phẩm',
-      icon: Brand,
+      icon: Inventory2Icon,
       path: routerPath.PRODUCTS,
       children: [
          { title: 'Tổng quan', path: routerPath.PRODUCTS },

@@ -14,9 +14,9 @@ const education = {
       width: 265
    },
    header: {
-      height: 202,
+      height: 168,
       heightAdmin: 68,
-      zIndex: 99999,
+      zIndex: 999,
    }
 };
 

@@ -1,13 +1,12 @@
 export const routerPath = {
-   COLOR: 'colors',
    USER: 'user',
-   SUBJECT: 'subject',
-   TEACHER: 'teacher',
-   TIME_TABLE: 'time_table',
    SCHOOLYEAR: 'schoolYear',
    PRODUCTS: 'products',
-   PRODUCTDETAIL: 'product-detail',
-   CATEGORYPRODUCTS: 'category-products',
+
+   CATEGORYPRODUCTS: 'categories',
+   COLOR: 'colors',
    BRAND: 'brands',
    SIZE: 'size',
+   CART: 'cart',
+   SHIPPING: 'shipping'
 };

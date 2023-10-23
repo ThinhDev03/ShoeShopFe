@@ -4,13 +4,13 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { Container } from '@mui/material';
+import { Box, Container } from '@mui/material';
 
 export default function CommonLayout() {
    return (
       <>
          <Header />
-         <Main maxWidth='lg'>
+         <Main>
             <Outlet />
          </Main>
          <Footer />
@@ -19,9 +19,9 @@ export default function CommonLayout() {
 }
 
 const Flex = styled(Stack)(({ theme }) => ({
-   marginTop: theme.palette.education.header.height
+   // marginTop: theme.palette.education.header.height
 }));
-const Main = styled(Container)(({ theme }) => ({
+const Main = styled(Box)(({ theme }) => ({
    flex: 1,
    display: 'flex',
    flexDirection: 'column',

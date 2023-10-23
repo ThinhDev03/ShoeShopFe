@@ -6,7 +6,7 @@ yup.setLocale({
         notType: '${path} is required'
     }
 });
-const yupClasses = yup.object().shape({
+const yupCategory = yup.object().shape({
     category_name: yup
         .string()
         .trim('Vui lòng bỏ khoảng trống')
@@ -20,4 +20,4 @@ const yupClasses = yup.object().shape({
         .required('Vui lòng nhập phần mô tả')
         .default(''),
 });
-export default yupClasses;
+export default yupCategory;

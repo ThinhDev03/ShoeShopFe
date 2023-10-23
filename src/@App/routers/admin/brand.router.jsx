@@ -5,7 +5,7 @@ import { routerPath } from '@App/configs/routerConfig';
 
 const Brand = Loadable(lazy(() => import('@App/pages/Admin/Brand')));
 const CreateBrand = Loadable(lazy(() => import('@App/pages/Admin/Brand/CreateBrand')));
-
+const UpdateBrand = Loadable(lazy(() => import('@App/pages/Admin/Brand/UpdateBrand')));
 
 const brandRouter = {
    path: routerPath.BRAND,
@@ -22,11 +22,11 @@ const brandRouter = {
       {
          path: 'create',
          element: <CreateBrand />
+      },
+      {
+         path: ':id',
+         element: <UpdateBrand />
       }
-      //   {
-      //      path: 'update/:id',
-      //      element: <UpdateClasses />
-      //   }
    ]
 };
 

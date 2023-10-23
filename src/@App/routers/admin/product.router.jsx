@@ -4,8 +4,14 @@ import Loadable from '../components/Loadable';
 import { routerPath } from '@App/configs/routerConfig';
 
 const ProductPage = Loadable(lazy(() => import('@App/pages/Admin/Product')));
+const CreateProduct = Loadable(lazy(() => import('@App/pages/Admin/Product/CreateProduct')));
+const ProductDetail = Loadable(lazy(() => import('@App/pages/Admin/Product/ProductDetail')));
+const UpdateProduct = Loadable(lazy(() => import('@App/pages/Admin/Product/UpdateProduct')));
+
 const Size = Loadable(lazy(() => import('@App/pages/Admin/Size')));
 const CreateSize = Loadable(lazy(() => import('@App/pages/Admin/Size/CreateSize')));
+const UpdateSize = Loadable(lazy(() => import('@App/pages/Admin/Size/UpdateSize')));
+
 const Color = Loadable(lazy(() => import('@App/pages/Admin/Color')));
 const CreateColor = Loadable(lazy(() => import('@App/pages/Admin/Color/CreateColor')));
 const UpdateColor = Loadable(lazy(() => import('@App/pages/Admin/Color/UpdateColor')));
@@ -24,11 +30,15 @@ const productRouter = {
       },
       {
          path: 'create',
-         element: <></>
+         element: <CreateProduct />
       },
       {
-         path: 'update/:id',
-         element: <></>
+         path: 'create/:id',
+         element: <ProductDetail />
+      },
+      {
+         path: ':id',
+         element: <UpdateProduct />
       },
       {
          path: routerPath.SIZE,
@@ -41,6 +51,10 @@ const productRouter = {
             {
                path: 'create',
                element: <CreateSize />
+            },
+            {
+               path: ':id',
+               element: <UpdateSize />
             }
          ]
       },
@@ -57,7 +71,7 @@ const productRouter = {
                element: <CreateColor />
             },
             {
-               path: 'update/:id',
+               path: ':id',
                element: <UpdateColor />
             }
          ]

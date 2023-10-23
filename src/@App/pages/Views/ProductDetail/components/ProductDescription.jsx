@@ -10,14 +10,58 @@ import {
    TextField,
    Typography
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import AccordionDescription from './AccordionDescription';
+import { useParams } from 'react-router-dom';
+import { useQueries } from '@tanstack/react-query';
+import productDetail from '@App/services/product-detail.service';
+import productService from '@App/services/product.service';
+import colorService from '@App/services/color.service';
+import sizeService from '@App/services/size.service';
 
 function ProductDescription() {
+   const { id } = useParams();
+   const [activeProductDetail, setActiveProductDetail] = useState(0);
+
+   const results = useQueries({
+      queries: [
+         {
+            queryKey: ['getProduct'],
+            queryFn: async () => {
+               const rest = await productService.getOne(id);
+               return rest.data;
+            }
+         },
+         {
+            queryKey: ['getProductDetai'],
+            queryFn: async () => {
+               const rest = await productDetail.getOne(id);
+               return rest.data;
+            }
+         },
+         {
+            queryKey: ['getColor'],
+            queryFn: async () => {
+               const rest = await colorService.getAll();
+               return rest.data;
+            }
+         },
+         {
+            queryKey: ['getSize'],
+            queryFn: async () => {
+               const rest = await sizeService.getAll();
+               return rest.data;
+            }
+         }
+      ]
+   });
+
+   console.log(results[1]);
+
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '30px' }}>
-            <Typography variant='h5'>Pattas Tomo - Low Top - Blarney</Typography>
+            <Typography variant='h5'>{!results[0].isLoading && results[0]?.data?.name}</Typography>
             <Stack flexDirection='row' justifyContent='space-between'>
                <Box sx={{ display: 'flex', gap: 2, fontSize: '18px' }}>
                   Mã sản phẩm:
@@ -29,7 +73,8 @@ function ProductDescription() {
                </Box>
             </Stack>
             <Typography variant='h5' sx={({ palette }) => ({ color: palette.education.text.main, fontWeight: 600 })}>
-               390.000 VND
+               {/* {(!results.isLoading && results[1]?.data?.[activeProductDetail].price) || ''}
+               {(!results.isLoading && results[1]?.data?.[activeProductDetail].sale) || ''} */}
             </Typography>
             <Box sx={{ borderTop: '1px dashed #333' }}></Box>
             <RadioGroup
@@ -37,20 +82,33 @@ function ProductDescription() {
                defaultValue='female'
                name='radio-buttons-group'
                sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-               <FormControlLabel value='female' control={<Radio />} label='Trắng' />
-               <FormControlLabel value='male' control={<Radio />} label='Đen' />
-               <FormControlLabel value='other' control={<Radio />} label='Xanh' />
+               {!results.isLoading &&
+                  results[2]?.data?.map((color, index) => {
+                     return (
+                        <FormControlLabel
+                           value='female'
+                           control={<Radio />}
+                           label={color.color_name}
+                           key={color._id}
+                           checked={index === activeProductDetail}
+                           onChange={() => setActiveProductDetail(index)}
+                        />
+                     );
+                  })}
             </RadioGroup>
             <Box sx={{ borderTop: '1px dashed #333' }}></Box>
             <Stack flexDirection='row' alignItems='center' gap={2}>
                <Box sx={{ width: '50%' }}>
-                  <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Color</Typography>
+                  <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Size</Typography>
                   <Select fullWidth>
-                     <MenuItem value={10}>X</MenuItem>
-                     <MenuItem value={20}>M</MenuItem>
-                     <MenuItem value={30}>L</MenuItem>
-                     <MenuItem value={30}>XL</MenuItem>
-                     <MenuItem value={30}>2XL</MenuItem>
+                     {!results.isLoading &&
+                        results[3]?.data?.map((size, index) => {
+                           return (
+                              <MenuItem value={size._id} key={size._id}>
+                                 {size.size_name}
+                              </MenuItem>
+                           );
+                        })}
                   </Select>
                </Box>
                <Box sx={{ width: '50%', mt: 0 }}>

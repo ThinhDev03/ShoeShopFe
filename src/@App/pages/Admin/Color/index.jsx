@@ -1,52 +1,66 @@
+import { Box } from '@mui/material';
+import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { successMessage } from '@Core/Helper/Message';
+import colorService from '@App/services/color.service';
 import BasicPage from '@App/components/customs/BasicPage';
-import classesService from '@App/services/classes.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
-import useCoreTable from '@Core/Components/Table/hooks/useCoreTable';
-import { Box } from '@mui/material';
-import { useRequest } from 'ahooks';
-import React, { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 
 export default function Color() {
-   const navigate = useNavigate()
-   const classRequests = useRequest(classesService.list, {
-      manual: true,
-      onError: () => {
-         mutate({
-            data: []
-         });
-      }
+   const navigate = useNavigate();
+   const {
+      data: dataColor,
+      refetch: getCategory,
+      isFetching
+   } = useQuery(['getColor'], async () => {
+      const rest = await colorService.getAll();
+      console.log(rest.data);
+      return rest.data;
    });
 
-   const { run: getClasses, mutate } = classRequests;
-   const classTableHandler = useCoreTable(classRequests);
-
-   const { runAsync: deleteClass } = useRequest(classesService.delete, {
-      manual: true,
-      onSuccess: async() => {
-         // SUCCESS MESSGE
-         await classTableHandler.handleFetchData()
+   const mutation = useMutation({
+      mutationFn: async (data) => {
+         return await colorService.deleteColor(data.id);
       },
-      onError: () => {
-         // ERROR MESSGE
+      onSuccess: () => {
+         successMessage('Xóa sản phảm thành công');
+         getCategory();
       }
    });
-
-   useEffect(() => {
-      getClasses();
-   }, []);
 
    const columns = useMemo(() => {
       return [
-         columnHelper.accessor('_id', {
-            header: 'Mã bài viết'
+         columnHelper.accessor((_, index) => index + 1, {
+            header: 'STT'
          }),
-         columnHelper.accessor('className', {
-            header: 'Tên Lớp'
+         columnHelper.accessor('color_name', {
+            header: 'Tên màu'
          }),
-         columnHelper.accessor('grade', {
-            header: 'Cấp học'
+         columnHelper.accessor('color_code', {
+            header: 'Mã màu'
+         }),
+         columnHelper.accessor('', {
+            header: 'Màu',
+            cell: ({ row }) => {
+               const subject = row?.original;
+               return (
+                  <Box
+                     sx={{
+                        width: 68,
+                        height: 32,
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 1,
+                        backgroundColor: subject.color_code
+                     }}></Box>
+               );
+            }
+         }),
+         columnHelper.accessor('description', {
+            header: 'Mô tả',
          }),
          columnHelper.accessor('', {
             header: 'Thao tác',
@@ -54,8 +68,15 @@ export default function Color() {
                const subject = row?.original;
                return (
                   <Box>
-                     <CoreTableActionEdit callback={() => navigate('/classes/update/' + subject?._id)}/>
-                     <CoreTableActionDelete callback={() => deleteClass(subject?._id)} content='Bạn có muốn xoá môn học này?'/>
+                     <CoreTableActionEdit callback={() => navigate(subject?._id)} />
+                     <CoreTableActionDelete
+                        callback={() =>
+                           mutation.mutate({
+                              id: subject?._id
+                           })
+                        }
+                        content='Bạn có muốn xoá môn học này?'
+                     />
                   </Box>
                );
             }
@@ -64,8 +85,8 @@ export default function Color() {
    }, []);
 
    return (
-      <BasicPage currentPage='Classes' createTitle='Tạo mới'>
-         <CoreTable columns={columns} {...classTableHandler} data={classTableHandler?.data?.classes} />
+      <BasicPage currentPage='Color' createTitle='Tạo mới'>
+         <CoreTable columns={columns} data={dataColor} isPagination={false} loading={isFetching} />
       </BasicPage>
    );
 }

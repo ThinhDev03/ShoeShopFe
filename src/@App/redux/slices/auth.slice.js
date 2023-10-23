@@ -6,16 +6,18 @@ import axios from 'axios';
 
 export const actionGetCurrentUser = createAsyncThunk('auth/actionGetCurrentUser', async (payload, action) => {
    const user = await authService.getCurrentUser();
-   const getPermissionByRole = () => {
-      return axios.get(import.meta.env.VITE_BASE_URL + '/permissions/get-by-roll?role=' + user.role, {
-         withCredentials: true
-      });
-   };
-   const userPermission = await getPermissionByRole();
-   return {
-      user,
-      userPermission: userPermission.data
-   };
+   // const getPermissionByRole = () => {
+   //    return axios.get(import.meta.env.VITE_BASE_URL + '/permissions/get-by-roll?role=' + user.role, {
+   //       withCredentials: true
+   //    });
+   // };
+   // const userPermission = await getPermissionByRole();
+   // return {
+   //    user
+   //    // userPermission: userPermission.data
+   // };
+
+   return user;
 });
 export const actionLogout = createAsyncThunk('auth/actionLogout', async (_, action) => {
    try {
@@ -23,7 +25,6 @@ export const actionLogout = createAsyncThunk('auth/actionLogout', async (_, acti
       action.dispatch(setToastMessage({ message: 'Đăng xuất thành công', status: 'success' }));
       return res;
    } catch (error) {
-      console.log(error);
       action.dispatch(setToastMessage({ message: 'Có lỗi sảy ra vui lòng thử lại!', status: 'error' }));
       throw new Error();
    }
@@ -33,26 +34,35 @@ const authSlice = createSlice({
    name: 'auth',
    initialState: {
       user: null,
-      isAuhthentication: false,
+      isAuththentication: false,
       isInitialized: false,
       userPermission: null,
       loading: false
    },
-   reducers: {},
+   reducers: {
+      actionLoginReducer: (state, action) => {
+         const { role, ...user } = action.payload;
+         state.user = user;
+         state.isAuththentication = true;
+         state.userPermission = role;
+      }
+   },
    extraReducers: (builder) => {
       builder
          .addCase(actionGetCurrentUser.fulfilled, (state, { payload }) => {
-            state.user = payload.user;
-            state.userPermission = payload.userPermission;
-            state.isAuhthentication = true;
+            const { role, ...user } = payload.data;
+            state.user = user;
+            state.userPermission = role;
+            state.isAuththentication = true;
             state.isInitialized = true;
          })
          .addCase(actionLogout.fulfilled, (state, action) => {
             state.user = null;
-            state.isAuhthentication = false;
+            state.isAuththentication = false;
          })
          .addCase(actionGetCurrentUser.rejected, (state, action) => {
-            state.isAuhthentication = false;
+            state.isAuththentication = false;
+            state.userPermission = null;
             state.isInitialized = true;
          })
          .addMatcher(
