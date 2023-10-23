@@ -87,18 +87,18 @@ class BaseService {
     * @returns
     */
    create = (data) => {
-      return this.request.post(this.BASE_ENDPOINT, data);
+      return this.request.post(this.BASE_ENDPOINT + '/create', data);
    };
 
    /**
     * @param {Object} data
     * @returns
     */
-   update = (data, id, method = "put") => {
+   update = (data, id, method = 'put') => {
       if (id) {
-         return this.request[method](`${this.BASE_ENDPOINT}/${id}`, data);
+         return this.request[method](`${this.BASE_ENDPOINT}/update/${id}`, data);
       }
-      return this.request[method](`${this.BASE_ENDPOINT}/${data[this.PRIMARY_KEY]}`, data);
+      return this.request[method](`${this.BASE_ENDPOINT}/update/${data[this.PRIMARY_KEY]}`, data);
    };
    /**
     * @param {Object} data
@@ -117,12 +117,8 @@ class BaseService {
     * @returns
     */
    delete = (id) => {
-      return this.request.delete(this.BASE_ENDPOINT + '/' + id);
+      return this.request.delete(this.BASE_ENDPOINT + '/remove/' + id);
    };
-
-   
-  
-  
 }
 
 export default BaseService;
