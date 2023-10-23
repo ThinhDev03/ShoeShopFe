@@ -1,13 +1,14 @@
 import React from 'react';
 import { Box, Stack, styled } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
+
 import Inventory2SharpIcon from '@mui/icons-material/Inventory2Sharp';
-import PersonIcon from '@mui/icons-material/Person';
+
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import useAuth from '@App/hooks/useAuth';
 import { ROLE } from '@App/configs/role';
 import { NavLink } from 'react-router-dom';
+import ChangeUserLogin from './ChangeUserLogin';
 
 const headerListAction = [
    {
@@ -23,7 +24,6 @@ const headerListAction = [
 ];
 
 function Nav() {
-   const { user, isAuththentication, userPermission } = useAuth();
    return (
       <FlexBox
          sx={{
@@ -51,41 +51,7 @@ function Nav() {
                </Stack>
             );
          })}
-         <Stack
-            sx={{
-               flexDirection: 'row',
-               alignItems: 'center',
-               gap: 0.5,
-               color: '#FFFFFF',
-               fontSize: 14,
-               textDecoration: 'none'
-            }}
-            component={NavLink}
-            to=''>
-            {isAuththentication ? (
-               <PersonIcon sx={{ width: '14px', height: '14px' }} />
-            ) : (
-               <LoginIcon sx={{ width: '14px', height: '14px' }} />
-            )}
-            <Box component='span'>{isAuththentication ? user.username : 'Đăng nhập'}</Box>
-         </Stack>
-         {isAuththentication && userPermission === ROLE[2] && (
-            <Stack
-               sx={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 0.5,
-                  color: '#FFFFFF',
-                  fontSize: 14,
-                  textDecoration: 'none'
-               }}
-               component={NavLink}
-               to='admin'>
-               <PersonIcon sx={{ width: '14px', height: '14px' }} />
-
-               <Box component='span'>Trang Quản trị</Box>
-            </Stack>
-         )}
+         <ChangeUserLogin />
       </FlexBox>
    );
 }

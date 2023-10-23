@@ -14,6 +14,7 @@ import authService from '@App/services/auth.service';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import useAuth from '@App/hooks/useAuth';
 import useLocalStorage from '@App/hooks/useLocalStorage';
+import ControllerTextFieldPassword from '@Core/Components/FormControl/ControllerTextFieldPassword';
 
 const schemaLogin = yup.object({
    username: yup.string().required('Tài khoản đăng nhập không được để trống'),
@@ -50,11 +51,11 @@ function Signin() {
             <form onSubmit={handleSubmit(handleSubmitForm)}>
                <Box mb={2}>
                   <FormLabel required title='Tên đăng nhập' />
-                  <ControllerTextField name='username' control={control} />
+                  <ControllerTextField name='username' control={control} placeholder='Nhập vào tên tài khoản...' />
                </Box>
                <Box mb={2}>
                   <FormLabel required title='Mật khẩu' />
-                  <ControllerTextField name='password' control={control} />
+                  <ControllerTextFieldPassword name='password' control={control} placeholder='Nhập vào mật khẩu ...' />
                </Box>
                <LoadingButton
                   fullWidth

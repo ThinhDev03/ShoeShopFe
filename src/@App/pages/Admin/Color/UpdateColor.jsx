@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import BaseFormClasses from './components/BaseFormColor';
-import yupClasses from './utils/yupColor';
+import yupColor from './utils/yupColor';
 import BasicPage from '@App/components/customs/BasicPage';
 import colorService from '@App/services/color.service';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -31,7 +31,7 @@ export default function UpdateColor() {
 
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses)
+      resolver: yupResolver(yupColor)
    });
 
    useEffect(() => {

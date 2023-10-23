@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import BaseFormClasses from './components/BaseFormSize';
-import yupClasses from './utils/yupSize';
+import yupSize from './utils/yupSize';
 import { gradeList, headTeacher } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
 import classesService from '@App/services/category.service';
@@ -26,8 +26,8 @@ const breadcrumbs = [
 export default function CreateSize() {
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses),
-      defaultValues: yupClasses.getDefault()
+      resolver: yupResolver(yupSize),
+      defaultValues: yupSize.getDefault()
    });
 
    const { isLoading, mutate } = useMutation({

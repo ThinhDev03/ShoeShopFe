@@ -6,7 +6,7 @@ const { actionLoginReducer } = authSlice.actions;
 export default function useAuth() {
    const dispatch = useDispatch();
    const state = useSelector((state) => state.auth);
-
+   console.log(state);
    const getUser = () => {
       dispatch(actionGetCurrentUser());
    };

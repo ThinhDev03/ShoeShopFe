@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Grid, InputAdornment, Stack, TextField, styled } from '@mui/material';
 
-import Nav from './Nav';
+import Nav from './components/Nav';
 import logo from '../../../../../assets/svg/logo.svg';
 import discoveryou from '../../../../../assets/svg/discoveryou.svg';
 
