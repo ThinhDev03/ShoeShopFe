@@ -21,9 +21,11 @@ import queryString from 'query-string';
 const createInstance = (baseUrl, middleware = () => {}) => {
    const options = {
       baseURL: baseUrl,
-      withCredentials: true,
+      withCredentials: false,
       headers: {
-         'X-Requested-With': 'XMLHttpRequest'
+         // 'X-Requested-With': 'XMLHttpRequest'
+         // 'Content-Type': 'application/x-www-form-urlencoded'
+         'Content-Type': 'application/json'
       },
       paramsSerializer: {
          serializer: (params) => {
@@ -35,7 +37,9 @@ const createInstance = (baseUrl, middleware = () => {}) => {
    const instance = axios.create(options);
    instance.interceptors.request.use(
       async (requestConfig) => {
-         await Promise.all(middleware(requestConfig));
+         // await Promise.all(middleware(requestConfig));
+         const authToken = localStorage.getItem('token');
+         if (authToken) requestConfig.headers.Authorization = `Bearer ${authToken}`;
          return requestConfig;
       },
       (requestError) => {
