@@ -10,3 +10,4 @@ export const routerPath = {
    CART: 'cart',
    SHIPPING: 'shipping'
 };
+

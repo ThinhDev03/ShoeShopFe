@@ -1,7 +1,6 @@
 import React from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@App/configs/firebase';
 import { Box, FormHelperText } from '@mui/material';
