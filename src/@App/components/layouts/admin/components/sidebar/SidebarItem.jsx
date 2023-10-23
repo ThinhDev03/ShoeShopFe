@@ -36,18 +36,24 @@ export default function SidebarItem({ setOpenSidebar }) {
                if (!menu?.children) {
                   return (
                      <ListItemButton
+                        key={index}
                         component={LinkSidebar}
                         onClick={handleCloseSidebar}
                         to={menu.path}
                         alignItems='center'
-                        sx={{ gap: 1, padding: '12px 16px !important' }}>
+                        sx={{ gap: 1, padding: '12px 16px !important' }}
+                        end>
                         <Icon sx={{ fontSize: '20px' }} />
                         <Typography>{menu.title}</Typography>
                      </ListItemButton>
                   );
                }
                return (
-                  <Accordion square={false} expanded={expanded.includes(index)} onChange={handleChange(index)}>
+                  <Accordion
+                     key={index}
+                     square={false}
+                     expanded={expanded.includes(index)}
+                     onChange={handleChange(index)}>
                      <AccordionSummary
                         component={ListItemButton}
                         sx={{ height: '40px !important' }}
@@ -123,10 +129,10 @@ export const LinkSidebar = styled(NavLink)(({ theme }) => ({
    display: 'block',
    padding: '8px 14px 8px 32px !important',
    '&.active': {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
       color: '#fff',
       ':hover': {
-         backgroundColor: theme.palette.primary.main,
+         backgroundColor: theme.palette.secondary.main,
          color: '#fff'
       }
    },

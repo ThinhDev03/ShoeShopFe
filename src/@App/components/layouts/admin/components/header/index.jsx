@@ -95,7 +95,7 @@ const WrapHeader = styled('nav')(({ theme }) => ({
    boxSizing: 'border-box',
    width: '100%',
    position: 'fixed',
-   height: theme.palette.education.header.height,
+   height: theme.palette.education.header.heightAdmin,
    top: 0,
    left: 0,
    backgroundColor: '#fff',
