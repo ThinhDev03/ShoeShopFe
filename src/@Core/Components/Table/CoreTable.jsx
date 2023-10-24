@@ -76,7 +76,8 @@ const CoreTable = (props) => {
             sx={{
                flex: 1
             }}>
-            <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%' }} size='small'>
+
+            <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%', height: '100%' }} size='small'>
                <CoreTableHeader columns={columns} table={table} />
                <CoreTableBody table={table} loading={loading} />
             </Table>
