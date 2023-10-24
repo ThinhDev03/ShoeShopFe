@@ -5,6 +5,8 @@ import ToastMessage from '../@Core/Components/FormControl/ToastMessage';
 import CoreConfirmProvider from '@Core/Components/Confirm/CoreConfirm';
 import useAuth from './hooks/useAuth';
 import LazyLoadingFullScreen from './components/customs/LazyLoadingFullScreen';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
    const { isInitialized } = useAuth();
@@ -14,6 +16,7 @@ function App() {
          <Router>
             <Routers />
          </Router>
+         <ToastContainer />
          <ToastMessage />
       </CoreConfirmProvider>
    );

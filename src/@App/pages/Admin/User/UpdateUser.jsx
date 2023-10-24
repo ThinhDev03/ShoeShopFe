@@ -16,7 +16,7 @@ export default function UpdateUser() {
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupUser),
-      defaultValues:  yupUser.getDefault() //userService.getTeacher({ _id: id })
+      defaultValues: yupUser.getDefault() //userService.getTeacher({ _id: id })
    });
 
    const onSubmit = async (data) => {
