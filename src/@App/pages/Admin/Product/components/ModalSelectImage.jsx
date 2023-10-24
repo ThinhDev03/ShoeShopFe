@@ -1,5 +1,5 @@
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
-import { Box, Grid, Modal, Stack, Typography, styled } from '@mui/material';
+import { Box, CircularProgress, Grid, Modal, Stack, Typography, styled } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import React, { useState } from 'react';
 
@@ -15,7 +15,7 @@ function ModalSelectImage({ setImage, onChange }) {
 
    const { id } = useParams();
 
-   const { isFetching, data: dataImage } = useQuery(['getImageProduct'], async () => {
+   const { isLoading, data: dataImage } = useQuery(['getImageProduct'], async () => {
       const rest = await productService.getImageProduct(id);
       return rest.data;
    });
@@ -49,23 +49,27 @@ function ModalSelectImage({ setImage, onChange }) {
             onClose={handleClose}
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'>
-            <WrapperModalContent>
+            <WrapperModalContent sx={{ position: 'absolute' }}>
                <Typography id='modal-modal-title' variant='h6' component='h2' sx={{ px: 3, py: 1 }}>
                   Lựa chọn hình ảnh
                </Typography>
-               <Grid container spacing={2} sx={{ padding: '12px 6px', position: 'relative' }}>
-                  {isFetching ? (
-                     <Box
-                        sx={{
-                           position: 'absolute',
-                           top: -10,
-                           right: -10
-                        }}
-                        onClick={() => handleDeleteImage(value)}>
-                        <RemoveCircleIcon />
-                     </Box>
-                  ) : (
-                     dataImage.map((data, index) => {
+               {isLoading ? (
+                  <Box
+                     sx={{
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                     }}>
+                     <CircularProgress />
+                  </Box>
+               ) : (
+                  <Grid container spacing={2} sx={{ padding: '12px 6px', position: 'relative' }}>
+                     {dataImage.map((data, index) => {
                         return (
                            <Grid item xs={12} md={2} key={index}>
                               <Box
@@ -81,9 +85,9 @@ function ModalSelectImage({ setImage, onChange }) {
                               </Box>
                            </Grid>
                         );
-                     })
-                  )}
-               </Grid>
+                     })}
+                  </Grid>
+               )}
             </WrapperModalContent>
          </Modal>
       </React.Fragment>

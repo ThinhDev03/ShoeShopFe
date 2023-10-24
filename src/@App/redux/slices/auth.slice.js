@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { setToastMessage } from './toastMessage.slice';
 import axios from 'axios';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 export const actionGetCurrentUser = createAsyncThunk('auth/actionGetCurrentUser', async (payload, action) => {
    const user = await authService.getCurrentUser();
@@ -18,16 +19,6 @@ export const actionGetCurrentUser = createAsyncThunk('auth/actionGetCurrentUser'
    // };
 
    return user;
-});
-export const actionLogout = createAsyncThunk('auth/actionLogout', async (_, action) => {
-   try {
-      const res = await authService.signout();
-      action.dispatch(setToastMessage({ message: 'Đăng xuất thành công', status: 'success' }));
-      return res;
-   } catch (error) {
-      action.dispatch(setToastMessage({ message: 'Có lỗi sảy ra vui lòng thử lại!', status: 'error' }));
-      throw new Error();
-   }
 });
 
 const authSlice = createSlice({
@@ -45,6 +36,13 @@ const authSlice = createSlice({
          state.user = user;
          state.isAuththentication = true;
          state.userPermission = role;
+      },
+      actionLogoutReducer: (state, action) => {
+         localStorage.removeItem('token');
+         successMessage('Đăng xuất thành công');
+         state.user = null;
+         state.isAuththentication = false;
+         state.userPermission = null;
       }
    },
    extraReducers: (builder) => {
@@ -55,10 +53,6 @@ const authSlice = createSlice({
             state.userPermission = role;
             state.isAuththentication = true;
             state.isInitialized = true;
-         })
-         .addCase(actionLogout.fulfilled, (state, action) => {
-            state.user = null;
-            state.isAuththentication = false;
          })
          .addCase(actionGetCurrentUser.rejected, (state, action) => {
             state.isAuththentication = false;

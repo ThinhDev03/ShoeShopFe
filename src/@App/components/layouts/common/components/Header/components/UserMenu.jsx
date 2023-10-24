@@ -8,7 +8,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
 
 function UserMenu() {
-   const { user, isAuththentication } = useAuth();
+   const { user, isAuththentication, logout } = useAuth();
    const confirm = useConfirm();
    const [anchorEl, setAnchorEl] = useState(null);
    const open = Boolean(anchorEl);

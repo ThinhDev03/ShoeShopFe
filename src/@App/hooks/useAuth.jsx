@@ -1,12 +1,12 @@
-import authSlice, { actionGetCurrentUser, actionLogout } from '@App/redux/slices/auth.slice';
+import authSlice, { actionGetCurrentUser } from '@App/redux/slices/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 
-const { actionLoginReducer } = authSlice.actions;
+const { actionLoginReducer, actionLogoutReducer } = authSlice.actions;
 
 export default function useAuth() {
    const dispatch = useDispatch();
    const state = useSelector((state) => state.auth);
-   console.log(state);
+
    const getUser = () => {
       dispatch(actionGetCurrentUser());
    };
@@ -16,7 +16,7 @@ export default function useAuth() {
    };
 
    const logout = () => {
-      dispatch(actionLogout());
+      dispatch(actionLogoutReducer());
    };
 
    return { ...state, logout, getUser, authLogin };

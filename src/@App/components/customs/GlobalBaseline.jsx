@@ -7,7 +7,11 @@ const GlobalBaseline = () => {
          styles={({ palette }) => {
             return {
                'html, body, #root': {
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  padding: '0 !important'
+               },
+               body: {
+                  overflowY: 'scroll !important'
                },
                '#nprogress': {
                   pointerEvents: 'none'

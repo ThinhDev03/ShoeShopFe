@@ -19,40 +19,36 @@ function SelectMultipleImageProductDetail({ name, control, defaultValue }) {
       onChange('');
    };
 
+   useEffect(() => {
+      if (value === '') {
+         setImage('');
+      }
+   }, [value]);
+
    return (
       <React.Fragment>
-         <Grid container spacing={2} sx={{ padding: '12px 6px' }}>
-            {(!image && (
-               <Grid item xs={12}>
-                  <ModalSelectImage setImage={setImage} onChange={onChange} />
-               </Grid>
-            )) || (
-               <Grid item xs={12}>
-                  <Box
+         {(!image && <ModalSelectImage setImage={setImage} onChange={onChange} />) || (
+            <Box
+               sx={{
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: 300,
+                  position: 'relative',
+                  borderRadius: '5px'
+               }}>
+               <LazyLoadingImage src={image.image_url} alt='' sx={{ borderRadius: '5px' }} />
+               <Box sx={{ position: 'absolute', top: -10, right: -10 }} onClick={() => handleClickDeleteImage('')}>
+                  <RemoveCircleIcon
                      sx={{
-                        width: '100%',
-                        height: '100%',
-                        maxHeight: '400px',
-                        position: 'relative',
-                        borderRadius: '5px'
-                     }}>
-                     <LazyLoadingImage src={image.image_url} alt='' sx={{ borderRadius: '5px' }} />
-                     <Box
-                        sx={{ position: 'absolute', top: -10, right: -10 }}
-                        onClick={() => handleClickDeleteImage('')}>
-                        <RemoveCircleIcon
-                           sx={{
-                              cursor: 'pointer',
-                              ':hover': {
-                                 color: '#d32f2f'
-                              }
-                           }}
-                        />
-                     </Box>
-                  </Box>
-               </Grid>
-            )}
-         </Grid>
+                        cursor: 'pointer',
+                        ':hover': {
+                           color: '#d32f2f'
+                        }
+                     }}
+                  />
+               </Box>
+            </Box>
+         )}
          {error?.message && (
             <FormHelperText variant='standard' sx={{ color: '#d32f2f' }}>
                {error.message}
