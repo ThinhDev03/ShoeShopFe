@@ -16,13 +16,14 @@ function ProductCard({ data }) {
          </Box>
          <Stack>
             <Typography
-               sx={{ py: 1, textAlign: 'center', color: '#ff5f17', fontSize: 2 }}
+               variant='h6'
+               sx={{ py: 1, textAlign: 'center', color: '#ff5f17' }}
                component={Link}
                to={data?._id}>
                {data?.name}
             </Typography>
             <Box sx={{ borderTop: '1px dashed #333', my: '4px' }}></Box>
-            <Typography
+            {/* <Typography
                sx={{
                   fontWeight: 600,
                   color: '#000',
@@ -33,12 +34,21 @@ function ProductCard({ data }) {
                }}
                component={Link}
                to={'/' + routerPath.PRODUCTS + '/' + data?._id}
-               dangerouslySetInnerHTML={{ __html: data?.description }}></Typography>
-            <Stack sx={{ mt: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-               {/* <Box component='span'>510.000 VND</Box>
-               <Box component='span' sx={{ color: '#808080', fontSize: '14px' }}>
+               dangerouslySetInnerHTML={{ __html: data?.description }}></Typography> */}
+            <Stack
+               sx={{
+                  mt: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 2,
+                  fontSize: '20px',
+                  fontWeight: 'bold'
+               }}>
+               <Box component='span'>510.000 VND</Box>
+               <Box component='span' sx={{ color: '#808080', fontSize: '16px' }}>
                   650.000 VND
-               </Box> */}
+               </Box>
             </Stack>
          </Stack>
       </Stack>

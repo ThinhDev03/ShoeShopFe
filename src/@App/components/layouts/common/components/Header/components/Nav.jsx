@@ -9,17 +9,20 @@ import useAuth from '@App/hooks/useAuth';
 import { ROLE } from '@App/configs/role';
 import { NavLink } from 'react-router-dom';
 import ChangeUserLogin from './ChangeUserLogin';
+import { routerPath } from '@App/configs/routerConfig';
 
 const headerListAction = [
    {
       id: 1,
       title: 'Tra cứu đơn hàng',
-      icon: Inventory2SharpIcon
+      icon: Inventory2SharpIcon,
+      href: ''
    },
    {
       id: 5,
       icon: ShoppingCartIcon,
-      title: 'Giỏ hàng'
+      title: 'Giỏ hàng',
+      href: routerPath.CART
    }
 ];
 
@@ -45,7 +48,7 @@ function Nav() {
                      textDecoration: 'none'
                   }}
                   component={NavLink}
-                  to=''>
+                  to={item.href}>
                   <CompIcon sx={{ width: '14px', height: '14px' }} />
                   <Box component='span'>{item.title}</Box>
                </Stack>

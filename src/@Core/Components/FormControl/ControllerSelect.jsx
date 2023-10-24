@@ -29,8 +29,8 @@ const ControllerSelect = (props) => {
                   {...field}
                   {...rest}>
                   {options?.map((item, index) => (
-                     <MenuItem key={index} value={item[_value]}>
-                        {item[_title]}
+                     <MenuItem key={index} value={item?.[_value]}>
+                        {item?.[_title]}
                      </MenuItem>
                   ))}
                </Select>
