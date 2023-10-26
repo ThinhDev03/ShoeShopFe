@@ -22,8 +22,7 @@ const breadcrumbs = [
 ];
 
 function UpdateProduct() {
-   let [searchParams, setSearchParams] = useSearchParams();
-   const id = searchParams.get('id');
+   const { id } = useParams();
 
    const { data: dataProduct, refetch: findOneColor } = useQuery(['getProduct', { id }], async () => {
       const rest = await productService.getOne(id);

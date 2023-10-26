@@ -49,7 +49,7 @@ function ProductPage() {
                const subject = row?.original;
                return (
                   <Box sx={{ width: 70, height: 70, borderRadius: 2, overflow: 'hidden' }}>
-                     <LazyLoadingImage src={subject.thumbnail} />
+                     <LazyLoadingImage src={subject?.thumbnail} />
                   </Box>
                );
             }
@@ -61,7 +61,7 @@ function ProductPage() {
                return (
                   <Typography
                      sx={{ display: 'flex', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                     {subject.name}
+                     {subject?.name}
                   </Typography>
                );
             }
@@ -69,13 +69,13 @@ function ProductPage() {
          columnHelper.accessor('', {
             header: 'Giá bán',
             cell: ({ row }) => {
-               const data = row.original;
+               const data = row?.original;
                console.log(data);
                return (
                   <Box sx={{ display: 'flex', gap: 2 }}>
-                     <Typography>{handlePrice(data.fromPrice)}</Typography>
+                     <Typography>{handlePrice(data?.fromPrice)}</Typography>
                      <span> - </span>
-                     <Typography>{handlePrice(data.toPrice)}</Typography>
+                     <Typography>{handlePrice(data?.toPrice)}</Typography>
                   </Box>
                );
             }
@@ -84,14 +84,15 @@ function ProductPage() {
             header: 'Thương hiệu',
             cell: ({ row }) => {
                const subject = row?.original;
-               return subject.brand_id.brand_name;
+               console.log(subject);
+               return subject?.brand_id?.brand_name;
             }
          }),
          columnHelper.accessor('', {
             header: 'Danh mục',
             cell: ({ row }) => {
                const subject = row?.original;
-               return <Typography>{subject.category_id.category_name}</Typography>;
+               return <Typography>{subject?.category_id?.category_name}</Typography>;
             }
          }),
          columnHelper.accessor('', {
@@ -100,8 +101,7 @@ function ProductPage() {
                const subject = row?.original;
                return (
                   <Box sx={{ display: 'flex' }}>
-                     <CoreTableVariation callback={() => navigate('create/' + subject._id)} />
-                     <CoreTableActionEdit callback={() => navigate(subject?._id)} />
+                     <CoreTableActionEdit callback={() => navigate( subject?._id)} />
                      <CoreTableActionDelete
                         callback={() =>
                            mutation.mutate({

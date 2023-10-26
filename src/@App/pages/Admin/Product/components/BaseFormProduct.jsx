@@ -78,17 +78,15 @@ function BaseFormProduct(props) {
                <ControllerEditor minRows={8} name='description' setValue={setValue} control={control} />
             </Grid>
          </Grid>
-         {product_id && (
-            <LoadingButton
-               loading={loading}
-               loadingPosition='start'
-               variant='contained'
-               startIcon={<SaveIcon />}
-               type='submit'
-               sx={{ mt: 4 }}>
-               {title || 'Thêm mới'}
-            </LoadingButton>
-         )}
+         <LoadingButton
+            loading={loading}
+            loadingPosition='start'
+            variant='contained'
+            startIcon={<SaveIcon />}
+            type='submit'
+            sx={{ mt: 4 }}>
+            {title || 'Thêm mới'}
+         </LoadingButton>
       </form>
    );
 }

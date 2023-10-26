@@ -18,8 +18,13 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
    const handleChangeInputFile = async (event) => {
       try {
          const rest = await uploadFirebaseImage(event);
-         onChange(rest);
-      } catch (error) {}
+         const data = Array.isArray(rest) ? [...rest, ...rest] : [...value, rest];
+         console.log(data);
+
+         onChange(data);
+      } catch (error) {
+         console.log(error);
+      }
    };
 
    const handleDeleteImageItem = async (srcImage) => {
