@@ -30,14 +30,12 @@ function SelectMultipleImageProductDetail({ name, control, defaultValue }) {
          {(!image && <ModalSelectImage setImage={setImage} onChange={onChange} />) || (
             <Box
                sx={{
-                  width: '100%',
                   height: '100%',
-                  maxHeight: 300,
                   position: 'relative',
                   borderRadius: '5px'
                }}>
-               <LazyLoadingImage src={image.image_url} alt='' sx={{ borderRadius: '5px' }} />
-               <Box sx={{ position: 'absolute', top: -10, right: -10 }} onClick={() => handleClickDeleteImage('')}>
+               <LazyLoadingImage src={image.image_url} alt='' style={{ borderRadius: '5px', objectFit: 'cover' }} />
+               <Box sx={{ position: 'absolute', top: -5, right: -5 }} onClick={() => handleClickDeleteImage('')}>
                   <RemoveCircleIcon
                      sx={{
                         cursor: 'pointer',

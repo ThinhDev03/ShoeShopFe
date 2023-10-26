@@ -6,7 +6,7 @@ import { storage } from '@App/configs/firebase';
 import { Box, FormHelperText } from '@mui/material';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-function ControllerEditor({ name, setValue, control }) {
+function ControllerEditor({ name, setValue, control, ...props }) {
    function uploadAdapter(loader) {
       return {
          upload: () => {
@@ -35,8 +35,9 @@ function ControllerEditor({ name, setValue, control }) {
       <Controller
          render={({ field, fieldState: { error } }) => {
             return (
-               <Box>
-                  <CKEditor
+               <React.Fragment>
+                  <Box
+                     component={CKEditor}
                      data={useWatch({ control, name })}
                      editor={ClassicEditor}
                      config={{
@@ -46,13 +47,14 @@ function ControllerEditor({ name, setValue, control }) {
                         const data = editor.getData();
                         setValue(name, data);
                      }}
+                     {...props}
                   />
                   {error?.message && (
                      <FormHelperText variant='standard' sx={{ color: '#d32f2f' }}>
                         {error.message}
                      </FormHelperText>
                   )}
-               </Box>
+               </React.Fragment>
             );
          }}
          name={name}

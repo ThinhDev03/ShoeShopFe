@@ -3,6 +3,7 @@ import { Box, Button, Stack, Typography, styled } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LazyLoadingImage from '../../LazyLoadingImage';
+import handlePrice from '@Core/Helper/Price';
 
 function ProductCard({ data }) {
    return (
@@ -17,7 +18,14 @@ function ProductCard({ data }) {
          <Stack>
             <Typography
                variant='h6'
-               sx={{ py: 1, textAlign: 'center', color: '#ff5f17' }}
+               sx={{
+                  py: 1,
+                  textAlign: 'center',
+                  color: '#ff5f17',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden'
+               }}
                component={Link}
                to={data?._id}>
                {data?.name}
@@ -45,9 +53,9 @@ function ProductCard({ data }) {
                   fontSize: '20px',
                   fontWeight: 'bold'
                }}>
-               <Box component='span'>510.000 VND</Box>
+               <Box component='span'>{handlePrice(data?.fromPrice)}</Box>
                <Box component='span' sx={{ color: '#808080', fontSize: '16px' }}>
-                  650.000 VND
+                  {handlePrice(data?.toPrice)}
                </Box>
             </Stack>
          </Stack>
