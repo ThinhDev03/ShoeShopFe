@@ -23,7 +23,7 @@ export const gradeList = [
 
 export const headTeacher = [
    {
-      label: 'Hoàng Thị E',
+      label: 'Hoàng Thị AE',
       value: '64328bb923dcf14d4d0d3955'
    },
    {
