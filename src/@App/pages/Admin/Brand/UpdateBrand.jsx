@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import yupClasses from './utils/yupClasses';
 import { useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -9,7 +10,6 @@ import brandService from '@App/services/brand.service';
 import { routerPath } from '@App/configs/routerConfig';
 import BasicPage from '@App/components/customs/BasicPage';
 import { successMessage } from '@Core/Helper/Message';
-import yupBrand from './utils/yupBrand';
 
 const breadcrumbs = [
    {
@@ -32,7 +32,7 @@ function UpdateBrand() {
 
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupBrand)
+      resolver: yupResolver(yupClasses)
    });
 
    useEffect(() => {
@@ -55,7 +55,7 @@ function UpdateBrand() {
 
    return (
       <BasicPage currentPage='Thêm danh mục sản phẩm' breadcrumbs={breadcrumbs}>
-         <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
+         <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title="Cập nhật" />
       </BasicPage>
    );
 }
