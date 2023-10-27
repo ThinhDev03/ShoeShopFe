@@ -1,6 +1,5 @@
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
-import { Box, CircularProgress, Grid, Modal, Stack, Typography, styled } from '@mui/material';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { Box, CircularProgress, Grid, Modal, Typography, styled } from '@mui/material';
 import React, { useState } from 'react';
 
 import uploadSvg from '@App/assets/svg/upload.svg';
@@ -13,7 +12,9 @@ function ModalSelectImage({ setImage, onChange }) {
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
 
-   const { id } = useParams();
+   let [searchParams] = useSearchParams();
+
+   const id = searchParams.get('id');
 
    const { isLoading, data: dataImage } = useQuery(['getImageProduct'], async () => {
       const rest = await productService.getImageProduct(id);
@@ -31,7 +32,7 @@ function ModalSelectImage({ setImage, onChange }) {
             sx={{
                width: '100%',
                height: '100%',
-               minHeight: '300px',
+               maxHeight: '200px',
                display: 'flex',
                justifyContent: 'center',
                alignItems: 'center',
@@ -74,8 +75,6 @@ function ModalSelectImage({ setImage, onChange }) {
                            <Grid item xs={12} md={2} key={index}>
                               <Box
                                  sx={{
-                                    width: '100%',
-                                    height: '100%',
                                     position: 'relative',
                                     overflow: 'hidden',
                                     borderRadius: '5px'
