@@ -3,7 +3,11 @@ import { routerPath } from '@App/configs/routerConfig';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+<<<<<<< HEAD
 import yupClasses from './utils/yupClasses';
+=======
+import yupBrand from './utils/yupBrand';
+>>>>>>> 6c1eb1d60cc13036287f8f7bd7ace79c0b601509
 import BaseFormBrand from './components/BaseFormBrand';
 import brandService from '@App/services/brand.service';
 import { useMutation } from '@tanstack/react-query';
@@ -23,8 +27,13 @@ const breadcrumbs = [
 function CreateBrand() {
    const form = useForm({
       mode: 'onChange',
+<<<<<<< HEAD
       resolver: yupResolver(yupClasses),
       defaultValues: yupClasses.getDefault()
+=======
+      resolver: yupResolver(yupBrand),
+      defaultValues: yupBrand.getDefault()
+>>>>>>> 6c1eb1d60cc13036287f8f7bd7ace79c0b601509
    });
 
    const { isLoading, mutate } = useMutation({

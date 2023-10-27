@@ -1,5 +1,4 @@
 import { Controller } from 'react-hook-form';
-import PropTypes from 'prop-types';
 // mui
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,15 +13,13 @@ import FormHelperText from '@mui/material/FormHelperText';
  */
 
 const ControllerSelect = (props) => {
-   const { label, options } = props;
-   const { control, name, placeholder, disabled, ...rest } = props;
+   const { options, _value, _title } = props;
+   const { control, name, placeholder, disabled, defaultValue, ...rest } = props;
+
    return (
       <Controller
          render={({ field, fieldState: { error } }) => (
             <FormControl fullWidth>
-               <InputLabel size='small' id='demo-simple-select-label'>
-                  {label}
-               </InputLabel>
                <Select
                   id={name}
                   fullWidth
@@ -30,12 +27,10 @@ const ControllerSelect = (props) => {
                   placeholder={disabled ? void 0 : placeholder}
                   disabled={disabled}
                   {...field}
-                  {...rest}
-                  labelId='demo-simple-select-label'
-                  label={label}>
-                  {options.map((item, index) => (
-                     <MenuItem key={index} value={item.value}>
-                        {item.label}
+                  {...rest}>
+                  {options?.map((item, index) => (
+                     <MenuItem key={index} value={item[_value]}>
+                        {item[_title]}
                      </MenuItem>
                   ))}
                </Select>
@@ -47,19 +42,10 @@ const ControllerSelect = (props) => {
             </FormControl>
          )}
          name={name}
+         defaultValue={defaultValue || ''}
          control={control}
       />
    );
 };
-ControllerSelect.propTypes = {
-   options: PropTypes.array.isRequired,
-   label: PropTypes.string
-};
 
-export const PropTypeSelect = PropTypes.arrayOf(
-   PropTypes.shape({
-      label: PropTypes.string,
-      value: PropTypes.string
-   })
-).isRequired;
 export default ControllerSelect;

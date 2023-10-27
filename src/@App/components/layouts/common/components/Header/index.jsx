@@ -1,41 +1,10 @@
-import { Box, Container, Grid, InputAdornment, Stack, TextField, styled } from '@mui/material';
-import Inventory2SharpIcon from '@mui/icons-material/Inventory2Sharp';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link, NavLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
+import { Box, Grid, InputAdornment, Stack, TextField, styled } from '@mui/material';
 
+import Nav from './components/Nav';
 import logo from '../../../../../assets/svg/logo.svg';
 import discoveryou from '../../../../../assets/svg/discoveryou.svg';
-
-const headerListAction = [
-   {
-      id: 1,
-      title: 'Tra cứu đơn hàng',
-      icon: Inventory2SharpIcon
-   },
-   {
-      id: 2,
-      icon: FavoriteIcon,
-      title: 'Tìm cửa hàng'
-   },
-   {
-      id: 3,
-      icon: FavoriteIcon,
-      title: 'Yêu thích'
-   },
-   {
-      id: 4,
-      icon: PersonIcon,
-      title: 'Đăng nhập'
-   },
-   {
-      id: 5,
-      icon: ShoppingCartIcon,
-      title: 'Giỏ hàng'
-   }
-];
 
 const headerMenubar = [
    {
@@ -44,81 +13,69 @@ const headerMenubar = [
    },
    {
       title: 'Nam',
-      path: '/products/nam'
+      path: '/products'
    },
-   {
-      title: 'Nữ',
-      path: '/products/nu'
-   },
+   // {
+   //    title: 'Nữ',
+   //    path: '/products'
+   // },
    {
       title: 'SALE OFF',
-      path: '/products/nu'
+      path: '/products'
    }
 ];
 
 export default function Header() {
    return (
       <NavHeader>
-         <FlexBox
-            sx={{
-               backgroundColor: '#303030',
-               padding: '6px 60px 4px 2px'
-            }}>
-            {headerListAction.map((item) => {
-               const CompIcon = item.icon;
+         <Nav />
+         <Grid container spacing={2}>
+            {/* <FlexBox sx={{ justifyContent: 'space-around', mt: 1, px: 3 }}> */}
+            <Grid item xs={2}>
+               <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }} component={Link} to='/'>
+                  <img src={logo} alt='' width='39.997px' height='66.92px' />
+               </Box>
+            </Grid>
+            <Grid item xs={8}>
+               <Box
+                  sx={{
+                     display: 'flex',
+                     gap: 3,
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                     width: '100%',
+                     height: '100%'
+                  }}>
+                  {headerMenubar.map((item, index) => {
+                     return (
+                        <Box
+                           key={index}
+                           component={NavLink}
+                           to={item.path}
+                           sx={({ palette }) => ({
+                              padding: '20px',
+                              fontSize: '21px',
+                              fontWeight: 600,
+                              lineHeight: '20px',
+                              textDecoration: 'none',
+                              textTransform: 'uppercase',
+                              color: palette.education.text.black,
+                              ':hover': {
+                                 color: palette.primary.main
+                              }
+                           })}
+                           onMouseOver={() => console.log('hover menu')}>
+                           {item.title}
+                        </Box>
+                     );
+                  })}
+                  <Link to=''>
+                     <img src={discoveryou} alt='' />
+                  </Link>
+               </Box>
+            </Grid>
 
-               return (
-                  <Stack
-                     key={item.id}
-                     sx={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        gap: 0.5,
-                        color: '#FFFFFF',
-                        fontSize: 14,
-                        textDecoration: 'none'
-                     }}
-                     component={NavLink}
-                     to=''>
-                     <CompIcon sx={{ width: '14px', height: '14px' }} />
-                     <Box component='span'>{item.title}</Box>
-                  </Stack>
-               );
-            })}
-         </FlexBox>
-         <FlexBox sx={{ justifyContent: 'space-around', mt: 1, px: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }} component={Link} to='/'>
-               <img src={logo} alt='' width='49.997px' height='86.92px' />
-            </Box>
-            <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-               {headerMenubar.map((item, index) => {
-                  return (
-                     <Box
-                        key={index}
-                        component={NavLink}
-                        to={item.path}
-                        sx={({ palette }) => ({
-                           padding: '20px',
-                           fontSize: '21px',
-                           fontWeight: 600,
-                           lineHeight: '20px',
-                           textDecoration: 'none',
-                           textTransform: 'uppercase',
-                           color: palette.education.text.black,
-                           ':hover': {
-                              color: palette.primary.main
-                           }
-                        })}
-                        onMouseOver={() => console.log('hover menu')}>
-                        {item.title}
-                     </Box>
-                  );
-               })}
-               <Link to="">
-                  <img src={discoveryou} alt='' />
-               </Link>
-            </Box>
-            <Box>
+            {/* <Box>
                <TextField
                   id='input-with-icon-textfield'
                   variant='outlined'
@@ -131,8 +88,9 @@ export default function Header() {
                      )
                   }}
                />
-            </Box>
-         </FlexBox>
+            </Box> */}
+            {/* </FlexBox> */}
+         </Grid>
          <FlexBox sx={{ padding: '14px 0px 13px 0px', backgroundColor: '#F1F1F1', justifyContent: 'center' }}>
             BUY 2 GET 10% OFF - ÁP DỤNG VỚI TẤT CẢ BASIC TEE
          </FlexBox>
