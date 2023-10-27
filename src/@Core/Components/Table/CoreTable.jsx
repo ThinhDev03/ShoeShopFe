@@ -13,7 +13,7 @@
  */
 
 import { useTheme } from '@emotion/react';
-import { Box, Button, Table, TableContainer, TablePagination } from '@mui/material';
+import { Box, Table, TableContainer, TablePagination } from '@mui/material';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import PropTypes from 'prop-types';
@@ -66,9 +66,10 @@ const CoreTable = (props) => {
    return (
       <TableContainer
          sx={{
-            height: '100%',
-            border: 'none',
             position: 'relative',
+            border: 'none',
+            width: '100%',
+            height: '100%',
             display: 'flex',
             flexDirection: 'column'
          }}>
@@ -76,8 +77,7 @@ const CoreTable = (props) => {
             sx={{
                flex: 1
             }}>
-
-            <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%', height: '100%' }} size='small'>
+            <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%' }} size='small'>
                <CoreTableHeader columns={columns} table={table} />
                <CoreTableBody table={table} loading={loading} />
             </Table>

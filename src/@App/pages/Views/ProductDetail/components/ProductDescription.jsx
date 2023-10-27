@@ -1,29 +1,27 @@
-import { Box, Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import AccordionDescription from './AccordionDescription';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
-import productDetail from '@App/services/product-detail.service';
-import productService from '@App/services/product.service';
-import ControllerRadioColor from './ControllerRadioColor';
-import handlePrice from '@Core/Helper/Price';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, MenuItem, Stack, Typography, styled } from '@mui/material';
+
 import yupCard from '../utils/yup.card';
-import { useForm } from 'react-hook-form';
-import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
+import productService from '@App/services/product.service';
+import handlePrice from '@Core/Helper/Price';
+import productDetail from '@App/services/product-detail.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
+import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
+import ColorRender from './ColorRender';
 
 function ProductDescription() {
    const { id } = useParams();
-   const [detail, setDetail] = useState(0);
+   const [indexActive, setIndexActive] = useState(0);
 
-   const form = useForm({
+   const { control, handleSubmit, setValue } = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCard),
       defaultValues: yupCard.getDefault()
    });
-
-   const { control, handleSubmit } = form;
 
    const results = useQueries({
       queries: [
@@ -50,6 +48,19 @@ function ProductDescription() {
       console.log(data);
    };
 
+   function getUniqueListBy(arr) {
+      const newSet = new Map();
+      arr.forEach((item) => {
+         newSet.set(item.color_id._id, item.color_id);
+      });
+
+      return Array.from(newSet);
+   }
+
+   // useEffect(() => {
+   //    const size = details?.data?.filter((item) => item.color_id._id === '653728be9b05ef0df28823a0');
+   // }, []);
+
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '30px' }}>
@@ -67,23 +78,24 @@ function ProductDescription() {
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                <Typography variant='h5' sx={({ palette }) => ({ color: palette.education.text.main, fontWeight: 600 })}>
-                  {(details && handlePrice(details?.data?.[detail].sale)) || ''}
+                  {(details && handlePrice(details?.data?.[indexActive].sale)) || ''}
                </Typography>
-               <Box sx={({ palette }) => ({ color: '#808080', fontSize: '20px', fontWeight: 500 })}>
-                  {(details && handlePrice(details?.data?.[detail].price)) || ''}
+               <Box sx={{ color: '#808080', fontSize: '20px', fontWeight: 500 }}>
+                  {(details && handlePrice(details?.data?.[indexActive].price)) || ''}
                </Box>
             </Box>
 
-            <Box sx={{ borderTop: '1px dashed #333', my: 1 }}></Box>
+            <Divider />
 
             <Box component='form' onSubmit={handleSubmit(onSubmit)}>
-               <ControllerRadioColor
-                  data={(details?.data && details.data) || []}
-                  name='color_id'
-                  setDetail={setDetail}
-               />
+               <Stack gap={3} flexDirection='row' alignItems='center'>
+                  {getUniqueListBy(details?.data || [], '_id').map((color) => {
+                     console.log(color[1].color_code);
+                     return <ColorRender color={color[1]} check={} onClick={setIndexActive} />;
+                  })}
+               </Stack>
 
-               <Box sx={{ borderTop: '1px dashed #333', my: 3 }}></Box>
+               <Divider />
 
                <Stack flexDirection='row' alignItems='center' gap={2} mb={1}>
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
@@ -93,19 +105,16 @@ function ProductDescription() {
                         _value='size_id._id'
                         _title='size_id.size_name'
                         name='size_id'
-                        control={control}
-                     />
-                     {/* <MenuItem value=''></MenuItem>
+                        control={control}>
                         {!details.isLoading &&
-                          .map((item, index) => {
-                              console.log(item.size_id._id);
+                           details?.data.map((item) => {
                               return (
                                  <MenuItem value={item.size_id._id} key={item._id}>
                                     {item.size_id.size_name}
                                  </MenuItem>
                               );
                            })}
-                     </ControllerSelect> */}
+                     </ControllerSelect>
                   </Box>
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
                      <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Số lượng</Typography>
@@ -126,16 +135,23 @@ function ProductDescription() {
                      })}>
                      Thêm vào giỏ hàng
                   </Button>
-                  <Button fullWidth sx={{ textTransform: 'uppercase', py: '18px' }}>
+                  <Button type='submit' fullWidth sx={{ textTransform: 'uppercase', py: '18px' }}>
                      Thanh toán
                   </Button>
                </Stack>
             </Box>
 
-            <AccordionDescription />
+            {/* <AccordionDescription product={product} /> */}
          </Stack>
       </React.Fragment>
    );
 }
+
+const Divider = styled(Box)(({ theme }) => ({
+   margin: '32px 0px 15px 0',
+   backgroundColor: theme.palette.education.text.white,
+   background: 'url(https://ananas.vn/wp-content/themes/ananas/fe-assets/images/bg_divider.png) repeat-x 7px',
+   height: '2px'
+}));
 
 export default React.memo(ProductDescription);

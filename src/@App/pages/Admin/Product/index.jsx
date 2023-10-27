@@ -7,7 +7,8 @@ import {
    CoreTableActionEdit,
    CoreTableVariation
 } from '@Core/Components/Table/components/CoreTableActions';
-import { Box } from '@mui/material';
+import handlePrice from '@Core/Helper/Price';
+import { Box, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 function ProductPage() {
    const navigate = useNavigate();
    const {
-      data: dataColor,
+      data: dataProducts,
       refetch: getCategory,
       isFetching
    } = useQuery(['getProduct'], async () => {
@@ -47,27 +48,51 @@ function ProductPage() {
             cell: ({ row }) => {
                const subject = row?.original;
                return (
-                  <Box sx={{ width: 100, height: 100 }}>
-                     <LazyLoadingImage src={subject.thumbnail} />
+                  <Box sx={{ width: 70, height: 70, borderRadius: 2, overflow: 'hidden' }}>
+                     <LazyLoadingImage src={subject?.thumbnail} />
                   </Box>
                );
             }
          }),
          columnHelper.accessor('name', {
-            header: 'Tên sản phẩm'
+            header: 'Tên sản phẩm',
+            cell: ({ row }) => {
+               const subject = row?.original;
+               return (
+                  <Typography
+                     sx={{ display: 'flex', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                     {subject?.name}
+                  </Typography>
+               );
+            }
+         }),
+         columnHelper.accessor('', {
+            header: 'Giá bán',
+            cell: ({ row }) => {
+               const data = row?.original;
+               console.log(data);
+               return (
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                     <Typography>{handlePrice(data?.fromPrice)}</Typography>
+                     <span> - </span>
+                     <Typography>{handlePrice(data?.toPrice)}</Typography>
+                  </Box>
+               );
+            }
          }),
          columnHelper.accessor('', {
             header: 'Thương hiệu',
             cell: ({ row }) => {
                const subject = row?.original;
-               return subject.brand_id.brand_name;
+               console.log(subject);
+               return subject?.brand_id?.brand_name;
             }
          }),
          columnHelper.accessor('', {
             header: 'Danh mục',
             cell: ({ row }) => {
                const subject = row?.original;
-               return subject.category_id.category_name;
+               return <Typography>{subject?.category_id?.category_name}</Typography>;
             }
          }),
          columnHelper.accessor('', {
@@ -75,9 +100,8 @@ function ProductPage() {
             cell: ({ row }) => {
                const subject = row?.original;
                return (
-                  <Box>
-                     <CoreTableVariation callback={() => navigate('create/' + subject._id)} />
-                     <CoreTableActionEdit callback={() => navigate(subject?._id)} />
+                  <Box sx={{ display: 'flex' }}>
+                     <CoreTableActionEdit callback={() => navigate( subject?._id)} />
                      <CoreTableActionDelete
                         callback={() =>
                            mutation.mutate({
@@ -94,8 +118,8 @@ function ProductPage() {
    }, []);
 
    return (
-      <BasicPage currentPage='Color' createTitle='Tạo mới'>
-         <CoreTable columns={columns} data={dataColor} isPagination={false} loading={isFetching} />
+      <BasicPage currentPage='Color'>
+         <CoreTable columns={columns} data={dataProducts} isPagination={false} loading={isFetching} />
       </BasicPage>
    );
 }

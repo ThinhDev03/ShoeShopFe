@@ -10,7 +10,12 @@ yup.setLocale({
 const yupCard = yup.object().shape({
    color_id: yup.string().strict(true).required('Vui lòng chọn màu').default(''),
    size_id: yup.string().strict(true).required('Vui lòng chọn size').default(''),
-   quantity: yup.string().strict(true).required('Vui lòng nhập vào số lượng').default('')
+   quantity: yup
+      .string()
+      .strict(true)
+      .required('Vui lòng nhập vào số lượng')
+      .matches(Regex.number, 'Vui lòng nhập số')
+      .default('')
 });
 
 export default yupCard;

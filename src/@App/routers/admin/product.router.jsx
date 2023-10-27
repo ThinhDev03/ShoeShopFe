@@ -33,10 +33,6 @@ const productRouter = {
          element: <CreateProduct />
       },
       {
-         path: 'create/:id',
-         element: <ProductDetail />
-      },
-      {
          path: ':id',
          element: <UpdateProduct />
       },
