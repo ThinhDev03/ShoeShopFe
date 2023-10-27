@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -11,7 +11,7 @@ import BaseFormProduct from './components/BaseFormProduct';
 import productService from '@App/services/product.service';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import ProductDetail from './ProductDetail';
-import { Box, Container, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 const breadcrumbs = [
    {
@@ -25,7 +25,7 @@ const breadcrumbs = [
 ];
 
 function CreateProduct() {
-   let [searchParams, setSearchParams] = useSearchParams();
+   let [searchParams] = useSearchParams();
 
    const navigate = useNavigate();
 
