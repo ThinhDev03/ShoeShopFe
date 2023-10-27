@@ -65,9 +65,9 @@ export default function Header(props) {
                      open={open}
                      onClose={handleClose}
                      PaperProps={PaperProps}
-                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                     transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                     getContentAnchorEl={null}>
+                     getContentAnchorEl={null}
+                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
                      <MenuItem key={'Profile'} onClick={handleClose}>
                         <Avatar /> Profile
                      </MenuItem>

@@ -65,7 +65,7 @@ function Categories() {
    }, []);
 
    return (
-      <BasicPage currentPage='Danh mục sản phẩm' createTitle='Tạo mới'>
+      <BasicPage currentPage='Danh mục sản phẩm'>
          <CoreTable columns={columns} loading={isFetching} data={data} isPagination={false} />
       </BasicPage>
    );

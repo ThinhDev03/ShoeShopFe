@@ -1,21 +1,33 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
-import BasicPage from '@App/components/customs/BasicPage';
-import BaseFormProductDetail from './components/BaseFormProductDetail';
-import { yupResolver } from '@hookform/resolvers/yup';
-import yupProductDetail from './utils/yupProductDetail';
 import { useParams } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import productDetail from '@App/services/product-detail.service';
+import { Box, Typography } from '@mui/material';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { routerPath } from '@App/configs/routerConfig';
+import yupProductDetail from './utils/yupProductDetail';
+import BasicPage from '@App/components/customs/BasicPage';
+import productService from '@App/services/product.service';
+import productDetail from '@App/services/product-detail.service';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
+import BaseFormProductDetail from './components/BaseFormProductDetail';
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 
 function ProductDetail() {
    const { id } = useParams();
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupProductDetail),
-      defaultValues: yupProductDetail.getDefault()
+      defaultValues: [yupProductDetail.getDefault()]
+   });
+
+   const { data } = useQuery(['getProductItem', id], async () => {
+      try {
+         await productService.getOne(id);
+         return true;
+      } catch (error) {
+         errorMessage('Sản phẩm không tồn tại');
+      }
    });
 
    const { isLoading, mutate } = useMutation({
@@ -33,8 +45,9 @@ function ProductDetail() {
    });
 
    const onSubmit = (data) => {
-      const dataProduct = { ...data, product_id: id };
-      mutate(dataProduct);
+      const { variation } = data;
+      const newData = variation.map((item) => ({ ...item, product_id: id }));
+      mutate(newData);
    };
 
    const breadcrumbs = [
@@ -48,10 +61,27 @@ function ProductDetail() {
       }
    ];
 
-   return (
-      <BasicPage currentPage='Thêm detail sản phẩm' breadcrumbs={breadcrumbs}>
+   return data ? (
+      <BasicPage currentPage='Thêm biến thể sản phẩm' breadcrumbs={breadcrumbs}>
          <BaseFormProductDetail form={form} onSubmit={onSubmit} loading={isLoading} />
       </BasicPage>
+   ) : (
+      <Box
+         sx={{
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column'
+         }}>
+         <Typography variant='h5' sx={{ color: '#ABAEB0' }}>
+            Sản phẩm chính không tồn tại.
+         </Typography>
+         <Box component='p' sx={{ color: '#ABAEB0' }}>
+            {' '}
+            vui lòng thêm sản phẩm chính trước khi thêm các biến thể
+         </Box>
+      </Box>
    );
 }
 

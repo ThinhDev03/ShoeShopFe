@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+<<<<<<< HEAD
 import yupClasses from './utils/yupClasses';
+=======
+>>>>>>> 6c1eb1d60cc13036287f8f7bd7ace79c0b601509
 import { useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -10,6 +13,10 @@ import brandService from '@App/services/brand.service';
 import { routerPath } from '@App/configs/routerConfig';
 import BasicPage from '@App/components/customs/BasicPage';
 import { successMessage } from '@Core/Helper/Message';
+<<<<<<< HEAD
+=======
+import yupBrand from './utils/yupBrand';
+>>>>>>> 6c1eb1d60cc13036287f8f7bd7ace79c0b601509
 
 const breadcrumbs = [
    {
@@ -32,7 +39,11 @@ function UpdateBrand() {
 
    const form = useForm({
       mode: 'onChange',
+<<<<<<< HEAD
       resolver: yupResolver(yupClasses)
+=======
+      resolver: yupResolver(yupBrand)
+>>>>>>> 6c1eb1d60cc13036287f8f7bd7ace79c0b601509
    });
 
    useEffect(() => {
@@ -55,7 +66,11 @@ function UpdateBrand() {
 
    return (
       <BasicPage currentPage='Thêm danh mục sản phẩm' breadcrumbs={breadcrumbs}>
+<<<<<<< HEAD
          <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title="Cập nhật" />
+=======
+         <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
+>>>>>>> 6c1eb1d60cc13036287f8f7bd7ace79c0b601509
       </BasicPage>
    );
 }

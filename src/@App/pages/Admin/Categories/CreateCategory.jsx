@@ -4,7 +4,7 @@ import React from 'react';
 import BaseFormCategory from './components/BaseFormCategory';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yupClasses from './utils/yupClasses';
+import yupCategory from './utils/yupCategory';
 import { useMutation } from '@tanstack/react-query';
 import categoryService from '@App/services/category.service';
 import { successMessage } from '@Core/Helper/Message';
@@ -23,8 +23,8 @@ const breadcrumbs = [
 function CreateCategory() {
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses),
-      defaultValues: yupClasses.getDefault()
+      resolver: yupResolver(yupCategory),
+      defaultValues: yupCategory.getDefault()
    });
 
    const { isLoading, mutate } = useMutation({

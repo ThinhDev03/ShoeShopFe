@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // mui
 import { Grid } from '@mui/material';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
-import ControllerSelect, { PropTypeSelect } from '@Core/Components/FormControl/ControllerSelect';
+import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import FormGroup from '@Core/Components/FormControl/FormGroup';
 import LoadingButton from '@mui/lab/LoadingButton';

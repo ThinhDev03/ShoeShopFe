@@ -8,26 +8,26 @@ const CreateBrand = Loadable(lazy(() => import('@App/pages/Admin/Brand/CreateBra
 const UpdateBrand = Loadable(lazy(() => import('@App/pages/Admin/Brand/UpdateBrand')));
 
 const brandRouter = {
-    path: routerPath.BRAND,
-    element: (
-        // <PermissionRestricted >
-        <Outlet />
-        //  </PermissionRestricted>
-    ),
-    children: [
-        {
-            index: true,
-            element: <Brand />
-        },
-        {
-            path: 'create',
-            element: <CreateBrand />
-        },
-        {
-            path: ':id',
-            element: <UpdateBrand />
-        }
-    ]
+   path: routerPath.BRAND,
+   element: (
+      // <PermissionRestricted >
+      <Outlet />
+      //  </PermissionRestricted>
+   ),
+   children: [
+      {
+         index: true,
+         element: <Brand />
+      },
+      {
+         path: 'create',
+         element: <CreateBrand />
+      },
+      {
+         path: ':id',
+         element: <UpdateBrand />
+      }
+   ]
 };
 
 export default brandRouter;
