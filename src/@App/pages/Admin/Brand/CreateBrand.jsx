@@ -3,7 +3,7 @@ import { routerPath } from '@App/configs/routerConfig';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yupClasses from './utils/yupClasses';
+import yupBrand from './utils/yupBrand';
 import BaseFormBrand from './components/BaseFormBrand';
 import brandService from '@App/services/brand.service';
 import { useMutation } from '@tanstack/react-query';

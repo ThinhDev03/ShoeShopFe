@@ -10,6 +10,7 @@ import brandService from '@App/services/brand.service';
 import { routerPath } from '@App/configs/routerConfig';
 import BasicPage from '@App/components/customs/BasicPage';
 import { successMessage } from '@Core/Helper/Message';
+import yupBrand from './utils/yupBrand';
 
 const breadcrumbs = [
    {
