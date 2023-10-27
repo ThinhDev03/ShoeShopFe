@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import BaseFormCategory from './components/BaseFormCategory';
 import BasicPage from '@App/components/customs/BasicPage';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yupClasses from './utils/yupClasses';
+import yupCategory from './utils/yupCategory';
 import { routerPath } from '@App/configs/routerConfig';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { successMessage } from '@Core/Helper/Message';
@@ -31,7 +31,7 @@ function UpdateCategory() {
 
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses)
+      resolver: yupResolver(yupCategory)
    });
 
    useEffect(() => {

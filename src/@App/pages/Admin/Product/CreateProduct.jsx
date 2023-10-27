@@ -28,7 +28,7 @@ function CreateProduct() {
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupProduct),
-      defaultValues: yupClasses.getDefault()
+      defaultValues: yupProduct.getDefault()
    });
 
    const { isLoading, mutate } = useMutation({

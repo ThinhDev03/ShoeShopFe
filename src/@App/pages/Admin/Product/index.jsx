@@ -2,7 +2,11 @@ import BasicPage from '@App/components/customs/BasicPage';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 import productService from '@App/services/product.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
-import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
+import {
+   CoreTableActionDelete,
+   CoreTableActionEdit,
+   CoreTableVariation
+} from '@Core/Components/Table/components/CoreTableActions';
 import { Box } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
@@ -72,6 +76,7 @@ function ProductPage() {
                const subject = row?.original;
                return (
                   <Box>
+                     <CoreTableVariation callback={() => navigate('create/' + subject._id)} />
                      <CoreTableActionEdit callback={() => navigate(subject?._id)} />
                      <CoreTableActionDelete
                         callback={() =>

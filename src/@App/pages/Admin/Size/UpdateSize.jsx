@@ -12,52 +12,52 @@ import { successMessage } from '@Core/Helper/Message';
 import BaseFormSize from './components/BaseFormSize';
 
 const breadcrumbs = [
-    {
-        name: 'Trang chủ',
-        link: '/'
-    },
-    {
-        name: 'Size',
-        link: '/admin/' + routerPath.PRODUCTS + '/' + routerPath.SIZE
-    }
+   {
+      name: 'Trang chủ',
+      link: '/'
+   },
+   {
+      name: 'Size',
+      link: '/admin/' + routerPath.PRODUCTS + '/' + routerPath.SIZE
+   }
 ];
 
 export default function UpdateSize() {
-    let { id } = useParams();
+   let { id } = useParams();
 
-    const { data: dataSize, refetch: findOneColor } = useQuery(['getSize', { id }], async () => {
-        const rest = await sizeService.getOne(id);
-        console.log(rest.data);
-        return rest.data;
-    });
+   const { data: dataSize, refetch: findOneColor } = useQuery(['getSize', { id }], async () => {
+      const rest = await sizeService.getOne(id);
+      console.log(rest.data);
+      return rest.data;
+   });
 
-    const form = useForm({
-        mode: 'onChange',
-        resolver: yupResolver(yupSize)
-    });
+   const form = useForm({
+      mode: 'onChange',
+      resolver: yupResolver(yupSize)
+   });
 
-    useEffect(() => {
-        form.reset(dataSize);
-    }, [dataSize]);
+   useEffect(() => {
+      form.reset(dataSize);
+   }, [dataSize]);
 
-    const { mutate, isLoading } = useMutation({
-        mutationFn: async (data) => {
-            return await sizeService.updateOne(data, id);
-        },
-        onSuccess: () => {
-            findOneColor();
-            successMessage('Cập nhật Size thành công');
-        }
-    });
+   const { mutate, isLoading } = useMutation({
+      mutationFn: async (data) => {
+         return await sizeService.updateOne(data, id);
+      },
+      onSuccess: () => {
+         findOneColor();
+         successMessage('Cập nhật Size thành công');
+      }
+   });
 
-    const onSubmit = async (data) => {
-        console.log(data);
-        mutate(data);
-    };
-
-    return (
-        <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
-            <BaseFormSize form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
-        </BasicPage>
-    );
+   const onSubmit = async (data) => {
+      console.log(data);
+      mutate(data);
+   };
+   
+   return (
+      <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
+         <BaseFormSize form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
+      </BasicPage>
+   );
 }

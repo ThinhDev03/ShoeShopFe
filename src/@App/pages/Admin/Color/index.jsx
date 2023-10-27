@@ -75,7 +75,7 @@ export default function Color() {
                               id: subject?._id
                            })
                         }
-                        content='Bạn có muốn xoá ... này?'
+                        content='Bạn có muốn xoá môn học này?'
                      />
                   </Box>
                );

@@ -25,12 +25,14 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
    const handleDeleteImageItem = async (srcImage) => {
       try {
          await deleteFirebaseImage(srcImage);
+
          const newListImage = value.filter((image) => image !== srcImage);
          onChange(newListImage);
       } catch (error) {
          console.log(error);
       }
    };
+
    return (
       <React.Fragment>
          <Box
@@ -43,6 +45,7 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
             }}>
             <Grid container spacing={2}>
                <Grid item xs={2}>
+
                   <LabelUpload htmlFor={name + '-multiple_image'}>
                      {!loading ? (
                         <React.Fragment>
@@ -62,9 +65,11 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
                                  alignItems: 'center',
                                  gap: 2
                               }}>
+
                               <Box sx={{ width: 32, height: 32 }}>
                                  <LazyLoadingImage src={upload} />
                               </Box>
+
                            </Box>
                         </React.Fragment>
                      ) : (
@@ -88,9 +93,11 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
                {value.length > 0 &&
                   value.map((image, index) => {
                      return (
+
                         <Grid item xs={2} key={index} sx={{ position: 'relative', height: '160px' }}>
                            <Box sx={{ borderRadius: '5px', overflow: 'hidden', borderRadius: 3 }}>
                               <LazyLoadingImage src={image} w='100%' h='160px' />
+
                               <Box
                                  sx={{
                                     position: 'absolute',
@@ -127,6 +134,7 @@ const LabelUpload = styled('label')(({ theme }) => ({
    flexDirection: 'column',
    gap: 12,
    cursor: 'pointer'
+
 }));
 
 const ExtendTextFieldFile = styled('input')(({ theme }) => ({
