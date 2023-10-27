@@ -31,14 +31,13 @@ function ControllerInputFile({ name, defaultValue, disabled, placeholder, contro
          console.log(error);
       }
    };
-   
+
    return (
       <React.Fragment>
          <WrapperLabelFile htmlFor={name + '-input_file'} error={Boolean(error)}>
             {!value ? (
                <Box
                   sx={{
-                     minHeight: '250px',
                      display: 'flex',
                      alignItems: 'center',
                      justifyContent: 'center'
@@ -59,8 +58,8 @@ function ControllerInputFile({ name, defaultValue, disabled, placeholder, contro
                   </Box>
                </Box>
             ) : (
-               <Box sx={{ position: 'relative', width: '100%', height: '100%', minHeight: '250px' }}>
-                  <LazyLoadingImage src={value} />
+               <Box sx={{ position: 'absolute', width: '100%', height: '100%' }}>
+                  <LazyLoadingImage src={value} styled={{ borderRadius: 1 }} />
                   <Box
                      sx={{
                         position: 'absolute',
@@ -102,6 +101,7 @@ function ControllerInputFile({ name, defaultValue, disabled, placeholder, contro
 const WrapperLabelFile = styled('label')(({ theme, error }) => ({
    position: 'relative',
    width: '100%',
+   height: '100%',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
