@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ref, getDownloadURL, uploadBytes, deleteObject } from 'firebase/storage';
-import { errorMessage } from '@Core/Helper/Message';
 import { storage } from '@App/configs/firebase';
 
 function useFirebaseUpload() {
@@ -57,6 +56,20 @@ function useFirebaseUpload() {
       if (srcImage) {
          setLoading(true);
          try {
+            if (Array.isArray(srcImage) && srcImage.length > 0) {
+               srcImage.map(async (image) => {
+                  const desertRef = ref(storage, srcImage);
+
+                  await deleteObject(desertRef);
+
+                  setLoading(false);
+
+                  return true;
+               });
+
+               return true;
+            }
+
             const desertRef = ref(storage, srcImage);
 
             await deleteObject(desertRef);
