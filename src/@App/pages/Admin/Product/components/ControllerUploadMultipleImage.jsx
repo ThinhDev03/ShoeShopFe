@@ -25,18 +25,24 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
     const handleDeleteImageItem = async (srcImage) => {
         try {
             await deleteFirebaseImage(srcImage);
-            const newListImage = preview.filter((image) => image !== srcImage);
+            const newListImage = value.filter((image) => image !== srcImage);
             onChange(newListImage);
         } catch (error) {
             console.log(error);
         }
     };
-
     return (
         <React.Fragment>
-            <Box sx={{ width: '100%', height: '100%', border: '1px solid #d0d7de', padding: 2, borderRadius: '5px' }}>
+            <Box
+                sx={{
+                    width: '100%',
+                    border: '1px solid #d0d7de',
+                    padding: 1.5,
+                    borderRadius: '5px',
+                    maxHeight: 200
+                }}>
                 <Grid container spacing={2}>
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                         <LabelUpload htmlFor={name + '-multiple_image'}>
                             {!loading ? (
                                 <React.Fragment>
@@ -56,10 +62,9 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
                                             alignItems: 'center',
                                             gap: 2
                                         }}>
-                                        <Box sx={{ width: 48, height: 48 }}>
+                                        <Box sx={{ width: 32, height: 32 }}>
                                             <LazyLoadingImage src={upload} />
                                         </Box>
-                                        <Typography>No files are selected!</Typography>
                                     </Box>
                                 </React.Fragment>
                             ) : (
@@ -83,9 +88,9 @@ function ControllerUploadMultipleImage({ name, defaultValue, control }) {
                     {value.length > 0 &&
                         value.map((image, index) => {
                             return (
-                                <Grid item xs={3} key={index} sx={{ position: 'relative' }}>
-                                    <Box sx={{ borderRadius: '5px', overflow: 'hidden' }}>
-                                        <LazyLoadingImage src={image} />
+                                <Grid item xs={2} key={index} sx={{ position: 'relative', height: '160px' }}>
+                                    <Box sx={{ borderRadius: '5px', overflow: 'hidden', borderRadius: 3 }}>
+                                        <LazyLoadingImage src={image} w='100%' h='160px' />
                                         <Box
                                             sx={{
                                                 position: 'absolute',
@@ -115,20 +120,6 @@ const LabelUpload = styled('label')(({ theme }) => ({
     border: '1px solid #d0d7de',
     borderRadius: '5px',
     height: 160,
-    backgroundColor: '#d0d7de4a',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    gap: 12,
-    cursor: 'pointer'
-}));
-
-const ImageItem = styled('div')(({ theme }) => ({
-    position: 'relative',
-    border: '1px solid #d0d7de',
-    borderRadius: '5px',
-    height: 130,
     backgroundColor: '#d0d7de4a',
     display: 'flex',
     alignItems: 'center',
