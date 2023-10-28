@@ -13,7 +13,7 @@ import FormHelperText from '@mui/material/FormHelperText';
  */
 
 const ControllerSelect = (props) => {
-   const { options, _value, _title } = props;
+   const { options, _value, _title, children } = props;
    const { control, name, placeholder, disabled, defaultValue, ...rest } = props;
 
    return (
@@ -28,11 +28,12 @@ const ControllerSelect = (props) => {
                   disabled={disabled}
                   {...field}
                   {...rest}>
-                  {options?.map((item, index) => (
-                     <MenuItem key={index} value={item[_value]}>
-                        {item[_title]}
-                     </MenuItem>
-                  ))}
+                  {(children && children) ||
+                     options?.map((item, index) => (
+                        <MenuItem key={index} value={item?.[_value]}>
+                           {item?.[_title]}
+                        </MenuItem>
+                     ))}
                </Select>
                {error?.message && (
                   <FormHelperText sx={{ color: '#d32f2f' }} variant='outlined'>
