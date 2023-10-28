@@ -33,7 +33,7 @@ export default function CreateColor() {
       },
       onSuccess: () => {
          form.reset();
-         successMessage('Thêm thương hiệu thành công');
+         successMessage('Thêm thương hiệu thành công.');
       },
       onError: (error) => {
          errorMessage(error);
