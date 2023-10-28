@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, FormHelperText, Grid } from '@mui/material';
+import { Box, FormHelperText } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 import ModalSelectImage from './ModalSelectImage';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
-import { Controller, useController } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 function SelectMultipleImageProductDetail({ name, control, defaultValue }) {
    const {
@@ -30,14 +30,12 @@ function SelectMultipleImageProductDetail({ name, control, defaultValue }) {
          {(!image && <ModalSelectImage setImage={setImage} onChange={onChange} />) || (
             <Box
                sx={{
-                  width: '100%',
                   height: '100%',
-                  maxHeight: 300,
                   position: 'relative',
                   borderRadius: '5px'
                }}>
-               <LazyLoadingImage src={image.image_url} alt='' sx={{ borderRadius: '5px' }} />
-               <Box sx={{ position: 'absolute', top: -10, right: -10 }} onClick={() => handleClickDeleteImage('')}>
+               <LazyLoadingImage src={image.image_url} alt='' style={{ borderRadius: '5px', objectFit: 'cover' }} />
+               <Box sx={{ position: 'absolute', top: -5, right: -5 }} onClick={() => handleClickDeleteImage('')}>
                   <RemoveCircleIcon
                      sx={{
                         cursor: 'pointer',
