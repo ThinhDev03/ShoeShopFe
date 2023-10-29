@@ -1,14 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 // mui
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import FormGroup from '@Core/Components/FormControl/FormGroup';
-import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 // import Hidden from '@mui/material';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
 export default function BaseFormUser(props) {
@@ -78,17 +76,10 @@ export default function BaseFormUser(props) {
             </Grid>
          </Grid>
          <Grid marginTop={2}>
-            <LoadingButton
-               loading={false}
-               loadingPosition='start'
-               variant='contained'
-               startIcon={<SaveIcon />}
-               type='submit'>
-               Tạo tài khoản giáo viên
-            </LoadingButton>
+            <Button variant='contained' startIcon={<SaveIcon />} type='submit'>
+               Tạo tài khoản
+            </Button>
          </Grid>
       </Box>
    );
 }
-
-

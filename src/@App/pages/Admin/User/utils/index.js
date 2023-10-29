@@ -4,6 +4,11 @@
 // ];
 
 export const gender = [
-   { value: 'Nam', label: 'Nam' },
-   { value: 'Nữ', label: 'Nữ' }
+   { value: 'MAN', label: 'Nam' },
+   { value: 'FEMAN', label: 'Nữ' }
+];
+
+export const users = [
+   { value: 'USER', label: 'Người dùng' },
+   { value: 'EMPLOYEE', label: 'Nhân viên' }
 ];

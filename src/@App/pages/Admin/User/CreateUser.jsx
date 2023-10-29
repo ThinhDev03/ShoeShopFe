@@ -6,10 +6,8 @@ import yupUser from './utils/yupUser';
 import { gender } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
 import userService from '@App/services/user.service';
-import { useSetNotifyState } from '@App/redux/slices/toastMessage.slice';
 
 export default function CreateUser() {
-   const { setToastInformation } = useSetNotifyState();
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupUser),
@@ -19,13 +17,7 @@ export default function CreateUser() {
    const onSubmit = async (data) => {
       try {
          await userService.createTeacher(data);
-         setToastInformation({ message: 'Thêm người dùng thành công' });
-      } catch (error) {
-         setToastInformation({
-            message: response?.data?.message || 'Thêm người dùng không thành công',
-            status: 'error'
-         });
-      }
+      } catch (error) {}
    };
    const props = {
       gender,

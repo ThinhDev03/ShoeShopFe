@@ -34,7 +34,7 @@ export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => 
 
    return (
       <Tooltip title='Xoá'>
-         <IconButton color='error' onClick={handleDelete}>
+         <IconButton onClick={handleDelete}>
             <DeleteIcon />
          </IconButton>
       </Tooltip>
@@ -44,7 +44,7 @@ export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => 
 export const CoreTableActionEdit = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Sửa'>
-         <IconButton color='success' onClick={callback}>
+         <IconButton onClick={callback}>
             <RateReviewRoundedIcon />
          </IconButton>
       </Tooltip>
@@ -54,7 +54,7 @@ export const CoreTableActionEdit = ({ callback = () => {} }) => {
 export const CoreTableActionView = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Xem chi tiết'>
-         <IconButton color='success' onClick={callback}>
+         <IconButton onClick={callback}>
             <RemoveRedEyeIcon />
          </IconButton>
       </Tooltip>
@@ -64,7 +64,7 @@ export const CoreTableActionView = ({ callback = () => {} }) => {
 export const CoreTableActionChangeStatus = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Thay đổi trạng thái'>
-         <IconButton color='primary' onClick={callback}>
+         <IconButton onClick={callback}>
             <ShoppingCartRoundedIcon />
          </IconButton>
       </Tooltip>
@@ -88,7 +88,7 @@ export const CoreTableActionStatusChange = ({
    };
    return (
       <Tooltip title='Thay đổi trạng thái giáo viên'>
-         <IconButton color='error' onClick={handleDelete}>
+         <IconButton onClick={handleDelete}>
             <DeleteIcon />
          </IconButton>
       </Tooltip>
@@ -98,7 +98,7 @@ export const CoreTableActionStatusChange = ({
 export const CoreTableVariation = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Tạo biến thể sản phẩm'>
-         <IconButton color='inherit' onClick={callback}>
+         <IconButton onClick={callback}>
             <AddCircleOutlineIcon />
          </IconButton>
       </Tooltip>

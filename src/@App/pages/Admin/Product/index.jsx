@@ -84,7 +84,7 @@ function ProductPage() {
             header: 'Thương hiệu',
             cell: ({ row }) => {
                const subject = row?.original;
-               return subject.brand_id.brand_name;
+               return subject.brand_id?.brand_name;
             }
          }),
          columnHelper.accessor('', {

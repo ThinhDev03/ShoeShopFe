@@ -16,6 +16,7 @@ import Home from '@App/pages/Views/Home';
 import Cart from '@App/pages/Views/Cart';
 import Shipping from '@App/pages/Views/Shipping';
 import categoryRouter from './admin/category.router';
+import userRouter from './user.router';
 
 const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
 const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
@@ -82,7 +83,8 @@ const routers = [
          },
          categoryRouter,
          brandRouter,
-         productRouter
+         productRouter,
+         userRouter
       ]
    },
    {
@@ -92,6 +94,5 @@ const routers = [
 ];
 
 export default function Routers() {
-   console.log('router run');
    return useRoutes(routers);
 }

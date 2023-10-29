@@ -4,8 +4,8 @@ import { routerPath } from './routerConfig';
 import CategoryIcon from '@mui/icons-material/Category';
 import { ROLE } from './role';
 import Brand from '@App/assets/svg/brand';
-import ColorLensIcon from '@mui/icons-material/ColorLens';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
+import PersonIcon from '@mui/icons-material/Person';
 
 const menuCofig = [
    {
@@ -24,7 +24,7 @@ const menuCofig = [
       path: routerPath.CATEGORYPRODUCTS,
       children: [
          { title: 'Tổng quan', path: routerPath.CATEGORYPRODUCTS },
-         { title: 'Tạo mới', path: routerPath.CATEGORYPRODUCTS + '/create' },
+         { title: 'Tạo mới', path: routerPath.CATEGORYPRODUCTS + '/create' }
       ]
    },
    {
@@ -35,7 +35,7 @@ const menuCofig = [
       path: routerPath.BRAND,
       children: [
          { title: 'Tổng quan', path: routerPath.BRAND },
-         { title: 'Tạo mới', path: routerPath.BRAND + '/create' },
+         { title: 'Tạo mới', path: routerPath.BRAND + '/create' }
       ]
    },
    {
@@ -47,10 +47,21 @@ const menuCofig = [
       children: [
          { title: 'Tổng quan', path: routerPath.PRODUCTS },
          { title: 'Tạo mới', path: routerPath.PRODUCTS + '/create' },
-         { title: 'Màu sắc', path: routerPath.PRODUCTS + "/" + routerPath.COLOR },
-         { title: 'Kích thước', path: routerPath.PRODUCTS + "/" + routerPath.SIZE },
+         { title: 'Màu sắc', path: routerPath.PRODUCTS + '/' + routerPath.COLOR },
+         { title: 'Kích thước', path: routerPath.PRODUCTS + '/' + routerPath.SIZE }
       ]
    },
+   {
+      id: 7,
+      role: [ROLE[1], ROLE[2]],
+      title: 'Người dùng',
+      icon: PersonIcon,
+      path: routerPath.USER,
+      children: [
+         { title: 'Tổng quan', path: routerPath.USER },
+         { title: 'Tạo nhân viên', path: routerPath.USER + '/create' }
+      ]
+   }
    // {
    //    id: 4,
    //    role: [ROLE[1], ROLE[2]],
