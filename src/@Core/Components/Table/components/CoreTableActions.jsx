@@ -19,7 +19,8 @@ import RateReviewRoundedIcon from '@mui/icons-material/RateReviewRounded';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
+import HttpsIcon from '@mui/icons-material/Https';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => {
    const confirm = useConfirm();
 
@@ -35,7 +36,29 @@ export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => 
    return (
       <Tooltip title='Xoá'>
          <IconButton onClick={handleDelete}>
-            <DeleteIcon />
+            <DeleteIcon fontSize='small' />
+         </IconButton>
+      </Tooltip>
+   );
+};
+
+export const CoreTableActionLock = ({ callback = () => {}, content = '' }) => {
+   const confirm = useConfirm();
+
+   const handleLock = () => {
+      confirm({
+         content: content,
+         isIcon: true,
+         color: 'error',
+         okText: 'Khóa',
+         onOk: callback
+      });
+   };
+
+   return (
+      <Tooltip title='Khóa'>
+         <IconButton onClick={handleLock}>
+            <HttpsIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );
@@ -45,7 +68,7 @@ export const CoreTableActionEdit = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Sửa'>
          <IconButton onClick={callback}>
-            <RateReviewRoundedIcon />
+            <BorderColorIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );
@@ -55,7 +78,7 @@ export const CoreTableActionView = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Xem chi tiết'>
          <IconButton onClick={callback}>
-            <RemoveRedEyeIcon />
+            <RemoveRedEyeIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );
@@ -65,7 +88,7 @@ export const CoreTableActionChangeStatus = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Thay đổi trạng thái'>
          <IconButton onClick={callback}>
-            <ShoppingCartRoundedIcon />
+            <ShoppingCartRoundedIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );
@@ -89,7 +112,7 @@ export const CoreTableActionStatusChange = ({
    return (
       <Tooltip title='Thay đổi trạng thái giáo viên'>
          <IconButton onClick={handleDelete}>
-            <DeleteIcon />
+            <DeleteIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );
@@ -99,7 +122,7 @@ export const CoreTableVariation = ({ callback = () => {} }) => {
    return (
       <Tooltip title='Tạo biến thể sản phẩm'>
          <IconButton onClick={callback}>
-            <AddCircleOutlineIcon />
+            <AddCircleOutlineIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );

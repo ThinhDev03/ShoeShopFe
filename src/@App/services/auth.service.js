@@ -6,6 +6,8 @@ export const authEndpoint = {
    register: 'register',
    signout: 'signout',
    getUser: 'verify-token',
+   getOne: 'get-detail',
+   locked: 'lock',
    refestToken: 'refresh-token'
 };
 
@@ -20,6 +22,9 @@ class AuthService extends BaseService {
    login(data) {
       return this.request.post(this.BASE_ENDPOINT + '/' + authEndpoint.login, data);
    }
+   locked(id, is_locked) {
+      return this.request.put(this.BASE_ENDPOINT + '/' + authEndpoint.locked + '/' + id, { is_locked });
+   }
 
    register(data) {
       return this.request.post(this.BASE_ENDPOINT + '/' + authEndpoint.register, data);
@@ -31,6 +36,10 @@ class AuthService extends BaseService {
 
    getCurrentUser() {
       return this.find(authEndpoint.getUser);
+   }
+
+   getUserById(id) {
+      return this.find(authEndpoint.getOne + '/' + id);
    }
 
    refeshToken() {

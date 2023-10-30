@@ -4,11 +4,12 @@
    "version": "0.0.0",
    "type": "module",
    "scripts": {
-      "dev": "vite --open 3000",
+      "dev": "vite --host --open",
       "build": "vite build",
       "preview": "vite preview",
       "test": "vitest",
-      "coverage": "vitest run --coverage"
+      "coverage": "vitest run --coverage",
+      "clean": "rm -rf nodes_modules && yarn"
    },
    "dependencies": {
       "@ckeditor/ckeditor5-build-classic": "^39.0.2",
@@ -51,6 +52,7 @@
       "@typescript-eslint/parser": "^5.57.0",
       "@vitejs/plugin-legacy": "^4.0.2",
       "@vitejs/plugin-react": "^3.1.0",
+      "@vitejs/plugin-react-swc": "^3.4.0",
       "autoprefixer": "^10.4.14",
       "eslint": "^8.36.0",
       "eslint-config-prettier": "^8.8.0",

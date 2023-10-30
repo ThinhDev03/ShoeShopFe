@@ -2,23 +2,59 @@ import BasicPage from '@App/components/customs/BasicPage';
 import authService from '@App/services/auth.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
-import { CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
-import { Box, Typography } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import React, { useMemo } from 'react';
+import { CoreTableActionEdit, CoreTableActionLock } from '@Core/Components/Table/components/CoreTableActions';
+import { Box, Stack } from '@mui/material';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { users } from './utils';
+import { userRole } from './utils';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
+import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
+import useDebounceInput from '@App/hooks/useDebounceInput';
 
 function UserPage() {
    const navigate = useNavigate();
+   const { control, watch } = useForm({ mode: 'onChange', defaultValues: { userRole: 'USER' } });
+   const [currentPage, setCurrentPage] = useState(1);
+   const userRoleSelected = watch('userRole');
+   const searchValue = watch('search');
+   const search = useDebounceInput(searchValue);
 
-   const { data: dataUser, isFetching } = useQuery(['getListUser'], async () => {
-      const rest = await authService.list();
-      return rest.data;
+   const {
+      data: dataUser,
+      isFetching,
+      refetch: fetchUser
+   } = useQuery(
+      ['getListUser', userRoleSelected, search, currentPage],
+      async () => {
+         const rest = await authService.list({
+            user_role: userRoleSelected,
+            is_locked: false,
+            search,
+            page: currentPage
+         });
+         return rest;
+      },
+      {
+         initialData: {
+            data: [],
+            pageSize: 1
+         }
+      }
+   );
+   const { mutate: onLockUser } = useMutation({
+      mutationFn: async (id) => {
+         return await authService.locked(id, true);
+      },
+      onSuccess: () => {
+         fetchUser();
+         successMessage('Khóa người dùng thành công');
+      },
+      onError: (err) => {
+         errorMessage('Khóa thất bại');
+      }
    });
-
-   const { control } = useForm();
 
    const columns = useMemo(() => {
       return [
@@ -30,6 +66,9 @@ function UserPage() {
          }),
          columnHelper.accessor('fullname', {
             header: 'Họ và tên'
+         }),
+         columnHelper.accessor('username', {
+            header: 'Tên đăng nhập'
          }),
          columnHelper.accessor('email', {
             header: 'Email'
@@ -44,10 +83,11 @@ function UserPage() {
          columnHelper.accessor('', {
             header: 'Thao tác',
             cell: ({ row }) => {
-               const subject = row?.original;
+               const user = row?.original;
                return (
                   <Box sx={{ display: 'flex' }}>
-                     <CoreTableActionEdit callback={() => navigate(subject?._id)} />
+                     <CoreTableActionEdit callback={() => navigate('update/' + user?._id)} />
+                     <CoreTableActionLock content='Bạn có muốn khóa tài khoản' callback={() => onLockUser(user?._id)} />
                   </Box>
                );
             }
@@ -57,10 +97,23 @@ function UserPage() {
 
    return (
       <BasicPage currentPage='Người dùng'>
-         <Box width={400} my={4}>
-            <ControllerSelect options={users} name='gender' control={control} />
-         </Box>
-         <CoreTable columns={columns} data={dataUser} isPagination={false} loading={isFetching} />
+         <Stack direction='row' gap={3}>
+            <Box width={200} mb={3}>
+               <ControllerSelect label='Chọn tài khoản' options={userRole} name='userRole' control={control} />
+            </Box>
+            <Box width={200} mb={3}>
+               <ControllerTextField placeholder='Tìm kiếm...' name='search' control={control} />
+            </Box>
+         </Stack>
+         <CoreTable
+            pageSize={dataUser.pageSize}
+            handleFetchData={fetchUser}
+            handleSetCurrentPage={setCurrentPage}
+            columns={columns}
+            data={dataUser.data}
+            isPagination
+            loading={isFetching}
+         />
       </BasicPage>
    );
 }

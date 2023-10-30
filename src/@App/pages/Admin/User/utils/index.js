@@ -8,7 +8,7 @@ export const gender = [
    { value: 'FEMAN', label: 'Nữ' }
 ];
 
-export const users = [
+export const userRole = [
    { value: 'USER', label: 'Người dùng' },
    { value: 'EMPLOYEE', label: 'Nhân viên' }
 ];

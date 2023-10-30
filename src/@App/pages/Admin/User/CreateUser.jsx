@@ -5,9 +5,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import yupUser from './utils/yupUser';
 import { gender } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
-import userService from '@App/services/user.service';
+import authService from '@App/services/auth.service';
+import { useNavigate } from 'react-router-dom';
+import { ROLE } from '@App/configs/role';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 export default function CreateUser() {
+   const navigate = useNavigate();
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupUser),
@@ -16,8 +20,16 @@ export default function CreateUser() {
 
    const onSubmit = async (data) => {
       try {
-         await userService.createTeacher(data);
-      } catch (error) {}
+         const body = {
+            role: ROLE[3],
+            ...data
+         };
+         await authService.register(body);
+         successMessage('Đăng ký thành công nhân viên!');
+         navigate('/admin/user');
+      } catch (error) {
+         errorMessage(error);
+      }
    };
    const props = {
       gender,

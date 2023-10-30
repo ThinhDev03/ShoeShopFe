@@ -6,7 +6,7 @@ import { ROLE } from './role';
 import Brand from '@App/assets/svg/brand';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import PersonIcon from '@mui/icons-material/Person';
-
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 const menuCofig = [
    {
       id: 1,
@@ -61,6 +61,14 @@ const menuCofig = [
          { title: 'Tổng quan', path: routerPath.USER },
          { title: 'Tạo nhân viên', path: routerPath.USER + '/create' }
       ]
+   },
+   {
+      id: 8,
+      role: [ROLE[1], ROLE[2]],
+      title: 'Đơn hàng',
+      icon: ReceiptLongIcon,
+      path: routerPath.BILL,
+      children: [{ title: 'Tổng quan', path: routerPath.BILL }]
    }
    // {
    //    id: 4,

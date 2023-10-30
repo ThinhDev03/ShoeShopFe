@@ -55,8 +55,8 @@ class BaseService {
       this.request = createInstance(this.BASE_URL, this.middleware);
 
       this.requestParams = {
-         page_index: this.DEFAULT_PAGE,
-         page_size: this.DEFAULT_LIMIT,
+         page: this.DEFAULT_PAGE,
+         limit: this.DEFAULT_LIMIT,
          sort: this.DEFAULT_SORT
       };
    }
@@ -94,7 +94,7 @@ class BaseService {
     * @param {Object} data
     * @returns
     */
-   update = (data, id, method = 'put') => {
+   update = (data, id, method = 'post') => {
       if (id) {
          return this.request[method](`${this.BASE_ENDPOINT}/update/${id}`, data);
       }

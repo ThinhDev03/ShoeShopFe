@@ -7,7 +7,7 @@ import {
    CoreTableActionEdit,
    CoreTableVariation
 } from '@Core/Components/Table/components/CoreTableActions';
-import handlePrice from '@Core/Helper/Price';
+import toFormatMoney from '@Core/Helper/Price';
 import { Box, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
@@ -73,9 +73,9 @@ function ProductPage() {
                console.log(data);
                return (
                   <Box sx={{ display: 'flex', gap: 2 }}>
-                     <Typography>{handlePrice(data.fromPrice)}</Typography>
+                     <Typography>{toFormatMoney(data.fromPrice)}</Typography>
                      <span> - </span>
-                     <Typography>{handlePrice(data.toPrice)}</Typography>
+                     <Typography>{toFormatMoney(data.toPrice)}</Typography>
                   </Box>
                );
             }

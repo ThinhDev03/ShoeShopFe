@@ -12,48 +12,29 @@
  * ----------	---	----------------------------------------------------------
  */
 
-import { useTheme } from '@emotion/react';
-import { Box, Table, TableContainer, TablePagination } from '@mui/material';
-import { rankItem } from '@tanstack/match-sorter-utils';
+import { Box, CircularProgress, Pagination, Table, TableContainer, TablePagination } from '@mui/material';
 import { createColumnHelper, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import CoreTableBody from './components/CoreTableBody';
 import CoreTableHeader from './components/CoreTableHeader';
-import { FilterAltOffOutlined } from '@mui/icons-material';
 import Scrollbar from '@App/components/customs/Scrollbar';
 
 export const columnHelper = createColumnHelper();
 
 const CoreTable = (props) => {
-   const {
-      data,
-      columns,
-      page,
-      limit,
-      total,
-      handleFetchData,
-      loading,
-      isPagination,
-      query,
-      clientPanigation = true
-   } = props;
+   const { data, columns, pageSize, handleSetCurrentPage, loading, isPagination, query } = props;
 
-   const defaultData = React.useMemo(() => []);
    const pagination = React.useMemo(
       () => ({
-         pageIndex: page,
-         pageSize: limit
+         pageIndex: 1,
+         pageSize: pageSize
       }),
-      [page, limit]
+      [pageSize]
    );
-   const [paginationState, setPaginationState] = useState({ pageIndex: 0, pageSize: 10, totalPage: 1 });
 
-   const {
-      palette: { neutral }
-   } = useTheme();
    const table = useReactTable({
-      data: data ?? defaultData,
+      data: data ?? [],
       columns: columns,
       getCoreRowModel: getCoreRowModel(),
       state: {
@@ -68,14 +49,15 @@ const CoreTable = (props) => {
          sx={{
             position: 'relative',
             border: 'none',
-            width: '100%',
             height: '100%',
+            width: '100%',
             display: 'flex',
             flexDirection: 'column'
          }}>
          <Scrollbar
             sx={{
-               flex: 1
+               flex: 1,
+               height: '100%'
             }}>
             <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%' }} size='small'>
                <CoreTableHeader columns={columns} table={table} />
@@ -85,47 +67,21 @@ const CoreTable = (props) => {
 
          {isPagination && (
             <Box
-               sx={{
+               sx={({ palette }) => ({
                   display: 'flex',
                   alignItems: 'center',
-                  // justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
                   pt: 1,
-                  backgroundColor: neutral.ultralight,
-                  padding: '6px'
-               }}>
-               <TablePagination
-                  component='div'
-                  count={clientPanigation ? data.length : total}
-                  page={table.getState().pagination.pageIndex}
-                  SelectProps={{
-                     sx: {
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        '&>.MuiTablePagination-select': {
-                           padding: '8px',
-                           width: 'fit-content',
-                           border: '1px solid #ccc',
-                           borderRadius: '4px'
-                        },
-                        '&>.MuiTablePagination-select:focus': { bgcolor: 'transparent' },
-                        '&>.MuiTablePagination-selectLabel': { fontWeight: 600 }
-                     }
+                  backgroundColor: palette.neutral.ultralight,
+                  padding: '4px'
+               })}>
+               <Pagination
+                  onChange={(_, page) => {
+                     handleSetCurrentPage(page);
                   }}
-                  onPageChange={(_, value) => {
-                     if (clientPanigation) setPaginationState({ ...paginationState, pageIndex: value });
-                     else handleFetchData({ page: value, ...query });
-                  }}
-                  labelRowsPerPage='Số hàng'
-                  labelDisplayedRows={({ page }) => {
-                     return `Trang ${page + 1}/${table.getPageCount()}`;
-                  }}
-                  showFirstButton
-                  showLastButton
-                  rowsPerPage={table.getState().pagination.pageSize}
-                  onRowsPerPageChange={(e) => {
-                     if (clientPanigation) setPaginationState({ ...paginationState, pageSize: e.target.value });
-                     else handleFetchData({ limit: e.target.value, ...query });
-                  }}
+                  count={pageSize}
+                  variant='outlined'
+                  shape='rounded'
                />
             </Box>
          )}
@@ -139,7 +95,9 @@ CoreTable.defaultProps = {
    page: 0,
    limit: 10,
    total: 10,
+   count: 10,
    handleFetchData: () => {},
+   handleSetCurrentPage: () => {},
    loading: false,
    isPagination: true,
    query: {},
@@ -149,7 +107,6 @@ CoreTable.defaultProps = {
 CoreTable.propTypes = {
    data: PropTypes.array,
    columns: PropTypes.array.isRequired,
-   pageIndex: PropTypes.number,
    limit: PropTypes.number,
    total: PropTypes.number,
    handleFetchData: PropTypes.func,

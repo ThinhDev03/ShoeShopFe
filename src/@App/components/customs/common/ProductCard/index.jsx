@@ -3,7 +3,7 @@ import { Box, Button, Stack, Typography, styled } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LazyLoadingImage from '../../LazyLoadingImage';
-import handlePrice from '@Core/Helper/Price';
+import toFormatMoney from '@Core/Helper/Price';
 
 function ProductCard({ data }) {
    return (
@@ -53,9 +53,9 @@ function ProductCard({ data }) {
                   fontSize: '20px',
                   fontWeight: 'bold'
                }}>
-               <Box component='span'>{handlePrice(data?.fromPrice)}</Box>
+               <Box component='span'>{toFormatMoney(data?.fromPrice)}</Box>
                <Box component='span' sx={{ color: '#808080', fontSize: '16px' }}>
-                  {handlePrice(data?.toPrice)}
+                  {toFormatMoney(data?.toPrice)}
                </Box>
             </Stack>
          </Stack>

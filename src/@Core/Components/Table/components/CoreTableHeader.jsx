@@ -21,32 +21,30 @@ import { TableHead, TableRow } from '@mui/material';
 import PropTypes from 'prop-types';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.common.white,
-    },
-  }));
+   [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.common.white
+   }
+}));
 
 const CoreTableHeader = ({ table }) => {
-    return (
-        <TableHead>
-            {table.getHeaderGroups().map((headerGroup,index) => (
-                <TableRow key={index}>
-                    {headerGroup.headers.map((header,index) => (
-                        <StyledTableCell key={index} width={header.column.columnDef.width}>
-                            {header.isPlaceholder
-                                ? null
-                                : flexRender(header.column.columnDef.header, header.getContext())}
-                        </StyledTableCell>
-                    ))}
-                </TableRow>
-            ))}
-        </TableHead>
-    );
+   return (
+      <TableHead>
+         {table.getHeaderGroups().map((headerGroup, index) => (
+            <TableRow key={index}>
+               {headerGroup.headers.map((header, index) => (
+                  <StyledTableCell key={index} width={header.column.columnDef.width}>
+                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </StyledTableCell>
+               ))}
+            </TableRow>
+         ))}
+      </TableHead>
+   );
 };
 
 CoreTableHeader.propTypes = {
-    table: PropTypes.object.isRequired
+   table: PropTypes.object.isRequired
 };
 
 export default React.memo(CoreTableHeader);

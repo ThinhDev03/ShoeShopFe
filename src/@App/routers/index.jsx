@@ -17,6 +17,7 @@ import Cart from '@App/pages/Views/Cart';
 import Shipping from '@App/pages/Views/Shipping';
 import categoryRouter from './admin/category.router';
 import userRouter from './user.router';
+import billRouter from './admin/bill.router';
 
 const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
 const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
@@ -84,7 +85,8 @@ const routers = [
          categoryRouter,
          brandRouter,
          productRouter,
-         userRouter
+         userRouter,
+         billRouter
       ]
    },
    {
