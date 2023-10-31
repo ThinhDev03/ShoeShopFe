@@ -11,7 +11,8 @@ import schemaRegister from './utils/yupRegister';
 
 function Register() {
    const form = useForm({
-      resolver: yupResolver(schemaRegister)
+      resolver: yupResolver(schemaRegister),
+      mode: 'onSubmit'
    });
 
    return (

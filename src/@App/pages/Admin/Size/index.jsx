@@ -3,11 +3,9 @@ import classesService from '@App/services/category.service';
 import sizeService from '@App/services/size.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
-import useCoreTable from '@Core/Components/Table/hooks/useCoreTable';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import { Box } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useRequest } from 'ahooks';
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 

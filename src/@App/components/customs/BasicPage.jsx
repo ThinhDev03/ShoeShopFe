@@ -9,15 +9,15 @@ export default function BasicPage({ currentPage, breadcrumbs, createTitle = '', 
       <>
          <Box sx={{ display: 'flex', justifyContent: createTitle ? 'space-between' : 'start' }}>
             <BreadCrumbs sx={{ m: 3, mb: 0 }} currentPage={currentPage} breadcrumbs={breadcrumbs} />
-            {Object.keys(createTitle).length > 0 && (
+            {createTitle && (
                <Box display='flex' alignItems='flex-end' mr={3}>
-                  <Button component={Link} to='create'>
+                  <Button color='secondary' component={Link} to='create'>
                      {createTitle}
                   </Button>
                </Box>
             )}
          </Box>
-         <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', height: '100%', flex: 1, m: 3, p: 3 }}>
+         <Paper elevation={2} sx={{ flex: 1, m: 3, p: 3, display: 'flex', flexDirection: 'column' }}>
             {children}
          </Paper>
       </>

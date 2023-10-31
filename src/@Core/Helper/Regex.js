@@ -6,6 +6,7 @@ class Regexs {
    decimal = /^[0-9]{1,7}(\.[0-9]{1,2})?$/;
    decimalNumber = /^\d+\.?\d+$/;
    className = /^[1-5]*[a-zA-Z]$/;
+   password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 }
 
 export default new Regexs();

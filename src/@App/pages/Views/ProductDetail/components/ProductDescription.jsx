@@ -7,7 +7,7 @@ import { Box, Button, MenuItem, Stack, Typography, styled } from '@mui/material'
 
 import yupCard from '../utils/yup.card';
 import productService from '@App/services/product.service';
-import handlePrice from '@Core/Helper/Price';
+import toFormatMoney from '@Core/Helper/Price';
 import productDetail from '@App/services/product-detail.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
@@ -77,10 +77,10 @@ function ProductDescription() {
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                <Typography variant='h5' sx={({ palette }) => ({ color: palette.education.text.main, fontWeight: 600 })}>
-                  {/* {(details && handlePrice(details?.data?.[indexActive].sale)) || ''} */}
+                  {(details && toFormatMoney(details?.data?.[indexActive].sale)) || ''}
                </Typography>
                <Box sx={{ color: '#808080', fontSize: '20px', fontWeight: 500 }}>
-                  {/* {(details && handlePrice(details?.data?.[indexActive].price)) || ''} */}
+                  {(details && toFormatMoney(details?.data?.[indexActive].price)) || ''}
                </Box>
             </Box>
 

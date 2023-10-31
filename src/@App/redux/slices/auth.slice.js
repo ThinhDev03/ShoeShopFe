@@ -1,8 +1,6 @@
 import authService from '@App/services/auth.service';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { setToastMessage } from './toastMessage.slice';
-import axios from 'axios';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 export const actionGetCurrentUser = createAsyncThunk('auth/actionGetCurrentUser', async (payload, action) => {

@@ -1,52 +1,121 @@
 import BasicPage from '@App/components/customs/BasicPage';
-import userService from '@App/services/user.service';
+import authService from '@App/services/auth.service';
+import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
-import useCoreTable from '@Core/Components/Table/hooks/useCoreTable';
-import { useRequest } from 'ahooks';
-import React, { useEffect, useMemo } from 'react';
+import { CoreTableActionEdit, CoreTableActionLock } from '@Core/Components/Table/components/CoreTableActions';
+import { Box, Stack } from '@mui/material';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import React, { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { userRole } from './utils';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
+import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
+import useDebounceInput from '@App/hooks/useDebounceInput';
 
-export default function User() {
-   const userRequests = useRequest(userService.getTeacher, {
-      manual: true,
-      onError: () => {
-         mutate({
-            data: []
+function UserPage() {
+   const navigate = useNavigate();
+   const { control, watch } = useForm({ mode: 'onChange', defaultValues: { userRole: 'USER' } });
+   const [currentPage, setCurrentPage] = useState(1);
+   const userRoleSelected = watch('userRole');
+   const searchValue = watch('search');
+   const search = useDebounceInput(searchValue);
+
+   const {
+      data: dataUser,
+      isFetching,
+      refetch: fetchUser
+   } = useQuery(
+      ['getListUser', userRoleSelected, search, currentPage],
+      async () => {
+         const rest = await authService.list({
+            user_role: userRoleSelected,
+            is_locked: false,
+            search,
+            page: currentPage
          });
+         return rest;
+      },
+      {
+         initialData: {
+            data: [],
+            pageSize: 1
+         }
+      }
+   );
+   const { mutate: onLockUser } = useMutation({
+      mutationFn: async (id) => {
+         return await authService.locked(id, true);
+      },
+      onSuccess: () => {
+         fetchUser();
+         successMessage('Khóa người dùng thành công');
+      },
+      onError: (err) => {
+         errorMessage('Khóa thất bại');
       }
    });
 
-   const { run: getUser, mutate } = userRequests;
-   const userTableHandler = useCoreTable(userRequests);
-
-   useEffect(() => {
-      getUser();
-
-      //! tempfix
-      (async () => {
-         if (!userTableHandler?.data?.data.length) {
-            userTableHandler.data.data = await userService.getTeacher();
-            console.log(userTableHandler);
-         }
-      })();
-   }, []);
-
    const columns = useMemo(() => {
       return [
-         columnHelper.accessor('displayName', {
-            header: 'Tên Giáo Viên'
+         columnHelper.accessor((_, index) => index + 1, {
+            header: 'STT',
+            cell: ({ row }) => {
+               return <Box width={100}>{row.index + 1}</Box>;
+            }
+         }),
+         columnHelper.accessor('fullname', {
+            header: 'Họ và tên'
+         }),
+         columnHelper.accessor('username', {
+            header: 'Tên đăng nhập'
          }),
          columnHelper.accessor('email', {
             header: 'Email'
          }),
          columnHelper.accessor('phone', {
-            header: 'Điện thoại'
+            header: 'Sô điện thoại'
+         }),
+         columnHelper.accessor('address', {
+            header: 'Địa chỉ'
+         }),
+
+         columnHelper.accessor('', {
+            header: 'Thao tác',
+            cell: ({ row }) => {
+               const user = row?.original;
+               return (
+                  <Box sx={{ display: 'flex' }}>
+                     <CoreTableActionEdit callback={() => navigate('update/' + user?._id)} />
+                     <CoreTableActionLock content='Bạn có muốn khóa tài khoản' callback={() => onLockUser(user?._id)} />
+                  </Box>
+               );
+            }
          })
       ];
    }, []);
 
    return (
-      <BasicPage currentPage='User'>
-         <CoreTable columns={columns} {...userTableHandler} data={userTableHandler?.data?.data} />
+      <BasicPage currentPage='Người dùng'>
+         <Stack direction='row' gap={3}>
+            <Box width={200} mb={3}>
+               <ControllerSelect label='Chọn tài khoản' options={userRole} name='userRole' control={control} />
+            </Box>
+            <Box width={200} mb={3}>
+               <ControllerTextField placeholder='Tìm kiếm...' name='search' control={control} />
+            </Box>
+         </Stack>
+         <CoreTable
+            pageSize={dataUser.pageSize}
+            handleFetchData={fetchUser}
+            handleSetCurrentPage={setCurrentPage}
+            columns={columns}
+            data={dataUser.data}
+            isPagination
+            loading={isFetching}
+         />
       </BasicPage>
    );
 }
+
+export default UserPage;

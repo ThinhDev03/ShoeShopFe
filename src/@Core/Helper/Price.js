@@ -13,11 +13,11 @@
  * ----------	---	----------------------------------------------------------
  */
 
-const handlePrice = (number, space = '.', currencyUnit = 'đ') => {
+const toFormatMoney = (number, space = '.', currencyUnit = 'đ') => {
    if (!number || number === 0) {
       return 0 + currencyUnit;
    }
    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, space) + currencyUnit;
 };
 
-export default handlePrice;
+export default toFormatMoney;
