@@ -38,8 +38,9 @@ const Main = styled('main')(({ theme }) => ({
    minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin}px)`,
    maxWidth: `calc(100% - ${theme.palette.education.sidebar.width}px)`,
    [theme.breakpoints.down('lg')]: {
-      padding: '10px',
-      margin: '10px',
-      minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin + 20}px)`
+      maxWidth: '100%'
+   //    padding: '10px',
+   //    margin: '10px',
+   //    minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin + 20}px)`,
    }
 }));

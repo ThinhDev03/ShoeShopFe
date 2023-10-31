@@ -28,7 +28,8 @@ function SwiperSlider() {
          <Swiper
             style={{
                '--swiper-navigation-color': '#fff',
-               '--swiper-pagination-color': '#fff'
+               '--swiper-pagination-color': '#fff',
+               height: '500px'
             }}
             loop={true}
             spaceBetween={10}

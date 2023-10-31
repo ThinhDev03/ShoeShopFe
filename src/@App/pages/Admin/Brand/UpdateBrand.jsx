@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import yupClasses from './utils/yupClasses';
 import { useParams } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -26,19 +25,23 @@ const breadcrumbs = [
 function UpdateBrand() {
    let { id } = useParams();
 
-   const { data: dataBrand, refetch: findOneBrand } = useQuery(['findOneBrand'], async () => {
-      const rest = await brandService.getOne(id);
-      return rest.data;
-   });
+   const { data: dataBrand, refetch: findOneBrand } = useQuery(
+      ['findOneBrand'],
+      async () => {
+         const rest = await brandService.getOne(id);
+         return rest.data;
+      },
+      {
+         onSuccess: (data) => {
+            form.reset(data);
+         }
+      }
+   );
 
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses)
+      resolver: yupResolver(yupBrand)
    });
-
-   useEffect(() => {
-      form.reset(dataBrand);
-   }, [dataBrand]);
 
    const { isLoading, mutate } = useMutation({
       mutationFn: async (data) => {
@@ -56,7 +59,7 @@ function UpdateBrand() {
 
    return (
       <BasicPage currentPage='Thêm danh mục sản phẩm' breadcrumbs={breadcrumbs}>
-         <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title="Cập nhật" />
+         <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
       </BasicPage>
    );
 }

@@ -23,8 +23,8 @@ const breadcrumbs = [
 function CreateBrand() {
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses),
-      defaultValues: yupClasses.getDefault()
+      resolver: yupResolver(yupBrand),
+      defaultValues: yupBrand.getDefault()
    });
 
    const { isLoading, mutate } = useMutation({

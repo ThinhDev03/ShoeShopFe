@@ -5,11 +5,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import yupUser from './utils/yupUser';
 import { gender } from './utils';
 import BasicPage from '@App/components/customs/BasicPage';
-import userService from '@App/services/user.service';
-import { useSetNotifyState } from '@App/redux/slices/toastMessage.slice';
+import authService from '@App/services/auth.service';
+import { useNavigate } from 'react-router-dom';
+import { ROLE } from '@App/configs/role';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 export default function CreateUser() {
-   const { setToastInformation } = useSetNotifyState();
+   const navigate = useNavigate();
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupUser),
@@ -18,13 +20,15 @@ export default function CreateUser() {
 
    const onSubmit = async (data) => {
       try {
-         await userService.createTeacher(data);
-         setToastInformation({ message: 'Thêm người dùng thành công' });
+         const body = {
+            role: ROLE[3],
+            ...data
+         };
+         await authService.register(body);
+         successMessage('Đăng ký thành công nhân viên!');
+         navigate('/admin/user');
       } catch (error) {
-         setToastInformation({
-            message: response?.data?.message || 'Thêm người dùng không thành công',
-            status: 'error'
-         });
+         errorMessage(error);
       }
    };
    const props = {

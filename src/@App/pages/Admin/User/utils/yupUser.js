@@ -12,24 +12,23 @@ const yupUser = yup.object().shape({
       .string()
       .trim()
       .email('Địa chỉ email không hợp lệ')
-      .matches(Regex.email)
+      .matches(Regex.email, 'Vui lòng nhập đúng email')
       .required('Vui lòng nhập địa chỉ email'),
-
    phone: yup.string().trim().matches(Regex.phone, 'Số điện thoại không hợp lệ').required('Vui lòng nhập số ĐT'),
-   displayName: yup.string().trim().required('Vui lòng nhập tên hiển thị'),
-   dateOfBirth: yup.date().required('Vui lòng nhập ngày sinh').default(Date.now()),
-   gender: yup
+   fullname: yup.string().trim().required('Vui lòng nhập tên hiển thị'),
+   username: yup.string().trim().required('Vui lòng nhập tên đăng nhập'),
+   password: yup
       .string()
-      .required('Vui lòng chọn giới tính')
-      .oneOf(['Nam', 'Nữ'], 'Vui lòng chọn lựa chọn hợp lệ')
-      .default(''),
-   eduBackground: yup
-      .object()
-      .shape({
-         qualification: yup.string().required('Vui lòng nhập trình độ học vấn/nghề nghiệp').trim(),
-         universityName: yup.string().required('Vui lòng nhập tên trường đã tốt nghiệp').trim(),
-         graduatedAt: yup.date().required('Vui lòng nhập ngày tốt nghiệp')
-      })
-      .required('Education background is required')
+      .trim()
+      .required('Vui lòng nhập mật khẩu')
+      .matches(Regex.password, 'Vui lòng nhập số, chữ hoa, chữ thường, ký tự đặc biệt'),
+   confirmPassword: yup
+      .string()
+      .trim()
+      .required('Vui lòng xác nhận mật khẩu')
+      .oneOf([yup.ref('password')], 'mật khẩu không trùng khớp'),
+
+   address: yup.string().trim().required('Vui lòng nhập địa chỉ'),
+   gender: yup.string().trim().required('Vui lòng chọn giới tính')
 });
 export default yupUser;

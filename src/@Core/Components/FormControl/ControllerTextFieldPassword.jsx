@@ -63,7 +63,11 @@ function ControllerTextFieldPassword(props) {
                               </Box>
                            )}
                         </Box>
-                        {error && <FormHelperText variant='standard'>{error.message}</FormHelperText>}
+                        {error && (
+                           <FormHelperText variant='standard' sx={{ color: '#d32f2f', ml: 2 }}>
+                              {error.message}
+                           </FormHelperText>
+                        )}
                      </React.Fragment>
                   );
                }}

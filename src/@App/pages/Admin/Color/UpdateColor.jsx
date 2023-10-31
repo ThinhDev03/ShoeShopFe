@@ -24,19 +24,24 @@ const breadcrumbs = [
 export default function UpdateColor() {
    let { id } = useParams();
 
-   const { data: dataColor, refetch: findOneColor } = useQuery(['getCategory', { id }], async () => {
-      const rest = await colorService.getOne(id);
-      return rest.data;
-   });
+   const { data: dataColor, refetch: findOneColor } = useQuery(
+      ['getCategory', { id }],
+      async () => {
+         const rest = await colorService.getOne(id);
+         return rest.data;
+      },
+      {
+         onSuccess: (data) => {
+            console.log(data);
+            form.reset(data);
+         }
+      }
+   );
 
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupColor)
    });
-
-   useEffect(() => {
-      form.reset(dataColor);
-   }, [dataColor]);
 
    const { mutate, isLoading } = useMutation({
       mutationFn: async (data) => {
@@ -54,7 +59,7 @@ export default function UpdateColor() {
 
    return (
       <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
-         <BaseFormClasses form={form} onSubmit={onSubmit} isLoading={isLoading} title="Cập nhật" />
+         <BaseFormClasses form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
       </BasicPage>
    );
 }

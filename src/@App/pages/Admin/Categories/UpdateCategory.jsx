@@ -27,16 +27,17 @@ function UpdateCategory() {
    const { data: dataCategory, refetch: findOneCategory } = useQuery(['getCategory', { id }], async () => {
       const rest = await categoryService.getOne(id);
       return rest.data;
+   },{
+      onSuccess: (data) => {
+         console.log(data);
+         form.reset(data);
+      }
    });
 
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCategory)
    });
-
-   useEffect(() => {
-      form.reset(dataCategory);
-   }, [dataCategory]);
 
    const { mutate, isLoading } = useMutation({
       mutationFn: async (data) => {
