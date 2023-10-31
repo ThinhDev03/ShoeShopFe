@@ -8,7 +8,7 @@ import {
    CoreTableVariation
 } from '@Core/Components/Table/components/CoreTableActions';
 import { successMessage } from '@Core/Helper/Message';
-import handlePrice from '@Core/Helper/Price';
+import toFormatPrice from '@Core/Helper/Price';
 import { Box, TextField, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
@@ -74,9 +74,9 @@ function ProductPage() {
                console.log(data);
                return (
                   <Box sx={{ display: 'flex', gap: 2 }}>
-                     <Typography>{handlePrice(data?.fromPrice)}</Typography>
+                     <Typography>{toFormatPrice(data?.fromPrice)}</Typography>
                      <span> - </span>
-                     <Typography>{handlePrice(data?.toPrice)}</Typography>
+                     <Typography>{toFormatPrice(data?.toPrice)}</Typography>
                   </Box>
                );
             }
