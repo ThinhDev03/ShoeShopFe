@@ -17,7 +17,7 @@ export default function BasicPage({ currentPage, breadcrumbs, createTitle = '', 
                </Box>
             )}
          </Box>
-         <Paper elevation={2} sx={{ height: '100%', flex: 1, m: 3, p: 3 }}>
+         <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', height: '100%', flex: 1, m: 3, p: 3 }}>
             {children}
          </Paper>
       </>

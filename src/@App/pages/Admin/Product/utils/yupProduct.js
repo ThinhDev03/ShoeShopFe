@@ -19,7 +19,7 @@ const yupProduct = yup.object().shape({
       .required('Không được để trống')
       .default(''),
    thumbnail: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Không được để trống').default(''),
-   images: yup.array().required().default('')
+   images: yup.array().required('Không được để trống').default('')
 });
 
 export default yupProduct;

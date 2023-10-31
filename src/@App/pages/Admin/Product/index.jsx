@@ -7,8 +7,9 @@ import {
    CoreTableActionEdit,
    CoreTableVariation
 } from '@Core/Components/Table/components/CoreTableActions';
+import { successMessage } from '@Core/Helper/Message';
 import handlePrice from '@Core/Helper/Price';
-import { Box, Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +28,7 @@ function ProductPage() {
 
    const mutation = useMutation({
       mutationFn: async ({ id }) => {
-         return await productService.getAll(id);
+         return await productService.deleteProduct(id);
       },
       onSuccess: () => {
          successMessage('Xóa sản phảm thành công');
@@ -101,7 +102,7 @@ function ProductPage() {
                const subject = row?.original;
                return (
                   <Box sx={{ display: 'flex' }}>
-                     <CoreTableActionEdit callback={() => navigate( subject?._id)} />
+                     <CoreTableActionEdit callback={() => navigate('save?id=' + subject?._id)} />
                      <CoreTableActionDelete
                         callback={() =>
                            mutation.mutate({
@@ -118,8 +119,8 @@ function ProductPage() {
    }, []);
 
    return (
-      <BasicPage currentPage='Color'>
-         <CoreTable columns={columns} data={dataProducts} isPagination={false} loading={isFetching} />
+      <BasicPage currentPage='Products'>
+         <CoreTable columns={columns} data={dataProducts} isPagination={true} loading={isFetching} />
       </BasicPage>
    );
 }

@@ -25,19 +25,23 @@ const breadcrumbs = [
 function UpdateBrand() {
    let { id } = useParams();
 
-   const { data: dataBrand, refetch: findOneBrand } = useQuery(['findOneBrand'], async () => {
-      const rest = await brandService.getOne(id);
-      return rest.data;
-   });
+   const { data: dataBrand, refetch: findOneBrand } = useQuery(
+      ['findOneBrand'],
+      async () => {
+         const rest = await brandService.getOne(id);
+         return rest.data;
+      },
+      {
+         onSuccess: (data) => {
+            form.reset(data);
+         }
+      }
+   );
 
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupBrand)
    });
-
-   useEffect(() => {
-      form.reset(dataBrand);
-   }, [dataBrand]);
 
    const { isLoading, mutate } = useMutation({
       mutationFn: async (data) => {
