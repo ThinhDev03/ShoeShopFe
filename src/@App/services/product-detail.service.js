@@ -1,6 +1,6 @@
 import { default as BaseService } from '@Core/Api/BaseService';
 
-class ProductDetail extends BaseService {
+class ProductDetailService extends BaseService {
    BASE_ENDPOINT = '/product';
 
    constructor(params) {
@@ -16,8 +16,8 @@ class ProductDetail extends BaseService {
       return this.request(this.BASE_ENDPOINT);
    }
 
-   deleteCategory(id) {
-      return this.delete(id);
+   deleteProductDetail(id) {
+      return this.request.delete(this.BASE_ENDPOINT + '/remove-detail/' + id);
    }
 
    getOne(id) {
@@ -29,5 +29,5 @@ class ProductDetail extends BaseService {
    }
 }
 
-const productDetail = new ProductDetail();
-export default productDetail;
+const productDetailService = new ProductDetailService();
+export default productDetailService;

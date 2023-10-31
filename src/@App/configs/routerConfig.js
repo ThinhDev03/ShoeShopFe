@@ -8,6 +8,7 @@ export const routerPath = {
    BRAND: 'brands',
    SIZE: 'size',
    CART: 'cart',
-   SHIPPING: 'shipping'
+   SHIPPING: 'shipping',
+   BILL:"bill"
 };
 

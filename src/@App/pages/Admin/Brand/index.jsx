@@ -4,7 +4,7 @@ import categoryService from '@App/services/category.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
 import { successMessage } from '@Core/Helper/Message';
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +70,8 @@ function Brand() {
 
    return (
       <BasicPage currentPage='Thương hiệu'>
-         <CoreTable columns={columns} loading={isFetching} data={data} isPagination={false} />
+         <TextField />
+         <CoreTable columns={columns} loading={isFetching} data={data} isPagination={true} />
       </BasicPage>
    );
 }

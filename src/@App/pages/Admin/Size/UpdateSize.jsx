@@ -25,20 +25,25 @@ const breadcrumbs = [
 export default function UpdateSize() {
    let { id } = useParams();
 
-   const { data: dataSize, refetch: findOneColor } = useQuery(['getSize', { id }], async () => {
-      const rest = await sizeService.getOne(id);
-      console.log(rest.data);
-      return rest.data;
-   });
+   const { data: dataSize, refetch: findOneColor } = useQuery(
+      ['getSize', { id }],
+      async () => {
+         const rest = await sizeService.getOne(id);
+         console.log(rest.data);
+         return rest.data;
+      },
+      {
+         onSuccess: (data) => {
+            console.log(data);
+            form.reset(data);
+         }
+      }
+   );
 
    const form = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupSize)
    });
-
-   useEffect(() => {
-      form.reset(dataSize);
-   }, [dataSize]);
 
    const { mutate, isLoading } = useMutation({
       mutationFn: async (data) => {
@@ -54,7 +59,7 @@ export default function UpdateSize() {
       console.log(data);
       mutate(data);
    };
-   
+
    return (
       <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
          <BaseFormSize form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />

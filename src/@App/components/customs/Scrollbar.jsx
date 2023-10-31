@@ -1,13 +1,8 @@
 import { Box } from '@mui/material';
 import 'simplebar-react/dist/simplebar.min.css';
-
-const Scrollbar = ({ sx, ...props }) => (
-   <Box
-      sx={{
-         overflow: 'auto',
-         ...sx
-      }}
-      {...props}>
+import SimpleBar from 'simplebar-react';
+const Scrollbar = ({ ...props }) => (
+   <Box component={SimpleBar} {...props}>
       {props.children}
    </Box>
 );

@@ -8,9 +8,10 @@ import ProductCardSekeleton from '@App/components/customs/common/ProductCard/Pro
 function Product() {
    const { data: productList, isFetching } = useQuery(['getProduct'], async () => {
       const rest = await productService.getAll();
+      console.log(rest);
       return rest;
    });
-
+   console.log(productList);
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
          <Grid container spacing={2}>
@@ -25,7 +26,7 @@ function Product() {
                              <ProductCardSekeleton />
                           </Grid>
                        ))
-                     : productList.data.map((product) => {
+                     : productList?.data?.map((product) => {
                           return (
                              <Grid item xs={6} md={4} key={product._id}>
                                 <ProductCard data={product} />

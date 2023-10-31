@@ -13,26 +13,30 @@ import FormHelperText from '@mui/material/FormHelperText';
  */
 
 const ControllerSelect = (props) => {
-   const { options, _value, _title } = props;
-   const { control, name, placeholder, disabled, defaultValue, ...rest } = props;
-
+   const { options, _value, _title, children } = props;
+   const { control, name, placeholder, disabled, defaultValue, label, ...rest } = props;
    return (
       <Controller
          render={({ field, fieldState: { error } }) => (
             <FormControl fullWidth>
+               <InputLabel size='small' id='demo-simple-select-label'>
+                  {label}
+               </InputLabel>
                <Select
                   id={name}
                   fullWidth
                   error={Boolean(error)}
                   placeholder={disabled ? void 0 : placeholder}
                   disabled={disabled}
+                  label={label}
                   {...field}
                   {...rest}>
-                  {options?.map((item, index) => (
-                     <MenuItem key={index} value={item[_value]}>
-                        {item[_title]}
-                     </MenuItem>
-                  ))}
+                  {(children && children) ||
+                     options?.map((item, index) => (
+                        <MenuItem key={index} value={item?.[_value]}>
+                           {item?.[_title]}
+                        </MenuItem>
+                     ))}
                </Select>
                {error?.message && (
                   <FormHelperText sx={{ color: '#d32f2f' }} variant='outlined'>
@@ -46,6 +50,10 @@ const ControllerSelect = (props) => {
          control={control}
       />
    );
+};
+ControllerSelect.defaultProps = {
+   _value: 'value',
+   _title: 'label'
 };
 
 export default ControllerSelect;
