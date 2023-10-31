@@ -13,12 +13,25 @@ import { errorMessage, successMessage } from '@Core/Helper/Message';
 import BaseFormProductDetail from './components/BaseFormProductDetail';
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 
-function ProductDetail() {
-   const { id } = useParams();
+import yupDetail from './utils/yupProductDetail';
+
+function ProductDetail({ id }) {
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupProductDetail),
-      defaultValues: [yupProductDetail.getDefault()]
+      resolver: yupResolver(yupDetail),
+      defaultValues: {
+         details: [
+            {
+               size_id: '',
+               color_id: '',
+               quantity: '',
+               price: '',
+               sale: '',
+               image_id: ''
+            }
+         ]
+      }
+
    });
 
    const { data } = useQuery(['getProductItem', id], async () => {
@@ -78,11 +91,13 @@ function ProductDetail() {
             Sản phẩm chính không tồn tại.
          </Typography>
          <Box component='p' sx={{ color: '#ABAEB0' }}>
-            {' '}
+
             vui lòng thêm sản phẩm chính trước khi thêm các biến thể
          </Box>
       </Box>
    );
 }
+
+
 
 export default ProductDetail;
