@@ -15,15 +15,14 @@ import ColorRender from './ColorRender';
 
 function ProductDescription() {
    const { id } = useParams();
-   const [indexActive, setIndexActive] = useState(0);
 
-   const { control, handleSubmit, setValue } = useForm({
+   const { control, handleSubmit } = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCard),
       defaultValues: yupCard.getDefault()
    });
 
-   const results = useQueries({
+   const [product, details] = useQueries({
       queries: [
          {
             queryKey: ['getProduct'],
@@ -42,8 +41,6 @@ function ProductDescription() {
       ]
    });
 
-   const [product, details] = results;
-
    const onSubmit = async (data) => {
       console.log(data);
    };
@@ -61,10 +58,12 @@ function ProductDescription() {
    //    const size = details?.data?.filter((item) => item.color_id._id === '653728be9b05ef0df28823a0');
    // }, []);
 
+   console.log(details);
+
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '30px' }}>
-            <Typography variant='h5'>{!results[0].isLoading && results[0]?.data?.name}</Typography>
+            <Typography variant='h5'>{product?.data?.name}</Typography>
             <Stack flexDirection='row' justifyContent='space-between'>
                <Box sx={{ display: 'flex', gap: 2, fontSize: '18px' }}>
                   Mã sản phẩm:
@@ -89,9 +88,8 @@ function ProductDescription() {
 
             <Box component='form' onSubmit={handleSubmit(onSubmit)}>
                <Stack gap={3} flexDirection='row' alignItems='center'>
-                  {getUniqueListBy(details?.data || [], '_id').map((color) => {
-                     console.log(color[1].color_code);
-                     return <ColorRender color={color[1]} check={} onClick={setIndexActive} />;
+                  {getUniqueListBy(details?.data || [], '_id').map((color, index) => {
+                     return <ColorRender key={index} color={color[1]} check={color._id} />;
                   })}
                </Stack>
 
@@ -101,19 +99,18 @@ function ProductDescription() {
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
                      <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Size</Typography>
                      <ControllerSelect
-                        options={(!details.isLoading && details?.data) || []}
+                        options={details?.data || []}
                         _value='size_id._id'
                         _title='size_id.size_name'
                         name='size_id'
                         control={control}>
-                        {!details.isLoading &&
-                           details?.data.map((item) => {
-                              return (
-                                 <MenuItem value={item.size_id._id} key={item._id}>
-                                    {item.size_id.size_name}
-                                 </MenuItem>
-                              );
-                           })}
+                        {details?.data?.map((item) => {
+                           return (
+                              <MenuItem value={item.size_id._id} key={item._id}>
+                                 {item.size_id.size_name}
+                              </MenuItem>
+                           );
+                        })}
                      </ControllerSelect>
                   </Box>
                   <Box sx={{ width: '50%', minHeight: '100px' }}>

@@ -46,9 +46,9 @@ const menuCofig = [
       path: routerPath.PRODUCTS,
       children: [
          { title: 'Tổng quan', path: routerPath.PRODUCTS },
-         { title: 'Tạo mới', path: routerPath.PRODUCTS + '/create' },
-         { title: 'Màu sắc', path: routerPath.PRODUCTS + '/' + routerPath.COLOR },
-         { title: 'Kích thước', path: routerPath.PRODUCTS + '/' + routerPath.SIZE }
+         { title: 'Tạo mới', path: routerPath.PRODUCTS + '/save' },
+         { title: 'Màu sắc', path: routerPath.PRODUCTS + "/" + routerPath.COLOR },
+         { title: 'Kích thước', path: routerPath.PRODUCTS + "/" + routerPath.SIZE },
       ]
    },
    {

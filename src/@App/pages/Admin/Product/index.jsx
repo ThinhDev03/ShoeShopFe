@@ -7,8 +7,9 @@ import {
    CoreTableActionEdit,
    CoreTableVariation
 } from '@Core/Components/Table/components/CoreTableActions';
-import toFormatMoney from '@Core/Helper/Price';
-import { Box, Typography } from '@mui/material';
+import { successMessage } from '@Core/Helper/Message';
+import toFormatPrice from '@Core/Helper/Price';
+import { Box, TextField, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +28,7 @@ function ProductPage() {
 
    const mutation = useMutation({
       mutationFn: async ({ id }) => {
-         return await productService.getAll(id);
+         return await productService.deleteProduct(id);
       },
       onSuccess: () => {
          successMessage('Xóa sản phảm thành công');
@@ -49,7 +50,7 @@ function ProductPage() {
                const subject = row?.original;
                return (
                   <Box sx={{ width: 70, height: 70, borderRadius: 2, overflow: 'hidden' }}>
-                     <LazyLoadingImage src={subject.thumbnail} />
+                     <LazyLoadingImage src={subject?.thumbnail} />
                   </Box>
                );
             }
@@ -61,7 +62,7 @@ function ProductPage() {
                return (
                   <Typography
                      sx={{ display: 'flex', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                     {subject.name}
+                     {subject?.name}
                   </Typography>
                );
             }
@@ -69,13 +70,13 @@ function ProductPage() {
          columnHelper.accessor('', {
             header: 'Giá bán',
             cell: ({ row }) => {
-               const data = row.original;
+               const data = row?.original;
                console.log(data);
                return (
                   <Box sx={{ display: 'flex', gap: 2 }}>
-                     <Typography>{toFormatMoney(data.fromPrice)}</Typography>
+                     <Typography>{toFormatPrice(data?.fromPrice)}</Typography>
                      <span> - </span>
-                     <Typography>{toFormatMoney(data.toPrice)}</Typography>
+                     <Typography>{toFormatPrice(data?.toPrice)}</Typography>
                   </Box>
                );
             }
@@ -84,14 +85,15 @@ function ProductPage() {
             header: 'Thương hiệu',
             cell: ({ row }) => {
                const subject = row?.original;
-               return subject.brand_id?.brand_name;
+               console.log(subject);
+               return subject?.brand_id?.brand_name;
             }
          }),
          columnHelper.accessor('', {
             header: 'Danh mục',
             cell: ({ row }) => {
                const subject = row?.original;
-               return <Typography>{subject.category_id.category_name}</Typography>;
+               return <Typography>{subject?.category_id?.category_name}</Typography>;
             }
          }),
          columnHelper.accessor('', {
@@ -100,8 +102,7 @@ function ProductPage() {
                const subject = row?.original;
                return (
                   <Box sx={{ display: 'flex' }}>
-                     <CoreTableVariation callback={() => navigate('create/' + subject._id)} />
-                     <CoreTableActionEdit callback={() => navigate(subject?._id)} />
+                     <CoreTableActionEdit callback={() => navigate('save?id=' + subject?._id)} />
                      <CoreTableActionDelete
                         callback={() =>
                            mutation.mutate({
@@ -118,8 +119,8 @@ function ProductPage() {
    }, []);
 
    return (
-      <BasicPage currentPage='Color'>
-         <CoreTable columns={columns} data={dataProducts} isPagination={false} loading={isFetching} />
+      <BasicPage currentPage='Products'>
+         <CoreTable columns={columns} data={dataProducts} isPagination={true} loading={isFetching} />
       </BasicPage>
    );
 }

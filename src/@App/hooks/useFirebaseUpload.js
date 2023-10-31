@@ -3,68 +3,46 @@ import { ref, getDownloadURL, uploadBytes, deleteObject } from 'firebase/storage
 import { storage } from '@App/configs/firebase';
 
 function useFirebaseUpload() {
-   const [loading, setLoading] = useState(false);
-
-   const uploadFirebaseImage = async (data, setSrcImage) => {
+   const uploadFirebaseImage = async (data) => {
       if (data) {
-         setLoading(true);
          try {
             if (data.target.files.length >= 2) {
                const images = [...data.target.files];
 
                const uploadPromises = images.map(async (fileImage) => {
-                  const storageRef = ref(storage, fileImage.name);
-
+                  const storageRef = ref(storage, fileImage.name + Math.floor(Math.random() * 100000000000000));
                   const snapshot = await uploadBytes(storageRef, fileImage);
-
                   return getDownloadURL(snapshot.ref);
                });
 
                const uploadedUrls = await Promise.all(uploadPromises);
-
-               setLoading(false);
+               console.log(uploadedUrls);
 
                return uploadedUrls;
-            }
-
-            if (data.target.files.length === 1) {
+            } else {
                const storageRef = ref(storage, data.target.files[0].name);
 
                const snapshot = await uploadBytes(storageRef, data.target.files[0]);
 
                const uploadedUrl = await getDownloadURL(snapshot.ref);
-
-               if (setSrcImage) {
-                  setSrcImage(uploadedUrl);
-               }
-
-               setLoading(false);
+               console.log(uploadedUrl);
 
                return uploadedUrl;
             }
          } catch (error) {
             console.log('upload image to firebase failed: ' + error.message);
-
-            setLoading(false);
          }
-      } else {
-         console.log('Vui lòng thêm dữ liệu');
       }
    };
 
    const deleteFirebaseImage = async (srcImage) => {
       if (srcImage) {
-         setLoading(true);
          try {
             if (Array.isArray(srcImage) && srcImage.length > 0) {
                srcImage.map(async (image) => {
                   const desertRef = ref(storage, srcImage);
 
                   await deleteObject(desertRef);
-
-                  setLoading(false);
-
-                  return true;
                });
 
                return true;
@@ -74,17 +52,14 @@ function useFirebaseUpload() {
 
             await deleteObject(desertRef);
 
-            setLoading(false);
-
             return true;
          } catch (error) {
             console.log(error);
-            setLoading(false);
          }
       }
    };
 
-   return { loading, setLoading, uploadFirebaseImage, deleteFirebaseImage };
+   return { uploadFirebaseImage, deleteFirebaseImage };
 }
 
 export default useFirebaseUpload;

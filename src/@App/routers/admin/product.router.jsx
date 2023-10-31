@@ -4,9 +4,7 @@ import Loadable from '../components/Loadable';
 import { routerPath } from '@App/configs/routerConfig';
 
 const ProductPage = Loadable(lazy(() => import('@App/pages/Admin/Product')));
-const CreateProduct = Loadable(lazy(() => import('@App/pages/Admin/Product/CreateProduct')));
-const ProductDetail = Loadable(lazy(() => import('@App/pages/Admin/Product/ProductDetail')));
-const UpdateProduct = Loadable(lazy(() => import('@App/pages/Admin/Product/UpdateProduct')));
+const SaveProduct = Loadable(lazy(() => import('@App/pages/Admin/Product/SaveProduct')));
 
 const Size = Loadable(lazy(() => import('@App/pages/Admin/Size')));
 const CreateSize = Loadable(lazy(() => import('@App/pages/Admin/Size/CreateSize')));
@@ -29,12 +27,8 @@ const productRouter = {
          element: <ProductPage />
       },
       {
-         path: 'create',
-         element: <CreateProduct />
-      },
-      {
-         path: ':id',
-         element: <UpdateProduct />
+         path: 'save',
+         element: <SaveProduct />
       },
       {
          path: routerPath.SIZE,

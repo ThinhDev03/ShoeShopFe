@@ -29,8 +29,7 @@ export default function Header() {
    return (
       <NavHeader>
          <Nav />
-         <Grid container spacing={2}>
-            {/* <FlexBox sx={{ justifyContent: 'space-around', mt: 1, px: 3 }}> */}
+         <Grid container spacing={2} margin={0}>
             <Grid item xs={2}>
                <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }} component={Link} to='/'>
                   <img src={logo} alt='' width='39.997px' height='66.92px' />

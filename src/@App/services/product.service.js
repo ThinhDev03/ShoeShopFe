@@ -12,16 +12,24 @@ class ProductService extends BaseService {
       return this.create(data);
    }
 
+   createImage(data) {
+      return this.request.post(this.BASE_ENDPOINT + '/create-image', data);
+   }
+
    getAll() {
-      return this.request(this.BASE_ENDPOINT);
+      return this.request.get(this.BASE_ENDPOINT);
    }
 
    getImageProduct(id) {
-      return this.request(this.BASE_ENDPOINT + '/images/' + id);
+      return this.request.get(this.BASE_ENDPOINT + '/images/' + id);
    }
 
    deleteProduct(id) {
       return this.delete(id);
+   }
+
+   deleteImage(id) {
+      return this.request.delete(this.BASE_ENDPOINT + `/remove-image/${id}`);
    }
 
    getOne(id) {

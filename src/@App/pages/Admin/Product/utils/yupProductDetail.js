@@ -29,11 +29,11 @@ const yupProductDetail = yup.object().shape({
       .matches(Regex.number, 'Giá khuyến mãi phải là số')
       .strict(true)
       .default(''),
-   image_id: yup.string().trim('Bỏ khoảng trống').strict(true).required('Vui lòng chọn').default('')
+   image_id: yup.string().strict(true).required('Vui lòng chọn').default('')
 });
 
 const yupDetail = yup.object().shape({
-   productDetail: yup.string().strict(true).required('Vui lòng chọn').default(''),
+   // productDetail: yup.string().strict(true).default(''),
    details: yup.array().of(yupProductDetail)
 });
 

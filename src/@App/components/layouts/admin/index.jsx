@@ -37,9 +37,9 @@ const Main = styled('main')(({ theme }) => ({
    backgroundColor: theme.palette.background.default,
    minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin}px)`,
    [theme.breakpoints.down('lg')]: {
-      maxWidth: `calc(100% - ${theme.palette.education.sidebar.width}px)`,
-      padding: '10px',
-      margin: '10px',
-      minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin + 20}px)`
+      maxWidth: '100%'
+   //    padding: '10px',
+   //    margin: '10px',
+   //    minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin + 20}px)`,
    }
 }));
