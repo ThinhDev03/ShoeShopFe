@@ -8,9 +8,9 @@ import { useSearchParams } from 'react-router-dom';
 import productService from '@App/services/product.service';
 
 function ModalSelectImage({ setImage, onChange }) {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+   const [open, setOpen] = useState(false);
+   const handleOpen = () => setOpen(true);
+   const handleClose = () => setOpen(false);
 
     let [searchParams] = useSearchParams();
 
@@ -21,10 +21,10 @@ function ModalSelectImage({ setImage, onChange }) {
         return rest.data;
     });
 
-    const handleClickSetImage = (data) => {
-        setImage(data);
-        onChange(data._id);
-    };
+   const handleClickSetImage = (data) => {
+      setImage(data);
+      onChange(data._id);
+   };
 
     return (
         <React.Fragment>
@@ -94,17 +94,17 @@ function ModalSelectImage({ setImage, onChange }) {
 }
 
 const WrapperModalContent = styled(Box)(({ theme }) => ({
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    height: 500,
-    backgroundColor: theme.palette.education.text.white,
-    border: '2px solid transparent ',
-    outline: 'none',
-    borderRadius: '5px',
-    zIndex: 10
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: 700,
+   height: 500,
+   backgroundColor: theme.palette.education.text.white,
+   border: '2px solid transparent ',
+   outline: 'none',
+   borderRadius: '5px',
+   zIndex: 10
 }));
 
 export default React.memo(ModalSelectImage);

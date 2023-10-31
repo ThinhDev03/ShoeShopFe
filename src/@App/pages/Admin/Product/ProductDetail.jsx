@@ -12,6 +12,7 @@ import productDetail from '@App/services/product-detail.service';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import BaseFormProductDetail from './components/BaseFormProductDetail';
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
+
 import yupDetail from './utils/yupProductDetail';
 
 function ProductDetail({ id }) {
@@ -30,6 +31,7 @@ function ProductDetail({ id }) {
             }
          ]
       }
+
    });
 
    const { data } = useQuery(['getProductItem', id], async () => {
@@ -73,7 +75,9 @@ function ProductDetail({ id }) {
    ];
 
    return data ? (
-      <BaseFormProductDetail form={form} onSubmit={onSubmit} loading={isLoading} />
+      <BasicPage currentPage='Thêm biến thể sản phẩm' breadcrumbs={breadcrumbs}>
+         <BaseFormProductDetail form={form} onSubmit={onSubmit} loading={isLoading} />
+      </BasicPage>
    ) : (
       <Box
          sx={{
@@ -87,6 +91,7 @@ function ProductDetail({ id }) {
             Sản phẩm chính không tồn tại.
          </Typography>
          <Box component='p' sx={{ color: '#ABAEB0' }}>
+
             vui lòng thêm sản phẩm chính trước khi thêm các biến thể
          </Box>
       </Box>

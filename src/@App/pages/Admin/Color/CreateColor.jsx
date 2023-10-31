@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yupClasses from './utils/yupColor';
 import BasicPage from '@App/components/customs/BasicPage';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import { useMutation } from '@tanstack/react-query';
 import colorService from '@App/services/color.service';
 import BaseFormColor from './components/BaseFormColor';
 import { routerPath } from '@App/configs/routerConfig';
+import yupColor from './utils/yupColor';
 
 const breadcrumbs = [
    {
@@ -23,8 +23,8 @@ const breadcrumbs = [
 export default function CreateColor() {
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupClasses),
-      defaultValues: yupClasses.getDefault()
+      resolver: yupResolver(yupColor),
+      defaultValues: yupColor.getDefault()
    });
 
    const { isLoading, mutate } = useMutation({
@@ -33,7 +33,7 @@ export default function CreateColor() {
       },
       onSuccess: () => {
          form.reset();
-         successMessage('Thêm thương hiệu thành công');
+         successMessage('Thêm thương hiệu thành công.');
       },
       onError: (error) => {
          errorMessage(error);

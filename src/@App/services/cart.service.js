@@ -1,22 +1,22 @@
 import BaseService from '@Core/Api/BaseService';
 
-class CategoryService extends BaseService {
-   BASE_ENDPOINT = '/category';
+class CartService extends BaseService {
+   BASE_ENDPOINT = 'cart';
 
    constructor(params) {
       super(params);
       this.setRequest();
    }
 
-   createCategory(data) {
-      return this.create(data);
-   }
-
    getAll() {
       return this.request(this.BASE_ENDPOINT);
    }
 
-   deleteCategory(id) {
+   createBrand(data) {
+      return this.create(data);
+   }
+
+   deleteBrand(id) {
       return this.delete(id);
    }
 
@@ -29,5 +29,5 @@ class CategoryService extends BaseService {
    }
 }
 
-const categoryService = new CategoryService();
-export default categoryService;
+const cartService = new CartService();
+export default cartService;

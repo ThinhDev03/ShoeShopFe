@@ -17,66 +17,66 @@ const CreateColor = Loadable(lazy(() => import('@App/pages/Admin/Color/CreateCol
 const UpdateColor = Loadable(lazy(() => import('@App/pages/Admin/Color/UpdateColor')));
 
 const productRouter = {
-    path: routerPath.PRODUCTS,
-    element: (
-        // <PermissionRestricted >
-        <Outlet />
-        //  </PermissionRestricted>
-    ),
-    children: [
-        {
-            index: true,
-            element: <ProductPage />
-        },
-        {
-            path: 'create',
-            element: <CreateProduct />
-        },
-        {
-            path: 'create/:id',
-            element: <ProductDetail />
-        },
-        {
-            path: ':id',
-            element: <UpdateProduct />
-        },
-        {
-            path: routerPath.SIZE,
-            element: <Outlet />,
-            children: [
-                {
-                    index: true,
-                    element: <Size />
-                },
-                {
-                    path: 'create',
-                    element: <CreateSize />
-                },
-                {
-                    path: ':id',
-                    element: <UpdateSize />
-                }
-            ]
-        },
-        {
-            path: routerPath.COLOR,
-            element: <Outlet />,
-            children: [
-                {
-                    index: true,
-                    element: <Color />
-                },
-                {
-                    path: 'create',
-                    element: <CreateColor />
-                },
-                {
-                    path: ':id',
-                    element: <UpdateColor />
-                }
-            ]
-        }
-    ]
+   path: routerPath.PRODUCTS,
+   element: (
+      // <PermissionRestricted >
+      <Outlet />
+      //  </PermissionRestricted>
+   ),
+   children: [
+      {
+         index: true,
+         element: <ProductPage />
+      },
+      {
+         path: 'create',
+         element: <CreateProduct />
+      },
+      {
+         path: 'create/:id',
+         element: <ProductDetail />
+      },
+      {
+         path: ':id',
+         element: <UpdateProduct />
+      },
+      {
+         path: routerPath.SIZE,
+         element: <Outlet />,
+         children: [
+            {
+               index: true,
+               element: <Size />
+            },
+            {
+               path: 'create',
+               element: <CreateSize />
+            },
+            {
+               path: ':id',
+               element: <UpdateSize />
+            }
+         ]
+      },
+      {
+         path: routerPath.COLOR,
+         element: <Outlet />,
+         children: [
+            {
+               index: true,
+               element: <Color />
+            },
+            {
+               path: 'create',
+               element: <CreateColor />
+            },
+            {
+               path: ':id',
+               element: <UpdateColor />
+            }
+         ]
+      }
+   ]
 };
 
 export default productRouter;

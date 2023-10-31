@@ -2,11 +2,6 @@ import * as yup from 'yup';
 import Regex from '@Core/Helper/Regex';
 
 yup.setLocale({
-    mixed: {
-        notType: '${path} is required'
-    }
-});
-
 const schemaRegister = yup.object({
     fullname: yup.string().required('Tài khoản đăng nhập không được để trống'),
     username: yup.string().required('Tài khoản đăng nhập không được để trống'),
