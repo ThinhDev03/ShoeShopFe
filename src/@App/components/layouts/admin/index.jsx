@@ -36,6 +36,7 @@ const Main = styled('main')(({ theme }) => ({
    boxSizing: 'border-box',
    backgroundColor: theme.palette.background.default,
    minHeight: `calc(100vh - ${theme.palette.education.header.heightAdmin}px)`,
+   maxWidth: `calc(100% - ${theme.palette.education.sidebar.width}px)`,
    [theme.breakpoints.down('lg')]: {
       maxWidth: '100%'
    //    padding: '10px',

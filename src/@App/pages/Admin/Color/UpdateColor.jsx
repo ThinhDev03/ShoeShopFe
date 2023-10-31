@@ -49,7 +49,7 @@ export default function UpdateColor() {
       },
       onSuccess: () => {
          findOneColor();
-         successMessage('Cập nhật danh mục thành công');
+         successMessage('Cập nhật danh mục thành công.');
       }
    });
 

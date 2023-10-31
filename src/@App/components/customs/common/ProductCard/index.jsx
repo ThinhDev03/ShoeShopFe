@@ -53,9 +53,9 @@ function ProductCard({ data }) {
                   fontSize: '20px',
                   fontWeight: 'bold'
                }}>
-               <Box component='span'>{toFormatMoney(data?.fromPrice)}</Box>
+               <Box component='span'>{handlePrice(data?.fromPrice)}</Box>
                <Box component='span' sx={{ color: '#808080', fontSize: '16px' }}>
-                  {toFormatMoney(data?.toPrice)}
+                  {handlePrice(data?.toPrice)}
                </Box>
             </Stack>
          </Stack>
