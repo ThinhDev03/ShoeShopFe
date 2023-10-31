@@ -63,7 +63,8 @@ export default function Header() {
                                  color: palette.primary.main
                               }
                            })}
-                           onMouseOver={() => console.log('hover menu')}>
+                           // onMouseOver={() => console.log('hover menu')}
+                           >
                            {item.title}
                         </Box>
                      );

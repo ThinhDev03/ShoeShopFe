@@ -17,13 +17,11 @@ function Brand() {
       isFetching
    } = useQuery(['getCategory'], async () => {
       const rest = await brandService.getAll();
-      console.log(rest);
       return rest.data;
    });
 
    const mutation = useMutation({
       mutationFn: async (data) => {
-         console.log(data.id);
          return await brandService.deleteBrand(data.id);
       },
       onSuccess: () => {

@@ -32,7 +32,6 @@ export default function UpdateColor() {
       },
       {
          onSuccess: (data) => {
-            console.log(data);
             form.reset(data);
          }
       }

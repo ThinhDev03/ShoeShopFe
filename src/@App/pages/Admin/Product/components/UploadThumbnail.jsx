@@ -11,11 +11,7 @@ import { errorMessage } from '@Core/Helper/Message';
 import productService from '@App/services/product.service';
 import { useSearchParams } from 'react-router-dom';
 
-function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, title }) {
-   let [searchParams] = useSearchParams();
-
-   const product_id = searchParams.get('id');
-
+function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, title, product_id }) {
    const { uploadFirebaseImage, deleteFirebaseImage } = useFirebaseUpload();
 
    const {
@@ -38,16 +34,15 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
    useQuery(
       ['getImage', { product_id }],
       async () => {
-         try {
+         if (product_id) {
             const rest = await productService.getImageProduct(product_id);
             return rest.data;
-         } catch (error) {
-            errorMessage();
          }
+         return true;
       },
       {
          onSuccess: (data) => {
-            onChange(data);
+            product_id && onChange(data);
          }
       }
    );
@@ -95,7 +90,6 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
                   {Array.isArray(value) &&
                      value.length > 0 &&
                      value?.map((image, index) => {
-                        console.log(image.image_url);
                         return (
                            <ImageItem key={index} xs={sx}>
                               <LazyLoadingImage src={image.image_url || image} style={{ borderRadius: '5px' }} />
@@ -143,7 +137,6 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
 const ImageItem = styled('label')({
    position: 'relative',
    width: '155.227px',
-
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
@@ -154,12 +147,11 @@ const ImageItem = styled('label')({
 });
 
 const WrapperUploadThumbnail = styled('div')(({ error, multiple }) => ({
-   width: '100%',
+   width: !multiple ? '155.227px' : '100%',
    position: 'relative',
    display: 'flex',
    padding: multiple ? '6px 12px' : '0px',
    gap: multiple ? 6 : 0,
-   width: '100%',
    backgroundColor: '#f5f6f7',
    borderRadius: '5px',
    border: `1px solid ${error ? '#d32f2f' : '#d0d7de'}`,

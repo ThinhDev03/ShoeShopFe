@@ -29,12 +29,10 @@ export default function UpdateSize() {
       ['getSize', { id }],
       async () => {
          const rest = await sizeService.getOne(id);
-         console.log(rest.data);
          return rest.data;
       },
       {
          onSuccess: (data) => {
-            console.log(data);
             form.reset(data);
          }
       }

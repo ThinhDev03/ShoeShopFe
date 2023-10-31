@@ -44,7 +44,6 @@ export default function CreateSize() {
    });
 
    const onSubmit = async (data) => {
-      console.log(data);
       mutate(data);
    };
    return (

@@ -42,21 +42,25 @@ function BaseFormProduct(props) {
       ]
    });
 
-   const {} = useQuery(
+   useQuery(
       ['getProduct', { product_id }],
       async () => {
-         const res = await productService.getOne(product_id);
-         return res.data;
+         if (product_id) {
+            const res = await productService.getOne(product_id);
+            return res.data;
+         }
+         return true;
       },
       {
          onSuccess(data) {
-            reset({
-               name: data.name,
-               category_id: data.category_id._id,
-               brand_id: data.brand_id._id,
-               description: data.description,
-               thumbnail: data.thumbnail
-            });
+            product_id &&
+               reset({
+                  name: data.name,
+                  category_id: data.category_id._id,
+                  brand_id: data.brand_id._id,
+                  description: data.description,
+                  thumbnail: data.thumbnail
+               });
          }
       }
    );
@@ -119,11 +123,11 @@ function BaseFormProduct(props) {
             </Grid>
             <Grid item xs={2}>
                <FormLabel required title='Ảnh đại diện' name='thumbnail' gutterBottom />
-               <UploadThumbnail name='thumbnail' control={control} />
+               <UploadThumbnail name='thumbnail' control={control} product_id={product_id} />
             </Grid>
             <Grid item xs={10}>
                <FormLabel required title='Ảnh khác' name='images' gutterBottom />
-               <UploadThumbnail name='images' control={control} multiple={true} />
+               <UploadThumbnail name='images' control={control} multiple={true} product_id={product_id} />
             </Grid>
             <Grid item xs={12}>
                <FormLabel title='Mô tả sản phẩm' name='description' gutterBottom />

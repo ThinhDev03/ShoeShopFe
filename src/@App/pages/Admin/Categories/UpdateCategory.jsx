@@ -29,7 +29,6 @@ function UpdateCategory() {
       return rest.data;
    },{
       onSuccess: (data) => {
-         console.log(data);
          form.reset(data);
       }
    });

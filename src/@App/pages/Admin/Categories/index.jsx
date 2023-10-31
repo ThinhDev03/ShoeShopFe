@@ -16,13 +16,11 @@ function Categories() {
       isFetching
    } = useQuery(['getCategory'], async () => {
       const rest = await categoryService.getAll();
-      console.log(rest.data);
       return rest.data;
    });
 
    const mutation = useMutation({
       mutationFn: async (data) => {
-         console.log(data);
          return await categoryService.deleteCategory(data.id);
       },
       onSuccess: () => {

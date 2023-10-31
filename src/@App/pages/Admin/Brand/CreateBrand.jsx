@@ -29,7 +29,6 @@ function CreateBrand() {
 
    const { isLoading, mutate } = useMutation({
       mutationFn: async (data) => {
-         console.log(data);
          return await brandService.createBrand(data);
       },
       onSuccess: () => {

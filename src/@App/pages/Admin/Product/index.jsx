@@ -22,7 +22,6 @@ function ProductPage() {
       isFetching
    } = useQuery(['getProduct'], async () => {
       const rest = await productService.getAll();
-      console.log(rest.data);
       return rest.data;
    });
 
@@ -71,7 +70,6 @@ function ProductPage() {
             header: 'Giá bán',
             cell: ({ row }) => {
                const data = row?.original;
-               console.log(data);
                return (
                   <Box sx={{ display: 'flex', gap: 2 }}>
                      <Typography>{handlePrice(data?.fromPrice)}</Typography>
@@ -85,7 +83,6 @@ function ProductPage() {
             header: 'Thương hiệu',
             cell: ({ row }) => {
                const subject = row?.original;
-               console.log(subject);
                return subject?.brand_id?.brand_name;
             }
          }),
