@@ -26,7 +26,7 @@ export default function Size() {
          return await sizeService.deleteSize(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phảm thành công!');
          getCategory();
       },
       onError: (error) => {
@@ -58,7 +58,7 @@ export default function Size() {
                               id: subject?._id
                            });
                         }}
-                        content='Bạn có muốn xoá size này?'
+                        content='Bạn có muốn xoá size này ?'
                      />
                   </Box>
                );
