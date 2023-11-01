@@ -13,11 +13,22 @@
  * ----------	---	----------------------------------------------------------
  */
 
-const toFormatMoney = (number, space = '.', currencyUnit = 'đ') => {
+const toFormatMoney = (number, space = '.', currencyUnit = ' VNĐ') => {
    if (!number || number === 0) {
       return 0 + currencyUnit;
    }
    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, space) + currencyUnit;
 };
+
+export function toDiscountedPrice(originalPrice, discountPercentage) {
+   // Kiểm tra xem giá ban đầu và tỷ lệ giảm giá có hợp lệ không
+   if (originalPrice < 0 || discountPercentage < 0 || discountPercentage > 100) {
+      return 'Invalid input'; // Trả về thông báo lỗi nếu có giá trị không hợp lệ
+   }
+   const discountAmount = (originalPrice * discountPercentage) / 100;
+   const discountedPrice = originalPrice - discountAmount;
+
+   return discountedPrice;
+}
 
 export default toFormatMoney;
