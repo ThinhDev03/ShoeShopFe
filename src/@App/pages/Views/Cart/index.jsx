@@ -49,7 +49,7 @@ function Cart() {
                            350.000 VND
                         </Box>
                      </Box>
-                     <Box display='flex' justifyContent='space-between'>
+                     <Box display='flex' justifyContent='space-between' >
                         <Box component='p' m={0}>
                            Giảm
                         </Box>
@@ -74,7 +74,7 @@ function Cart() {
                         350.000 VND
                      </Box>
                   </Box>
-                  <Button fullWidth sx={{ textTransform: 'uppercase', py: '10px', fontWeight: 'bold' }}>
+                  <Button fullWidth sx={{ textTransform: 'uppercase', py: '10px', fontWeight: 'bold' }} >
                      Tiếp tục thanh toán
                   </Button>
                </Stack>
