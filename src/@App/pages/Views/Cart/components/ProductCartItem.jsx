@@ -7,7 +7,7 @@ function ProductCartItem() {
    return (
       <Grid container spacing={2}>
          <Grid item xs={3}>
-            <img src='https://ananas.vn/wp-content/uploads/Thumbnail-500x500.jpg' width='100%' height='100%' alt='' />
+            <img src='https://ananas.vn/wp-content/uploads/Thumbnail-500x500.jpg' width='100%' height='100%' alt=''/>
          </Grid>
          <Grid item xs={6}>
             <Stack height='100%' justifyContent='space-between'>
@@ -28,7 +28,7 @@ function ProductCartItem() {
                      <TextField sx={{ width: 150 }} />
                   </Box>
                   <Box>
-                     <FormLabel title='Số lượng' gutterBottom required />
+                     <FormLabel title='Số lượng' gutterBottom required/>
                      <TextField sx={{ width: 150 }} />
                   </Box>
                </Stack>
