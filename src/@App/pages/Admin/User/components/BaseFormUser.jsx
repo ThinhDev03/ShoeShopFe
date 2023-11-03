@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // mui
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
-import ControllerSelect, { PropTypeSelect } from '@Core/Components/FormControl/ControllerSelect';
+import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import FormGroup from '@Core/Components/FormControl/FormGroup';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -91,8 +91,4 @@ export default function BaseFormUser(props) {
    );
 }
 
-BaseFormUser.propTypes = {
-   gender: PropTypeSelect,
-   form: PropTypes.object.isRequired,
-   onSubmit: PropTypes.func.isRequired
-};
+

@@ -8,26 +8,26 @@ const CreateCategory = Loadable(lazy(() => import('@App/pages/Admin/Categories/C
 const UpdateCategory = Loadable(lazy(() => import('@App/pages/Admin/Categories/UpdateCategory')));
 
 const categoryRouter = {
-    path: routerPath.CATEGORYPRODUCTS,
-    element: (
-        // <PermissionRestricted >
-        <Outlet />
-        //  </PermissionRestricted>
-    ),
-    children: [
-        {
-            index: true,
-            element: <Categories />
-        },
-        {
-            path: 'create',
-            element: <CreateCategory />
-        },
-        {
-            path: ':id',
-            element: <UpdateCategory />
-        }
-    ]
+   path: routerPath.CATEGORYPRODUCTS,
+   element: (
+      // <PermissionRestricted >
+      <Outlet />
+      //  </PermissionRestricted>
+   ),
+   children: [
+      {
+         index: true,
+         element: <Categories />
+      },
+      {
+         path: 'create',
+         element: <CreateCategory />
+      },
+      {
+         path: ':id',
+         element: <UpdateCategory />
+      }
+   ]
 };
 
 export default categoryRouter;

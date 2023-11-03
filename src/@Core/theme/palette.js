@@ -14,9 +14,9 @@ const education = {
       width: 265
    },
    header: {
-      height: 202,
+      height: 168,
       heightAdmin: 68,
-      zIndex: 99999,
+      zIndex: 999,
    }
 };
 
@@ -34,7 +34,7 @@ const palette = {
       primary: {
          light: '#5BE584',
          main: '#F15E2C', // color default
-         dark: '#007B55' // color hover
+         dark: '#F15E2C' // color hover
       },
       secondary: {
          light: '#5BE584',

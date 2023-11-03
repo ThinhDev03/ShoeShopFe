@@ -1,32 +1,32 @@
 import BaseService from '@Core/Api/BaseService';
 
 class CategoryService extends BaseService {
-    BASE_ENDPOINT = '/category';
+   BASE_ENDPOINT = '/category';
 
-    constructor(params) {
-        super(params);
-        this.setRequest();
-    }
+   constructor(params) {
+      super(params);
+      this.setRequest();
+   }
 
-    createColor(data) {
-        return this.create(data);
-    }
+   createCategory(data) {
+      return this.create(data);
+   }
 
-    getAll() {
-        return this.request(this.BASE_ENDPOINT);
-    }
+   getAll() {
+      return this.request(this.BASE_ENDPOINT);
+   }
 
-    deleteCategory(id) {
-        return this.delete(id);
-    }
+   deleteCategory(id) {
+      return this.delete(id);
+   }
 
-    getOne(id) {
-        return this.find(id);
-    }
+   getOne(id) {
+      return this.find(id);
+   }
 
-    updateOne(data, id, method = 'post') {
-        return this.update(data, id, method);
-    }
+   updateOne(data, id, method = 'post') {
+      return this.update(data, id, method);
+   }
 }
 
 const categoryService = new CategoryService();

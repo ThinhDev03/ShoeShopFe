@@ -3,10 +3,6 @@ import React from 'react';
 import SwiperSlider from './components/SwiperSlider';
 import ProductDescription from './components/ProductDescription';
 import RelatedProducts from './components/RelatedProducts';
-import { useQueries } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
-import productDetail from '@App/services/product-detail.service';
-import productService from '@App/services/product.service';
 
 function ProductDetail() {
     return (

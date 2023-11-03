@@ -14,7 +14,7 @@ import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
 
 function BaseFormProduct(props) {
-   const { form, onSubmit, loading, title } = props;
+   const { form, onSubmit, loading, title, product_id } = props;
    const { control, handleSubmit, setValue, getValue } = form;
 
    const results = useQueries({
@@ -38,12 +38,12 @@ function BaseFormProduct(props) {
 
    return (
       <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
-         <Grid container spacing={3}>
-            <Grid item xs={12} md={6} sx={{ minHeight: '120px' }}>
+         <Grid container spacing={2}>
+            <Grid item xs={12} md={4} sx={{ minHeight: '105px' }}>
                <FormLabel required title='Tên sản phẩm' name='name' gutterBottom />
                <ControllerTextField name='name' control={control} />
             </Grid>
-            <Grid item xs={12} md={3} sx={{ minHeight: '120px' }}>
+            <Grid item xs={12} md={4} sx={{ minHeight: '105px' }}>
                <FormLabel required title='Danh mục' name='category_id' gutterBottom />
                <ControllerSelect
                   name='category_id'
@@ -53,7 +53,7 @@ function BaseFormProduct(props) {
                   control={control}
                />
             </Grid>
-            <Grid item xs={12} md={3} sx={{ minHeight: '120px' }}>
+            <Grid item xs={12} md={4} sx={{ minHeight: '105px' }}>
                <FormLabel required title='Thương hiệu' name='brand_id' gutterBottom />
                <ControllerSelect
                   name='brand_id'
@@ -63,27 +63,32 @@ function BaseFormProduct(props) {
                   control={control}
                />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={2} sx={{ maxHeight: 200 }}>
                <FormLabel required title='Ảnh đại diện sản phẩm' name='thumbnail' gutterBottom />
                <ControllerInputFile name='thumbnail' setValue={setValue} control={control} multiple={true} />
             </Grid>
-            <Grid item xs={12} md={8} sx={{ minHeight: '300px' }}>
+
+            <Grid item xs={12} md={10} sx={{ mb: 3 }}>
                <FormLabel required title='Ảnh sản phẩm' name='images' gutterBottom />
                <ControllerUploadMultipleImage name='images' setValue={setValue} control={control} />
             </Grid>
-            <Grid item xs={12} md={12} sx={{ mb: 3 }}>
+
+            <Grid item xs={12}>
                <FormLabel title='Mô tả sản phẩm' name='description' gutterBottom />
                <ControllerEditor minRows={8} name='description' setValue={setValue} control={control} />
             </Grid>
          </Grid>
-         <LoadingButton
-            loading={loading}
-            loadingPosition='start'
-            variant='contained'
-            startIcon={<SaveIcon />}
-            type='submit'>
-            {title || 'Thêm mới'}
-         </LoadingButton>
+         {product_id && (
+            <LoadingButton
+               loading={loading}
+               loadingPosition='start'
+               variant='contained'
+               startIcon={<SaveIcon />}
+               type='submit'
+               sx={{ mt: 4 }}>
+               {title || 'Thêm mới'}
+            </LoadingButton>
+         )}
       </form>
    );
 }

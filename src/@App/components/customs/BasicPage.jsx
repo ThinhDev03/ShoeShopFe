@@ -1,12 +1,22 @@
-import { Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import BreadCrumbs from './@mui/BreadCrumbs';
+import { Link } from 'react-router-dom';
 
-export default function BasicPage({ currentPage, breadcrumbs, children }) {
+export default function BasicPage({ currentPage, breadcrumbs, createTitle = '', children }) {
    return (
       <>
-         <BreadCrumbs sx={{ m: 3, mb: 0 }} currentPage={currentPage} breadcrumbs={breadcrumbs} />
+         <Box sx={{ display: 'flex', justifyContent: createTitle ? 'space-between' : 'start' }}>
+            <BreadCrumbs sx={{ m: 3, mb: 0 }} currentPage={currentPage} breadcrumbs={breadcrumbs} />
+            {Object.keys(createTitle).length > 0 && (
+               <Box display='flex' alignItems='flex-end' mr={3}>
+                  <Button component={Link} to='create'>
+                     {createTitle}
+                  </Button>
+               </Box>
+            )}
+         </Box>
          <Paper elevation={2} sx={{ height: '100%', flex: 1, m: 3, p: 3 }}>
             {children}
          </Paper>
@@ -25,6 +35,7 @@ BasicPage.defaultProps = {
 BasicPage.propTypes = {
    children: PropTypes.node.isRequired,
    currentPage: PropTypes.string,
+   createTitle: PropTypes.string,
    breadcrumbs: PropTypes.arrayOf(
       PropTypes.shape({
          link: PropTypes.string,
