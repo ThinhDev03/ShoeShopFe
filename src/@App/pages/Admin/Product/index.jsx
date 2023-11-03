@@ -31,7 +31,7 @@ function ProductPage() {
          return await productService.deleteProduct(id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phẩm thành công');
          getCategory();
       }
    });
@@ -109,7 +109,7 @@ function ProductPage() {
                               id: subject?._id
                            })
                         }
-                        content='Bạn có muốn xoá môn học này?'
+                        content='Bạn có chắc chắn muốn xoá?'
                      />
                   </Box>
                );
