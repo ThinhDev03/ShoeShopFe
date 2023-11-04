@@ -14,9 +14,9 @@ import { routerPath } from '@App/configs/routerConfig';
 const headerListAction = [
    {
       id: 1,
-      title: 'Tra cứu đơn hàng',
+      title: 'Danh sách đơn hàng',
       icon: Inventory2SharpIcon,
-      href: ''
+      href: 'bill'
    },
    {
       id: 5,

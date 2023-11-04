@@ -50,7 +50,7 @@ function SwiperSlider({ productDetails, slideIndex }) {
                   className='mySwiper'>
                   {productDetails.map((item, index) => {
                      return (
-                        <SwiperSlide key={item._id} virtualIndex={index}>
+                        <SwiperSlide key={item._id} virtualIndex={index} style={{ width: '100px', height: '100px' }}>
                            <LazyLoadingImage src={item.image_id.image_url} />
                         </SwiperSlide>
                      );

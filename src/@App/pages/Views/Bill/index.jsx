@@ -8,7 +8,8 @@ import ControllerTextField from '@Core/Components/FormControl/ControllerTextFiel
 import {
    CoreTableActionDelete,
    CoreTableActionEdit,
-   CoreTableActionView
+   CoreTableActionView,
+   CoreTableReplay
 } from '@Core/Components/Table/components/CoreTableActions';
 import toFormatMoney from '@Core/Helper/Price';
 import {
@@ -33,6 +34,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import BillDetailItem from './components/BillDetailItem';
 
 function Bill() {
    const [open, setOpen] = React.useState(false);
@@ -57,14 +59,19 @@ function Bill() {
       }
    );
 
-   const { mutate: getBillDetail, isFetching: loadingBillDetail } = useMutation({
-      mutationFn: () => {
-         return billService.find();
+   const {
+      data: billItemdetail,
+      mutate: getBillDetail,
+      isFetching: loadingBillDetail
+   } = useMutation({
+      mutationFn: (bill_id) => {
+         return billService.request.get('bill/bill-detail/' + bill_id);
       }
    });
 
    const handleClickModal = (bill_id) => {
       setOpen(true);
+      getBillDetail(bill_id);
    };
 
    const handleClose = () => setOpen(false);
@@ -97,8 +104,8 @@ function Bill() {
          format: (v) => (
             <Chip
                variant='outlined'
-               color={BILL_STATUS[3] === v.status ? 'secondary' : 'primary'}
-               label={transferStatus[v.status]}
+               color={BILL_STATUS[3] === v?.status ? 'secondary' : 'primary'}
+               label={transferStatus[v?.status]}
             />
          )
       },
@@ -109,9 +116,9 @@ function Bill() {
          align: 'center',
          format: (v) => (
             <Chip
-               color={paymentStatus.PAID === v.payment_id.status ? 'secondary' : 'primary'}
+               color={paymentStatus.PAID === v?.payment_id?.status ? 'secondary' : 'primary'}
                variant='outlined'
-               label={paymentStatus[v.payment_id.status ? v.payment_id.status : 'UNPAID']}
+               label={paymentStatus[v?.payment_id?.status ? v?.payment_id?.status : 'UNPAID']}
             />
          )
       },
@@ -127,11 +134,15 @@ function Bill() {
          label: 'Thao tác',
          minWidth: 170,
          align: 'center',
-         format: (v, id) => {
+         format: (v, i) => {
             return (
                <Box>
-                  <CoreTableActionView callback={() => handleClickModal(id)} />
-                  {v.status === BILL_STATUS[0] && <CoreTableActionDelete content='Bạn có muốn hủy đơn hàng này?' />}
+                  <CoreTableActionView callback={() => handleClickModal(v._id)} />
+                  {v.status === BILL_STATUS[0] ? (
+                     <CoreTableReplay content='Bạn có muốn hủy đơn hàng này?' />
+                  ) : (
+                     <Box display='inline-block' width='37px' height='37px'></Box>
+                  )}
                </Box>
             );
          }
@@ -220,14 +231,18 @@ function Bill() {
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'>
             <Box sx={style}>
-               <Typography
-                  id='modal-modal-title'
-                  variant='h6'
-                  component='h2'
-                  sx={{ px: 3, py: 2, bgcolor: '#dadada52' }}>
-                  Chi tiết hóa đơn
-               </Typography>
-               <Box sx={{ mt: 2, px: 3 }}></Box>
+               <Scrollbar>
+                  <Typography
+                     id='modal-modal-title'
+                     variant='h6'
+                     component='h2'
+                     sx={{ px: 3, py: 2, bgcolor: '#dadada52' }}>
+                     Chi tiết hóa đơn
+                  </Typography>
+                  <Box sx={{ mt: 2, px: 2, display: 'flex', flexDirection: 'column', gap: 1, height: '100%' }}>
+                     {!loadingBillDetail && billItemdetail?.data?.map((bill) => <BillDetailItem data={bill} />)}
+                  </Box>
+               </Scrollbar>
             </Box>
          </Modal>
       </Container>
@@ -239,8 +254,8 @@ const style = {
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
-   width: 600,
-   minHeight: 400,
+   width: 650,
+   height: 600,
    bgcolor: 'background.paper',
    borderRadius: 1,
    boxShadow: 24

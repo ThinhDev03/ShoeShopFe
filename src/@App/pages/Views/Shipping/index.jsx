@@ -11,6 +11,7 @@ import schemaShipping from './utils/yupShipping';
 import { toDiscountedPrice } from '@Core/Helper/Price';
 import billService from '@App/services/bill.service';
 import { successMessage } from '@Core/Helper/Message';
+import { Navigate } from 'react-router-dom';
 
 function Shipping() {
    const { user } = useAuth();
@@ -61,6 +62,23 @@ function Shipping() {
 
       createBill(newData);
       getCart();
+      return <Navigate to='/bill' />;
+   };
+
+   const renderShipping = () => {
+      if (carts?.length > 0)
+         return (
+            <Grid container spacing={2}>
+               <Grid item xs={7}>
+                  <FormShipping form={form} />
+               </Grid>
+               <Grid item xs={5}>
+                  <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={carts} totalPrice={totalPrice} />
+               </Grid>
+            </Grid>
+         );
+
+      return <Navigate to='/' />;
    };
 
    return (
@@ -80,16 +98,7 @@ function Shipping() {
                </Box>
             </Box>
          ) : (
-            carts?.length > 0 && (
-               <Grid container spacing={2}>
-                  <Grid item xs={7}>
-                     <FormShipping form={form} />
-                  </Grid>
-                  <Grid item xs={5}>
-                     <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={carts} totalPrice={totalPrice} />
-                  </Grid>
-               </Grid>
-            )
+            renderShipping()
          )}
       </Container>
    );

@@ -21,6 +21,8 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import HttpsIcon from '@mui/icons-material/Https';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ReplayIcon from '@mui/icons-material/Replay';
+
 export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => {
    const confirm = useConfirm();
 
@@ -37,6 +39,27 @@ export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => 
       <Tooltip title='Xoá'>
          <IconButton onClick={handleDelete}>
             <DeleteIcon fontSize='small' />
+         </IconButton>
+      </Tooltip>
+   );
+};
+
+export const CoreTableReplay = ({ callback = () => {}, content = '' }) => {
+   const confirm = useConfirm();
+
+   const handleDelete = () => {
+      confirm({
+         content: content,
+         isIcon: true,
+         color: 'error',
+         onOk: callback
+      });
+   };
+
+   return (
+      <Tooltip title='Hủy'>
+         <IconButton onClick={handleDelete}>
+            <ReplayIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );

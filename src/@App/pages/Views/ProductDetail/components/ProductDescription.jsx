@@ -14,9 +14,9 @@ import useAuth from '@App/hooks/useAuth';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 function ProductDescription({ productDetails, details, product }) {
-   const {user} = useAuth()
-   const [colorSelected, setColorSelected] = useState('');
-   const { isAuthenticated } = useAuth();
+   console.log(product);
+   const { user, isAuthenticated } = useAuth();
+   const [colorSelected, setColorSelected] = useState(null);
    const { control, handleSubmit, watch } = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCart),
@@ -30,6 +30,9 @@ function ProductDescription({ productDetails, details, product }) {
          });
          successMessage('Thêm vào giỏ hàng thành công');
       } catch (error) {
+         if (!isAuthenticated) {
+            return errorMessage('Vui lòng đăng nhập');
+         }
          errorMessage('Thêm sản phẩm vào giỏ thất bại');
       }
    };
@@ -49,31 +52,55 @@ function ProductDescription({ productDetails, details, product }) {
    const hasQuantity = currentProduct && currentProduct.quantity === 0;
    return (
       <React.Fragment>
-         <Stack sx={{ padding: '0 24px', gap: '30px' }}>
+         <Stack sx={{ padding: '0 24px', gap: '18px' }}>
             <Typography variant='h5'>{product?.name}</Typography>
-            <Stack flexDirection='row' justifyContent='space-between'>
+            {/* <Stack flexDirection='row' justifyContent='space-between'>
                <Box sx={{ display: 'flex', gap: 2, fontSize: '18px' }}>
                   Mã sản phẩm:
                   <strong>AV00180</strong>
                </Box>
                <Box sx={{ display: 'flex', gap: 2, fontSize: '18px' }}>
                   Tình trạng:
-                  <strong>New Arrival</strong>
+                  <strong>{}</strong>
                </Box>
-            </Stack>
-
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-               <Typography variant='h5' sx={({ palette }) => ({ color: palette.education.text.main, fontWeight: 600 })}>
-                  {details && toFormatMoney(toDiscountedPrice(currentProduct?.price, currentProduct?.sale))}
+            </Stack> */}
+            {colorSelected ? (
+               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Typography
+                     variant='h5'
+                     sx={({ palette }) => ({ color: palette.education.text.main, fontWeight: 600 })}>
+                     {details && toFormatMoney(toDiscountedPrice(currentProduct?.price, currentProduct?.sale))}
+                  </Typography>
+                  <Typography
+                     sx={{ color: '#808080', fontSize: '20px', textDecoration: 'line-through', fontWeight: 500 }}>
+                     {details && toFormatMoney(currentProduct?.price)}
+                  </Typography>
+               </Box>
+            ) : (
+               <Typography
+                  variant='h5'
+                  sx={({ palette }) => ({
+                     color: palette.education.text.main,
+                     fontWeight: 600,
+                     bgcolor: '#fafafa',
+                     padding: '15px 20px'
+                  })}>
+                  {product?.toPrice === product?.fromPrice ? (
+                     toFormatMoney(product?.toPrice)
+                  ) : (
+                     <React.Fragment>
+                        <span>{toFormatMoney(product?.toPrice)}</span>
+                        <span style={{ margin: '0px 8px' }}>-</span>
+                        <span>{toFormatMoney(product?.fromPrice)}</span>
+                     </React.Fragment>
+                  )}
                </Typography>
-               <Typography sx={{ color: '#808080', fontSize: '20px', textDecoration: 'line-through', fontWeight: 500 }}>
-                  {details && toFormatMoney(currentProduct?.price)}
-               </Typography>
-            </Box>
+            )}
 
             <Divider />
 
             <Box component='form' onSubmit={handleSubmit(onSubmit)}>
+               <Typography sx={{ textTransform: 'uppercase', fontWeight: 600, mb: 2 }}>Color:</Typography>
                <Stack gap={3} flexDirection='row' alignItems='center'>
                   {productDetails.map((product, index) => {
                      return (
@@ -122,9 +149,6 @@ function ProductDescription({ productDetails, details, product }) {
                      })}>
                      {hasQuantity ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                   </Button>
-                  <Button type='submit' fullWidth sx={{ textTransform: 'uppercase', py: '18px' }}>
-                     Thanh toán
-                  </Button>
                </Stack>
             </Box>
 
@@ -135,7 +159,7 @@ function ProductDescription({ productDetails, details, product }) {
 }
 
 const Divider = styled(Box)(({ theme }) => ({
-   margin: '32px 0px 15px 0',
+   margin: '12px 0px 15px 0',
    backgroundColor: theme.palette.education.text.white,
    background: 'url(https://ananas.vn/wp-content/themes/ananas/fe-assets/images/bg_divider.png) repeat-x 7px',
    height: '2px'

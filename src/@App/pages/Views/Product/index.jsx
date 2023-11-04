@@ -14,7 +14,6 @@ function Product() {
    const searchValue = form.watch('search');
    const category = form.watch('category');
    const brand = form.watch('brand');
-   console.log(category);
    const search = useDebounceInput(searchValue);
 
    const { data: productList, isFetching } = useQuery(
@@ -27,13 +26,14 @@ function Product() {
 
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
-         <Grid container spacing={2}>
+         <Grid container spacing={4}>
             <Grid item xs={4} md={3}>
                <Filter form={form} category={category} brand={brand} />
             </Grid>
             <Grid item xs={8} md={9}>
-               <Box component='img' src={banner} alt='banner' mb={2} />
                <Grid container spacing={2}>
+                  <Box component='img' src={banner} alt='banner' mb={2} mt={2} borderRadius='5px' />
+
                   {isFetching
                      ? Array.from({ length: 6 }, (_, index) => index).map((item) => (
                           <Grid item xs={6} md={4} key={item}>
