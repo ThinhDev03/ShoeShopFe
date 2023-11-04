@@ -12,18 +12,6 @@ class CartService extends BaseService {
       return this.request.get(this.BASE_ENDPOINT + '/' + user_id);
    }
 
-   createBrand(data) {
-      return this.create(data);
-   }
-
-   deleteBrand(id) {
-      return this.delete(id);
-   }
-
-   getOne(id) {
-      return this.find(id);
-   }
-
    updateOne(data, id, method = 'post') {
       return this.update(data, id, method);
    }

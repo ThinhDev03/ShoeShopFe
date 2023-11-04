@@ -31,13 +31,11 @@ function AccordionDescription({ product }) {
             </AccordionSummary>
             <AccordionDetails>
                <Box sx={{ borderTop: '1px dashed #333', mb: 3 }}></Box>
-               <Box
-                  sx={{ pl: 3 }}
-                  dangerouslySetInnerHTML={{ __html: (!product.isLoading && product.data.description) || '' }}></Box>
+               <Box sx={{ pl: 3 }} dangerouslySetInnerHTML={{ __html: (product && product.description) || '' }}></Box>
             </AccordionDetails>
          </Accordion>
       </React.Fragment>
    );
 }
 
-export default React.memo(AccordionDescription);
+export default AccordionDescription;

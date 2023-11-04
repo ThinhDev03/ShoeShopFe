@@ -74,9 +74,9 @@ export const CoreTableActionEdit = ({ callback = () => {} }) => {
    );
 };
 
-export const CoreTableActionView = ({ callback = () => {} }) => {
+export const CoreTableActionView = ({ callback = () => {}, title = 'Xem chi tiết' }) => {
    return (
-      <Tooltip title='Xem chi tiết'>
+      <Tooltip title={title}>
          <IconButton onClick={callback}>
             <RemoveRedEyeIcon fontSize='small' />
          </IconButton>

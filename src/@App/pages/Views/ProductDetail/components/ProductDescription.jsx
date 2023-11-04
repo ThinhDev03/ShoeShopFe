@@ -1,69 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { useQueries } from '@tanstack/react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, MenuItem, Stack, Typography, styled } from '@mui/material';
+import { Box, Button, Stack, Typography, styled } from '@mui/material';
 
-import yupCard from '../utils/yup.card';
-import productService from '@App/services/product.service';
-import toFormatMoney from '@Core/Helper/Price';
-import productDetail from '@App/services/product-detail.service';
+import yupCart from '../utils/yup.card';
+import toFormatMoney, { toDiscountedPrice } from '@Core/Helper/Price';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
-import ColorRender from './ColorRender';
+import ColorButton from './ColorButton';
+import AccordionDescription from './AccordionDescription';
+import cartService from '@App/services/cart.service';
+import useAuth from '@App/hooks/useAuth';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
-function ProductDescription() {
-   const { id } = useParams();
-
-   const { control, handleSubmit } = useForm({
+function ProductDescription({ productDetails, details, product }) {
+   const [colorSelected, setColorSelected] = useState('');
+   const { isAuthenticated } = useAuth();
+   const { control, handleSubmit, watch } = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupCard),
-      defaultValues: yupCard.getDefault()
+      resolver: yupResolver(yupCart),
+      defaultValues: yupCart.getDefault()
    });
-
-   const [product, details] = useQueries({
-      queries: [
-         {
-            queryKey: ['getProduct'],
-            queryFn: async () => {
-               const rest = await productService.getOne(id);
-               return rest.data;
-            }
-         },
-         {
-            queryKey: ['getProductDetai'],
-            queryFn: async () => {
-               const rest = await productDetail.getOne(id);
-               return rest.data;
-            }
-         }
-      ]
-   });
-
    const onSubmit = async (data) => {
-      console.log(data);
+      try {
+         await cartService.create({
+            user_id: user._id,
+            ...data
+         });
+         successMessage('Thêm vào giỏ hàng thành công');
+      } catch (error) {
+         errorMessage('Thêm sản phẩm vào giỏ thất bại');
+      }
    };
 
-   function getUniqueListBy(arr) {
-      const newSet = new Map();
-      arr.forEach((item) => {
-         newSet.set(item.color_id._id, item.color_id);
-      });
+   const getSizeWithColor = (products, color) => {
+      if (!products) return [];
+      const productWithColor = products.filter((product) => product.color_id._id === color);
+      return productWithColor.map(({ size_id, _id }) => ({
+         size_name: size_id.size_name,
+         product_id: _id
+      }));
+   };
 
-      return Array.from(newSet);
-   }
-
-   // useEffect(() => {
-   //    const size = details?.data?.filter((item) => item.color_id._id === '653728be9b05ef0df28823a0');
-   // }, []);
-
-   console.log(details);
-
+   const currentProductId = watch('product_id');
+   const currentProduct = details ? details.find((product) => product._id === currentProductId) || details[0] : {};
+   const sizes = getSizeWithColor(details, colorSelected);
+   const hasQuantity = currentProduct && currentProduct.quantity === 0;
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '30px' }}>
-            <Typography variant='h5'>{product?.data?.name}</Typography>
+            <Typography variant='h5'>{product?.name}</Typography>
             <Stack flexDirection='row' justifyContent='space-between'>
                <Box sx={{ display: 'flex', gap: 2, fontSize: '18px' }}>
                   Mã sản phẩm:
@@ -77,19 +63,26 @@ function ProductDescription() {
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                <Typography variant='h5' sx={({ palette }) => ({ color: palette.education.text.main, fontWeight: 600 })}>
-                  {(details && toFormatMoney(details?.data?.[indexActive].sale)) || ''}
+                  {details && toFormatMoney(toDiscountedPrice(currentProduct?.price, currentProduct?.sale))}
                </Typography>
-               <Box sx={{ color: '#808080', fontSize: '20px', fontWeight: 500 }}>
-                  {(details && toFormatMoney(details?.data?.[indexActive].price)) || ''}
-               </Box>
+               <Typography sx={{ color: '#808080', fontSize: '20px', textDecoration: 'line-through', fontWeight: 500 }}>
+                  {details && toFormatMoney(currentProduct?.price)}
+               </Typography>
             </Box>
 
             <Divider />
 
             <Box component='form' onSubmit={handleSubmit(onSubmit)}>
                <Stack gap={3} flexDirection='row' alignItems='center'>
-                  {getUniqueListBy(details?.data || [], '_id').map((color, index) => {
-                     return <ColorRender key={index} color={color[1]} check={color._id} />;
+                  {productDetails.map((product, index) => {
+                     return (
+                        <ColorButton
+                           key={product._id}
+                           setColorSelected={setColorSelected}
+                           color={product.color_id}
+                           colorSelected={colorSelected}
+                        />
+                     );
                   })}
                </Stack>
 
@@ -99,29 +92,25 @@ function ProductDescription() {
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
                      <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Size</Typography>
                      <ControllerSelect
-                        options={details?.data || []}
-                        _value='size_id._id'
-                        _title='size_id.size_name'
-                        name='size_id'
-                        control={control}>
-                        {details?.data?.map((item) => {
-                           return (
-                              <MenuItem value={item.size_id._id} key={item._id}>
-                                 {item.size_id.size_name}
-                              </MenuItem>
-                           );
-                        })}
-                     </ControllerSelect>
+                        disabled={!colorSelected}
+                        options={sizes}
+                        _value='product_id'
+                        _title='size_name'
+                        name='product_id'
+                        control={control}
+                        size='small'
+                     />
                   </Box>
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
                      <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Số lượng</Typography>
-                     <ControllerTextField name='quantity' control={control} />
+                     <ControllerTextField type='number' disabled={!colorSelected} name='quantity' control={control} />
                   </Box>
                </Stack>
                <Stack gap={1}>
                   <Button
                      type='submit'
                      fullWidth
+                     disabled={hasQuantity}
                      sx={({ palette }) => ({
                         textTransform: 'uppercase',
                         py: '18px',
@@ -130,7 +119,7 @@ function ProductDescription() {
                            bgcolor: palette.education.text.black
                         }
                      })}>
-                     Thêm vào giỏ hàng
+                     {hasQuantity ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
                   </Button>
                   <Button type='submit' fullWidth sx={{ textTransform: 'uppercase', py: '18px' }}>
                      Thanh toán
@@ -138,7 +127,7 @@ function ProductDescription() {
                </Stack>
             </Box>
 
-            {/* <AccordionDescription product={product} /> */}
+            <AccordionDescription product={product} />
          </Stack>
       </React.Fragment>
    );
