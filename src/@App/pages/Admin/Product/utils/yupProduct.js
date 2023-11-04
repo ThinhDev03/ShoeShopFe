@@ -1,11 +1,6 @@
 import * as yup from 'yup';
 import Regex from '@Core/Helper/Regex';
 
-yup.setLocale({
-   mixed: {
-      notType: '${path} is required'
-   }
-});
 
 const yupProduct = yup.object().shape({
    name: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Vui lòng nhập tên màu').default(''),

@@ -33,7 +33,7 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
       {
          onSuccess: (data) => {
             data.filter((item) => {
-               if ((item._id === value)) {
+               if (item._id === value) {
                   setImageUrl(item.image_url);
                   return item;
                }
@@ -46,6 +46,7 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
    const handleChangeImage = (image) => {
       onChange(image._id);
       setImageUrl(image.image_url);
+      handleClose();
    };
 
    const handleDelete = () => {

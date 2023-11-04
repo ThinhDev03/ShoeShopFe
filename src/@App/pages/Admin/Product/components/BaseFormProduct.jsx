@@ -123,7 +123,7 @@ function BaseFormProduct(props) {
             </Grid>
             <Grid item xs={2}>
                <FormLabel required title='Ảnh đại diện' name='thumbnail' gutterBottom />
-               <UploadThumbnail name='thumbnail' control={control} product_id={product_id} />
+               <UploadThumbnail name='thumbnail' control={control} multiple={false} product_id={product_id} />
             </Grid>
             <Grid item xs={10}>
                <FormLabel required title='Ảnh khác' name='images' gutterBottom />

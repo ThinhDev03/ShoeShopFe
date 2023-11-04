@@ -8,8 +8,8 @@ class CartService extends BaseService {
       this.setRequest();
    }
 
-   getAll() {
-      return this.request(this.BASE_ENDPOINT);
+   getCart(user_id) {
+      return this.request.get(this.BASE_ENDPOINT + '/' + user_id);
    }
 
    createBrand(data) {

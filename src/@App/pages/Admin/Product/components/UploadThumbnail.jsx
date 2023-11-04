@@ -87,8 +87,7 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
                         />
                      )}
                   </ImageItem>
-                  {Array.isArray(value) &&
-                     value.length > 0 &&
+                  {value.length > 0 &&
                      value?.map((image, index) => {
                         return (
                            <ImageItem key={index} xs={sx}>
