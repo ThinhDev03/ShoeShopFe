@@ -24,7 +24,7 @@ function Cart() {
 
    const {
       data: carts,
-      isFetching: isLoading,
+      isLoading: isLoading,
       refetch: getCart
    } = useQuery(['getCart'], async () => {
       const res = await cartService.getCart(user._id);
@@ -32,7 +32,7 @@ function Cart() {
    });
 
    const totalPrice = useMemo(() => {
-      return carts?.data?.reduce((currentPrice, item) => {
+      return carts?.reduce((currentPrice, item) => {
          return currentPrice + toDiscountedPrice(item.price, item.sale) * item.quantity;
       }, 0);
    }, [carts]);

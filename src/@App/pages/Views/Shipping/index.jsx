@@ -21,7 +21,7 @@ function Shipping() {
 
    const {
       data: carts,
-      isFetching: loading,
+      isLoading: loading,
       refetch: getCart
    } = useQuery(['getCart'], async () => {
       const res = await cartService.getCart(user._id);
@@ -29,7 +29,7 @@ function Shipping() {
    });
 
    const totalPrice = useMemo(() => {
-      return carts?.data?.reduce((currentPrice, item) => {
+      return carts?.reduce((currentPrice, item) => {
          return currentPrice + toDiscountedPrice(item.price, item.sale) * item.quantity;
       }, 0);
    }, [carts]);
@@ -40,6 +40,7 @@ function Shipping() {
          return res.data;
       },
       onSuccess: () => {
+         getCart();
          successMessage('Đặt hàng thành công');
       }
    });
@@ -49,7 +50,7 @@ function Shipping() {
          ...data,
          user_id: user._id,
          total_money: totalPrice,
-         products: carts?.data.map((cart) => {
+         products: carts?.map((cart) => {
             return {
                cart_id: cart.cart_id,
                product_id: cart.product_id,
@@ -61,8 +62,6 @@ function Shipping() {
       createBill(newData);
       getCart();
    };
-
-   console.log(carts);
 
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>

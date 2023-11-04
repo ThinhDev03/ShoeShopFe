@@ -24,7 +24,9 @@ const toFormatMoney = (number, space = '.', currencyUnit = 'đ') => {
    return (
       financial(number)
          .toString()
-         .replace(/\B(?=(\d{3})+(?!\d))/g, space) + ' ' + currencyUnit
+         .replace(/\B(?=(\d{3})+(?!\d))/g, space) +
+      ' ' +
+      currencyUnit
    );
 };
 
@@ -33,7 +35,10 @@ export function toDiscountedPrice(originalPrice, discountPercentage) {
    if (originalPrice < 0 || discountPercentage < 0 || discountPercentage > 100) {
       return 'Invalid input'; // Trả về thông báo lỗi nếu có giá trị không hợp lệ
    }
-   const discountAmount = (originalPrice * discountPercentage) / 100;
+
+   const sale = discountPercentage ? discountPercentage : 0;
+
+   const discountAmount = (originalPrice * sale) / 100;
    const discountedPrice = originalPrice - discountAmount;
 
    return discountedPrice;

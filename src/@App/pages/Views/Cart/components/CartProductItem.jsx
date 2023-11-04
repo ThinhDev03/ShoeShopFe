@@ -9,6 +9,7 @@ import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
 
 function CartProductItem({ data, getCart }) {
+   console.log(data);
    const [quantity, setQuantity] = useState(data.quantity);
    const { user } = useAuth();
 
