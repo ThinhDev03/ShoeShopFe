@@ -14,6 +14,7 @@ import useAuth from '@App/hooks/useAuth';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 function ProductDescription({ productDetails, details, product }) {
+   const {user} = useAuth()
    const [colorSelected, setColorSelected] = useState('');
    const { isAuthenticated } = useAuth();
    const { control, handleSubmit, watch } = useForm({
