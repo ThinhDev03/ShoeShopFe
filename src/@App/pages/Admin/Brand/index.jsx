@@ -68,7 +68,6 @@ function Brand() {
 
    return (
       <BasicPage currentPage='Thương hiệu'>
-         <TextField />
          <CoreTable columns={columns} loading={isFetching} data={data} isPagination={true} />
       </BasicPage>
    );

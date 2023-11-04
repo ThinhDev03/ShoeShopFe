@@ -24,7 +24,8 @@ function ProductCard({ data }) {
                   color: '#ff5f17',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  fontWeight: 300
                }}
                component={Link}
                to={data?._id}>
@@ -38,14 +39,16 @@ function ProductCard({ data }) {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 2,
-                  fontSize: '20px',
-                  fontWeight: 'bold'
+                  gap: 1,
+                  fontSize: '20px'
                }}>
-               <Box component='span'>{toFormatMoney(data?.fromPrice)}</Box>
-               <Box component='span' sx={{ color: '#808080', fontSize: '16px' }}>
+               <Typography fontWeight={500} component='span'>
+                  {toFormatMoney(data?.fromPrice, '.', '')}{' '}
+               </Typography>
+               {'-'}
+               <Typography fontWeight={500} component='span' sx={{ fontSize: '16px' }}>
                   {toFormatMoney(data?.toPrice)}
-               </Box>
+               </Typography>
             </Stack>
          </Stack>
       </Stack>
