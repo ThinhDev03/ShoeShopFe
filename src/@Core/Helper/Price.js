@@ -13,11 +13,19 @@
  * ----------	---	----------------------------------------------------------
  */
 
-const toFormatMoney = (number, space = '.', currencyUnit = ' VNĐ') => {
+export function financial(x) {
+   return Number.parseFloat(x).toFixed(0);
+}
+
+const toFormatMoney = (number, space = '.', currencyUnit = 'đ') => {
    if (!number || number === 0) {
       return 0 + currencyUnit;
    }
-   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, space) + currencyUnit;
+   return (
+      financial(number)
+         .toString()
+         .replace(/\B(?=(\d{3})+(?!\d))/g, space) + ' ' + currencyUnit
+   );
 };
 
 export function toDiscountedPrice(originalPrice, discountPercentage) {

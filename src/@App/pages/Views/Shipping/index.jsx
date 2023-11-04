@@ -1,49 +1,97 @@
-import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
-import React from 'react';
+import { Box, CircularProgress, Container, Grid } from '@mui/material';
+import React, { useMemo } from 'react';
 import FormShipping from './component/FormShipping';
 import Invoice from './component/Invoice';
-import { Link } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import cartService from '@App/services/cart.service';
+import useAuth from '@App/hooks/useAuth';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import schemaShipping from './utils/yupShipping';
+import { toDiscountedPrice } from '@Core/Helper/Price';
+import billService from '@App/services/bill.service';
+import { successMessage } from '@Core/Helper/Message';
 
 function Shipping() {
+   const { user } = useAuth();
+
+   const { handleSubmit, ...form } = useForm({
+      resolver: yupResolver(schemaShipping)
+   });
+
+   const {
+      data: carts,
+      isFetching: loading,
+      refetch: getCart
+   } = useQuery(['getCart'], async () => {
+      const res = await cartService.getCart(user._id);
+      return res.data;
+   });
+
+   const totalPrice = useMemo(() => {
+      return carts?.data?.reduce((currentPrice, item) => {
+         return currentPrice + toDiscountedPrice(item.price, item.sale) * item.quantity;
+      }, 0);
+   }, [carts]);
+
+   const { mutate: createBill } = useMutation({
+      mutationFn: async (data) => {
+         const res = await billService.create(data);
+         return res.data;
+      },
+      onSuccess: () => {
+         successMessage('Đặt hàng thành công');
+      }
+   });
+
+   const onSubmit = async (data) => {
+      const newData = {
+         ...data,
+         user_id: user._id,
+         total_money: totalPrice,
+         products: carts?.data.map((cart) => {
+            return {
+               cart_id: cart.cart_id,
+               product_id: cart.product_id,
+               quantity: cart.quantity
+            };
+         })
+      };
+
+      createBill(newData);
+      getCart();
+   };
+
+   console.log(carts);
+
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
-         {/* <Grid container spacing={2}>
-            <Grid item xs={7}>
-               <Box sx={{ padding: '8px 12px', backgroundColor: '#f1f1f1', mb: '12px' }}>
-                  <Typography variant='h5' fontWeight='bold'>
-                     Giỏ hàng
-                  </Typography>
+         {loading ? (
+            <Box sx={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
+               <Box
+                  sx={{
+                     display: 'flex',
+                     height: '100%',
+                     width: '100%',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     backgroundColor: '#DADADA1A'
+                  }}>
+                  <CircularProgress />
                </Box>
-               <FormShipping />
-            </Grid>
-            <Grid item xs={5}>
-               <Invoice />
-            </Grid>
-         </Grid> */}
-         <Stack gap={3}>
-            <Typography variant='h4' fontWeight='bold' textAlign='center'>
-               Giỏ hàng của bạn
-            </Typography>
-            <Box sx={{ borderBottom: '1px solid #000', my: 2 }}></Box>
-
-            <Box textAlign='center' fontSize='18px'>
-               Bạn đang không có sản phẩm nào trong giỏ hàng!
             </Box>
-            <Box display='flex' justifyContent='center' mt={4}>
-               <Button
-                  component={Link}
-                  to='/products'
-                  sx={({ palette }) => ({
-                     padding: '10px 32px',
-                     backgroundColor: palette.education.text.black,
-                     ':hover': {
-                        backgroundColor: palette.education.text.black
-                     }
-                  })}>
-                  QUAY LẠI MUA HÀNG
-               </Button>
-            </Box>
-         </Stack>
+         ) : (
+            carts?.length > 0 && (
+               <Grid container spacing={2}>
+                  <Grid item xs={7}>
+                     <FormShipping form={form} />
+                  </Grid>
+                  <Grid item xs={5}>
+                     <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={carts} totalPrice={totalPrice} />
+                  </Grid>
+               </Grid>
+            )
+         )}
       </Container>
    );
 }
