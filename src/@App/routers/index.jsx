@@ -1,4 +1,3 @@
-// import { lazy } from "react";
 import { lazy } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 import Loadable from './components/Loadable';
@@ -23,7 +22,7 @@ const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
 const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
 const Product = Loadable(lazy(() => import('@App/pages/Views/Product')));
 const ProductDetail = Loadable(lazy(() => import('@App/pages/Views/ProductDetail')));
-// const GetCurrentUser = lazy(() => import('@App/pages/Signin/GetCurrentUser'));
+const GetCurrentUser = lazy(() => import('@App/pages/Signin/GetCurrentUser'));
 
 const routers = [
    {
@@ -63,11 +62,11 @@ const routers = [
                   element: <Register />
                }
             ]
+         },
+         {
+            path: 'success',
+            element: <GetCurrentUser />
          }
-         // {
-         //    path: 'success',
-         //    element: <GetCurrentUser />
-         // }
       ]
    },
    {
