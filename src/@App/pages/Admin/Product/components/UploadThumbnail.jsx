@@ -63,7 +63,7 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
          }
       },
       onError: () => {
-         errorMessage('Đã có lỗi xảy ra.');
+         errorMessage('Đã có lỗi xảy  ra.');
       }
    });
 
