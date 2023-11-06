@@ -18,8 +18,8 @@ function BaseFormCategory(props) {
                <ControllerTextField name='category_name' control={control} />
             </Grid>
             <Grid item xs={6} sx={{ minHeight: '130px' }}>
-               <FormLabel title='Mô tả' name='description' gutterBottom />
-               <ControllerTextField name='description' control={control} />
+               <FormLabel title='Mô tả' name='description ' gutterBottom />
+               <ControllerTextField name='description ' control={control} />
             </Grid>
             <Grid item>
                <LoadingButton loading={props.isLoading} variant='contained' startIcon={<SaveIcon />} type='submit'>
