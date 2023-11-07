@@ -23,16 +23,16 @@ function FormShipping() {
             <ControllerTextField name='Email' control={control} />
          </Box>
          <Box mb={2}>
-            <FormLabel title='Tỉnh/ thành phố' gutterBottom required />
-            <ControllerTextField name='' control={control} />
+            <FormLabel title='Tỉnh/ Thành phố' gutterBottom required />
+            <ControllerSelect name='' control={control} />
          </Box>
          <Box mb={2}>
             <FormLabel title='Quận/ Huyện' gutterBottom required />
-            {/* <ControllerSelect name='' control={control} /> */}
+            <ControllerSelect name='' control={control} />
          </Box>
          <Box mb={2}>
-            <FormLabel title='Phường Xã' gutterBottom required />
-            {/* <ControllerSelect name='' control={control} /> */}
+            <FormLabel title='Phường/ Xã' gutterBottom required />
+            <ControllerSelect name='' control={control} />
          </Box>
       </Box>
    );
