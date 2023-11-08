@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Stack, Typography, styled } from '@mui/material';
 
-import yupCart from '../utils/yup.card';
 import toFormatMoney, { toDiscountedPrice } from '@Core/Helper/Price';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
@@ -12,17 +11,32 @@ import AccordionDescription from './AccordionDescription';
 import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
+import * as yup from 'yup';
 
 function ProductDescription({ productDetails, details, product }) {
-   console.log(product);
+   const [quantity, setQuantity] = useState(0);
+   const yupCart = yup.object().shape({
+      product_id: yup.string().strict(true).required('Vui lòng chọn size').default(''),
+      quantity: yup
+         .number()
+         .required('Vui lòng nhập vào số lượng')
+         .max(quantity, 'Vượt quá số lượng sản phẩm trong kkho')
+         .min(1, 'Vui lòng nhập số lượng lớn hơn hoặc bằng một')
+   });
+
    const { user, isAuthenticated } = useAuth();
    const [colorSelected, setColorSelected] = useState(null);
+
    const { control, handleSubmit, watch } = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCart),
       defaultValues: yupCart.getDefault()
    });
+
    const onSubmit = async (data) => {
+      if (!isAuthenticated) {
+         return errorMessage('Vui lòng đăng nhập');
+      }
       try {
          await cartService.create({
             user_id: user._id,
@@ -30,9 +44,6 @@ function ProductDescription({ productDetails, details, product }) {
          });
          successMessage('Thêm vào giỏ hàng thành công');
       } catch (error) {
-         if (!isAuthenticated) {
-            return errorMessage('Vui lòng đăng nhập');
-         }
          errorMessage('Thêm sản phẩm vào giỏ thất bại');
       }
    };
@@ -50,6 +61,11 @@ function ProductDescription({ productDetails, details, product }) {
    const currentProduct = details ? details.find((product) => product._id === currentProductId) || details[0] : {};
    const sizes = getSizeWithColor(details, colorSelected);
    const hasQuantity = currentProduct && currentProduct.quantity === 0;
+
+   useEffect(() => {
+      setQuantity(currentProduct?.quantity);
+   }, [currentProductId]);
+
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '18px' }}>
@@ -131,7 +147,12 @@ function ProductDescription({ productDetails, details, product }) {
                   </Box>
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
                      <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Số lượng</Typography>
-                     <ControllerTextField type='number' disabled={!colorSelected} name='quantity' control={control} />
+                     <ControllerTextField
+                        type='number'
+                        disabled={!colorSelected || hasQuantity}
+                        name='quantity'
+                        control={control}
+                     />
                   </Box>
                </Stack>
                <Stack gap={1}>

@@ -1,5 +1,5 @@
 import { Box, Breadcrumbs, Button, Container, Grid, Link, Rating, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import SwiperSlider from './components/SwiperSlider';
 import ProductDescription from './components/ProductDescription';
 import RelatedProducts from './components/RelatedProducts';

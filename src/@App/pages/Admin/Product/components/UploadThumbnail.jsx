@@ -9,52 +9,69 @@ import useFirebaseUpload from '@App/hooks/useFirebaseUpload';
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 import { errorMessage } from '@Core/Helper/Message';
 import productService from '@App/services/product.service';
-import { useSearchParams } from 'react-router-dom';
 
-function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, title, product_id }) {
+function UploadThumbnail({ name, control, multiple = false, sx, title, product_id, setValue, getValues }) {
    const { uploadFirebaseImage, deleteFirebaseImage } = useFirebaseUpload();
-
    const {
-      field: { onChange, value },
+      field: { onChange, value: imageOrImages },
       fieldState: { error }
-   } = useController({ name, control, defaultValue: defaultValue || '' });
+   } = useController({ name, control });
+
+   const { refetch: refetchImages } = useQuery(
+      ['getImage', product_id, multiple, name],
+      async () => {
+         if (product_id) {
+            const res = await productService.getImageProduct(product_id);
+
+            return res.data;
+         }
+         return true;
+      },
+      {
+         onSuccess: (data) => {
+            console.log(data);
+            onChange(data);
+         },
+         initialData: []
+      }
+   );
 
    const { mutate: callbackUploadImage, isLoading: uploadLoading } = useMutation({
       mutationKey: 'uploadImage',
       mutationFn: async (eventInputImage) => {
          const res = await uploadFirebaseImage(eventInputImage);
-         const newValue = multiple ? (Array.isArray(res) ? [...value, ...res] : [...value, res]) : res;
-         onChange(newValue);
+         const image = {
+            image_url: res
+         };
+         if (multiple) {
+            const images = getValues('newImages');
+            setValue('newImages', [res, ...images]);
+            onChange([image, ...imageOrImages]);
+         } else {
+            onChange(res);
+         }
       },
       onError: () => {
          errorMessage('Đã có lỗi xảy ra.');
       }
    });
 
-   useQuery(
-      ['getImage', { product_id }],
-      async () => {
-         if (product_id) {
-            const rest = await productService.getImageProduct(product_id);
-            return rest.data;
-         }
-         return true;
-      },
-      {
-         onSuccess: (data) => {
-            product_id && onChange(data);
-         }
-      }
-   );
-
    const { mutate: callbackDeleteImage, isLoading: deleteLoading } = useMutation({
       mutationKey: 'uploadImage',
       mutationFn: async (data) => {
          const res = await deleteFirebaseImage(data);
-
          if (res) {
-            const newValue = value.filter((image) => image !== data);
-            onChange(newValue);
+            const images = getValues('newImages');
+            if (images.includes(data)) {
+               const newValue = images.filter((image) => image !== data);
+               setValue('newImages', newValue);
+               const newImages = imageOrImages.filter((image) => image !== data);
+               onChange(newImages);
+            } else {
+               
+               const newValue = imageOrImages.filter((image) => image !== data);
+               onChange(newValue);
+            }
          }
       },
       onError: () => {
@@ -65,12 +82,11 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
    const handleChangeInputFile = (event) => callbackUploadImage(event);
 
    const handleDelete = (data) => callbackDeleteImage(data);
-
    return (
       <React.Fragment>
          <WrapperUploadThumbnail error={Boolean(error)} multiple={multiple}>
             {/* change upload */}
-            {multiple ? (
+            {multiple && (
                <React.Fragment>
                   <ImageItem sx={{ height: '180px', position: 'relative', ...sx }}>
                      <LazyLoadingImage src={upload} w={28} h={28} />
@@ -87,8 +103,8 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
                         />
                      )}
                   </ImageItem>
-                  {value.length > 0 &&
-                     value?.map((image, index) => {
+                  {imageOrImages.length > 0 &&
+                     imageOrImages.map((image, index) => {
                         return (
                            <ImageItem key={index} xs={sx}>
                               <LazyLoadingImage src={image.image_url || image} style={{ borderRadius: '5px' }} />
@@ -98,11 +114,12 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
                         );
                      })}
                </React.Fragment>
-            ) : (
-               (value && (
+            )}
+            {!multiple &&
+               ((imageOrImages && (
                   <ImageItem sx={{ height: '180px', ...sx }}>
-                     <LazyLoadingImage src={value} style={{ borderRadius: '5px' }} />
-                     <DeleteImage onClick={() => handleDelete(value)} />
+                     <LazyLoadingImage src={imageOrImages} style={{ borderRadius: '5px' }} />
+                     <DeleteImage onClick={() => handleDelete(imageOrImages)} />
                      {deleteLoading && <ExtendCircularProgress />}
                   </ImageItem>
                )) || (
@@ -121,8 +138,7 @@ function UploadThumbnail({ name, control, defaultValue, multiple = false, sx, ti
                         />
                      )}
                   </ImageItem>
-               )
-            )}
+               ))}
          </WrapperUploadThumbnail>
          {error?.message && (
             <FormHelperText variant='standard' sx={{ ml: 2, color: '#d32f2f' }}>
@@ -191,4 +207,4 @@ export const DeleteImage = ({ onClick }) => {
    );
 };
 
-export default React.memo(UploadThumbnail);
+export default UploadThumbnail;

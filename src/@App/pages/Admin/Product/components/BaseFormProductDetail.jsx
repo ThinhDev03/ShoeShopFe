@@ -3,18 +3,16 @@ import sizeService from '@App/services/size.service';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Grid } from '@mui/material';
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import yupDetail from '../utils/yupProductDetail';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
-import UploadThumbnail from './UploadThumbnail';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import productDetailService from '@App/services/product-detail.service';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import SelectImageDetail from './SelectImageDetail';
-import productService from '@App/services/product.service';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import CoreInput from '@Core/Components/Input/CoreInput';
 
@@ -67,8 +65,6 @@ function BaseFormProductDetail(props) {
       handleSubmit,
       control,
       reset,
-      setValue,
-
       formState: { errors }
    } = useForm({
       mode: 'onSubmit',
@@ -77,12 +73,12 @@ function BaseFormProductDetail(props) {
          details: [valueDefault]
       }
    });
-   console.log(errors);
+
    const { fields, prepend, append, remove } = useFieldArray({
       control,
       name: 'details'
    });
-
+   
    const { isLoading, mutate: createProductDetail } = useMutation({
       mutationFn: async (data) => {
          const newData = data.map((item) => ({ ...item, product_id }));
@@ -142,7 +138,6 @@ function BaseFormProductDetail(props) {
                   image_id: item.image_id._id
                };
             });
-            console.log(newData);
             reset({
                details: newData
             });
