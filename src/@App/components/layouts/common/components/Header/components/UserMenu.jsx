@@ -82,12 +82,6 @@ function UserMenu() {
                      <Avatar /> Profile
                   </MenuItem>
                   <Divider />
-                  <MenuItem key={'Settings'} onClick={handleOptionClick}>
-                     <ListItemIcon>
-                        <Settings fontSize='small' />
-                     </ListItemIcon>
-                     Settings
-                  </MenuItem>
                   <MenuItem key={'Logout'} onClick={handleLogout}>
                      <ListItemIcon>
                         <Logout fontSize='small' />

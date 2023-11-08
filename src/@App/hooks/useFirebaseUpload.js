@@ -16,7 +16,6 @@ function useFirebaseUpload() {
                });
 
                const uploadedUrls = await Promise.all(uploadPromises);
-               console.log(uploadedUrls);
 
                return uploadedUrls;
             } else {
@@ -25,13 +24,10 @@ function useFirebaseUpload() {
                const snapshot = await uploadBytes(storageRef, data.target.files[0]);
 
                const uploadedUrl = await getDownloadURL(snapshot.ref);
-               console.log(uploadedUrl);
 
                return uploadedUrl;
             }
-         } catch (error) {
-            console.log('upload image to firebase failed: ' + error.message);
-         }
+         } catch (error) {}
       }
    };
 
@@ -53,9 +49,7 @@ function useFirebaseUpload() {
             await deleteObject(desertRef);
 
             return true;
-         } catch (error) {
-            console.log(error);
-         }
+         } catch (error) {}
       }
    };
 

@@ -6,12 +6,9 @@ import categoryService from '@App/services/category.service';
 import brandService from '@App/services/brand.service';
 import SearchProduct from './SearchProduct';
 
-const status = ['Limited Edition', 'Online Only', 'Sale off'];
-
-const DESIGNS = ['Low Top', 'High Top', 'Mid Top', 'Mule'];
-
-function Filter() {
-   const results = useQueries({
+function Filter({ form, brand, category }) {
+   const { control, setValue } = form;
+   const [categoryData, brandData] = useQueries({
       queries: [
          {
             queryKey: ['category'],
@@ -31,24 +28,30 @@ function Filter() {
    });
 
    return (
-      <Box>
-         <SearchProduct />
+      <Box sx={{ position: 'sticky', top: 230 }}>
+         <SearchProduct control={control} />
          <FilterAction
-            title='TRẠNG THÁI'
-            data={results[0]}
-            _title='category_name'
-            _id='_id'
-            loading={results[0].isFetching}
+            setValue={setValue}
+            title='DANH MỤC'
+            data={categoryData}
+            pathName='category'
+            pathLabel='category_name'
+            pathKey='_id'
+            currentValue={category}
+            control={control}
          />
          <FilterAction
-            title='KIỂU DÁNG'
-            data={results[1]}
-            _title='brand_name'
-            _id='_id'
-            loading={results[1].isFetching}
+            currentValue={brand}
+            setValue={setValue}
+            title='THƯƠNG HIỆU'
+            data={brandData}
+            pathName='brand'
+            pathLabel='brand_name'
+            pathKey='_id'
+            control={control}
          />
       </Box>
    );
 }
 
-export default React.memo(Filter);
+export default Filter;

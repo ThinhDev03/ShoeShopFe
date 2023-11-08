@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
-function ColorRender({ color, check, onClick }) {
+function ColorButton({ color, colorSelected, setColorSelected }) {
    return (
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 1 }}>
          <Box
@@ -14,8 +14,8 @@ function ColorRender({ color, check, onClick }) {
                borderRadius: '50%',
                border: '1px solid #E5E5E5'
             }}
-            onClick={() => setIndexActive(color._id)}>
-            {check === color._id && (
+            onClick={() => setColorSelected(color._id)}>
+            {colorSelected === color._id && (
                <CheckIcon
                   sx={{
                      position: 'absolute',
@@ -34,4 +34,4 @@ function ColorRender({ color, check, onClick }) {
    );
 }
 
-export default ColorRender;
+export default ColorButton;
