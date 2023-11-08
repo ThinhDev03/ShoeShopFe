@@ -11,7 +11,7 @@ function Product() {
       console.log(rest);
       return rest;
    });
-   console.log(productList);
+
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
          <Grid container spacing={2}>
