@@ -35,8 +35,10 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
             data.filter((item) => {
                if (item._id === value) {
                   setImageUrl(item.image_url);
+                  return item;
                }
             });
+            return data;
          }
       }
    );
@@ -44,14 +46,13 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
    const handleChangeImage = (image) => {
       onChange(image._id);
       setImageUrl(image.image_url);
+      handleClose();
    };
 
    const handleDelete = () => {
       onChange('');
       setImageUrl('');
    };
-
-   console.log(imageUrl);
 
    return (
       <React.Fragment>
