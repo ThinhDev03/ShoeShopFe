@@ -25,7 +25,7 @@ function Brand() {
          return await brandService.deleteBrand(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phẩm thành công');
          getCategory();
       }
    });
@@ -57,7 +57,7 @@ function Brand() {
                               id: subject._id
                            })
                         }
-                        content='Bạn có muốn xoá môn học này?'
+                        content='Bạn có chắc chắn muốn xoá?'
                      />
                   </Box>
                );

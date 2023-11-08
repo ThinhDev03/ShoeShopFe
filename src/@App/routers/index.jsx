@@ -1,4 +1,3 @@
-// import { lazy } from "react";
 import { lazy } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 
@@ -13,8 +12,17 @@ import productRouter from './admin/product.router';
 import categoryRouter from './admin/category.router';
 import userRouter from './user.router';
 import billRouter from './admin/bill.router';
+<<<<<<< HEAD
+
+const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
+const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
+const Product = Loadable(lazy(() => import('@App/pages/Views/Product')));
+const ProductDetail = Loadable(lazy(() => import('@App/pages/Views/ProductDetail')));
+const GetCurrentUser = lazy(() => import('@App/pages/Signin/GetCurrentUser'));
+=======
 import clientRoute from './client';
 import Home from '@App/pages/Views/Home';
+>>>>>>> test
 
 const routers = [
    {
@@ -25,7 +33,44 @@ const routers = [
             index: true,
             element: <Home />
          },
+<<<<<<< HEAD
+         {
+            path: routerPath.PRODUCTS,
+            element: <Product />
+         },
+         {
+            path: routerPath.PRODUCTS + '/:id',
+            element: <ProductDetail />
+         },
+         {
+            path: routerPath.CART,
+            element: <Cart />
+         },
+         {
+            path: routerPath.SHIPPING,
+            element: <Shipping />
+         },
+         {
+            path: '/',
+            element: <PublicRouter />,
+            children: [
+               {
+                  path: 'signin',
+                  element: <Signin />
+               },
+               {
+                  path: 'register',
+                  element: <Register />
+               }
+            ]
+         },
+         {
+            path: 'success',
+            element: <GetCurrentUser />
+         }
+=======
          ...clientRoute
+>>>>>>> test
       ]
    },
    {

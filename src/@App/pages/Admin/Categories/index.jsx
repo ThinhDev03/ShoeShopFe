@@ -24,7 +24,7 @@ function Categories() {
          return await categoryService.deleteCategory(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phẩm thành công');
          getCategory();
       }
    });
@@ -53,7 +53,7 @@ function Categories() {
                               id: subject._id
                            })
                         }
-                        content='Bạn có muốn xoá môn học này?'
+                        content='Bạn có chắc chắn muốn xoá?'
                      />
                   </Box>
                );

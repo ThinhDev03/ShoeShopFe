@@ -30,7 +30,7 @@ function ProductPage() {
          return await productService.deleteProduct(id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phẩm thành công');
          getCategory();
       }
    });
@@ -107,7 +107,11 @@ function ProductPage() {
                               id: product?._id
                            })
                         }
+<<<<<<< HEAD
+                        content='Bạn có chắc chắn muốn xoá?'
+=======
                         content='Bạn có muốn xoá sản phẩm?'
+>>>>>>> test
                      />
                   </Box>
                );

@@ -47,7 +47,7 @@ const ControllerSelect = (props) => {
          )}
          name={name}
          defaultValue={defaultValue || ''}
-         control={control}
+         control={ control }
       />
    );
 };
