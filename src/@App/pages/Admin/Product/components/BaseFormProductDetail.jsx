@@ -249,7 +249,7 @@ function BaseFormProductDetail(props) {
                   startIcon={<SaveIcon />}
                   type='submit'
                   sx={{ mt: 4 }}>
-                  {title || 'Áp dụng'}
+                  {title || 'Thêm mới'}
                </LoadingButton>
             </Box>
          </Box>
