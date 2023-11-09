@@ -7,81 +7,56 @@ import toFormatMoney from '@Core/Helper/Price';
 
 function ProductCard({ data }) {
    return (
-      <Stack>
+      <Stack
+         sx={{
+            boxShadow: '0 2px 4px 0 rgba(0,0,0,.12), 0 -2px 2px 0 rgba(0,0,0,.04)',
+            borderRadius: '8px',
+            overflow: 'hidden'
+         }}>
          <Box
             component={Link}
             to={'/' + routerPath.PRODUCTS + '/' + data?._id}
-            sx={{ position: 'relative', width: 276, height: 276 }}>
+            sx={{ position: 'relative', height: 276 }}>
             <LazyLoadingImage src={data?.thumbnail} width='100%' height='100%' alt='' />
             {/* <ProductStatus>HẾT HÀNG</ProductStatus> */}
          </Box>
-         <Stack>
+         <Stack sx={{ mb: 0.5 }}>
             <Typography
                variant='h6'
                sx={{
-                  py: 1,
-                  textAlign: 'center',
-                  color: '#ff5f17',
+                  padding: '8px 12px 0 12px ',
+                  color: '#333333',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  fontWeight: 300
                }}
                component={Link}
                to={data?._id}>
                {data?.name}
             </Typography>
-            <Box sx={{ borderTop: '1px dashed #333', my: '4px' }}></Box>
-            {/* <Typography
-               sx={{
-                  fontWeight: 600,
-                  color: '#000',
-                  textAlign: 'center',
-                  ':hover': {
-                     color: '#f15e2c'
-                  }
-               }}
-               component={Link}
-               to={'/' + routerPath.PRODUCTS + '/' + data?._id}
-               dangerouslySetInnerHTML={{ __html: data?.description }}></Typography> */}
+            {/* <Box sx={{ borderTop: '1px dashed #333', my: '4px' }}></Box> */}
+
             <Stack
                sx={{
-                  mt: 1,
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 2,
+                  gap: 1,
                   fontSize: '20px',
+                  padding: '8px 12px ',
                   fontWeight: 'bold'
                }}>
-               <Box component='span'>{toFormatMoney(data?.fromPrice)}</Box>
-               <Box component='span' sx={{ color: '#808080', fontSize: '16px' }}>
+               <Typography fontWeight={500} component='span'>
+                  {toFormatMoney(data?.fromPrice, '.', '')}{' '}
+               </Typography>
+               {'-'}
+               <Typography fontWeight={500} component='span' sx={{ fontSize: '16px' }}>
                   {toFormatMoney(data?.toPrice)}
-               </Box>
+               </Typography>
             </Stack>
          </Stack>
       </Stack>
    );
 }
-
-const ProductStatus = styled('span')(({ theme }) => ({
-   position: 'absolute',
-   top: 0,
-   left: 0,
-   width: '100%',
-   height: '99%',
-   backgroundColor: '#00000059',
-   display: 'flex',
-   alignItems: 'center',
-   justifyContent: 'center',
-   color: theme.palette.education.text.white
-}));
-
-const AddtoCard = styled(Button)(({ theme }) => ({
-   position: 'absolute',
-   bottom: 3,
-   left: 0,
-   width: '100%',
-   display: 'none'
-}));
 
 export default ProductCard;

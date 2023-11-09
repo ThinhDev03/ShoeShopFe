@@ -23,42 +23,6 @@ function SaveProduct() {
       defaultValues: yupProduct.getDefault()
    });
 
-   // const [product] = useQueries({
-   //    queries: [
-   //       {
-   //          queryKey: ['getProduct', { product_id }],
-   //          queryFn: async () => {
-   //             try {
-   //                const rest = await productService.getOne(product_id);
-   //                return rest.data;
-   //             } catch (error) {
-   //                errorMessage('Sản phẩm không tồn tại');
-   //             }
-   //          },
-   //          onSuccess: (data) => {
-   //             return form.reset({
-   //                name: data?.name,
-   //                brand_id: data?.brand_id._id,
-   //                category_id: data?.category_id._id,
-   //                thumbnail: data?.thumbnail,
-   //                description: data?.description
-   //             });
-   //          }
-   //       },
-   //       {
-   //          queryKey: ['getImageProduct', { product_id }],
-   //          queryFn: async () => {
-   //             const rest = await productService.getImageProduct(product_id);
-   //             console.log(rest.data);
-   //             return rest.data;
-   //          },
-   //          onSuccess: (data) => {
-   //             product_id && form.setValue('images', data);
-   //          }
-   //       }
-   //    ]
-   // });
-
    return (
       <BasicPage currentPage='Thêm sản phẩm' breadcrumbs={breadcrumbsCreate}>
          <BaseFormProduct form={form} product_id={product_id} setSearchParams={setSearchParams} />

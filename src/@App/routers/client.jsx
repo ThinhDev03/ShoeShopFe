@@ -1,5 +1,4 @@
 import { routerPath } from '@App/configs/routerConfig';
-import PrivateRouter from './components/PrivateRouter';
 import Loadable from './components/Loadable';
 import { lazy } from 'react';
 import PublicRouter from './components/PublicRouter';
@@ -27,11 +26,7 @@ const clientRoute = [
    },
    {
       path: routerPath.SHIPPING,
-      element: (
-         <PrivateRouter>
-            <Shipping />
-         </PrivateRouter>
-      )
+      element: <Shipping />
    },
    {
       path: routerPath.BILL,

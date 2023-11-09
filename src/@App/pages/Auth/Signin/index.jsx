@@ -71,15 +71,6 @@ function Signin() {
                   Đăng nhập
                </LoadingButton>
             </form>
-            <Divider sx={{ my: 2, opacity: 0.5, fontWeight: 'medium' }}>Hoặc</Divider>
-            <Stack flexDirection='row' gap={2}>
-               <ButtonLoginSocial fullWidth variant='outlined' startIcon={<FacebookIcon sx={{ color: '#1877f2' }} />}>
-                  Facebook
-               </ButtonLoginSocial>
-               <ButtonLoginSocial fullWidth variant='outlined' startIcon={<GoogleIcon sx={{ color: '#1877f2' }} />}>
-                  Google
-               </ButtonLoginSocial>
-            </Stack>
             <Typography component='p' textAlign='center' mt={2}>
                Bạn không có tài khoản? Hãy{' '}
                <Box

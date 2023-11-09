@@ -3,13 +3,13 @@ import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 import productService from '@App/services/product.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import {
-    CoreTableActionDelete,
-    CoreTableActionEdit,
-    CoreTableVariation
+   CoreTableActionDelete,
+   CoreTableActionEdit,
+   CoreTableActionView
 } from '@Core/Components/Table/components/CoreTableActions';
 import { successMessage } from '@Core/Helper/Message';
 import toFormatPrice from '@Core/Helper/Price';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,6 @@ function ProductPage() {
       isFetching
    } = useQuery(['getProduct'], async () => {
       const rest = await productService.getAll();
-      console.log(rest.data);
       return rest.data;
    });
 
@@ -71,7 +70,6 @@ function ProductPage() {
             header: 'Giá bán',
             cell: ({ row }) => {
                const data = row?.original;
-               console.log(data);
                return (
                   <Box sx={{ display: 'flex', gap: 2 }}>
                      <Typography>{toFormatPrice(data?.fromPrice)}</Typography>
@@ -85,7 +83,6 @@ function ProductPage() {
             header: 'Thương hiệu',
             cell: ({ row }) => {
                const subject = row?.original;
-               console.log(subject);
                return subject?.brand_id?.brand_name;
             }
          }),
@@ -99,17 +96,22 @@ function ProductPage() {
          columnHelper.accessor('', {
             header: 'Thao tác',
             cell: ({ row }) => {
-               const subject = row?.original;
+               const product = row?.original;
                return (
                   <Box sx={{ display: 'flex' }}>
-                     <CoreTableActionEdit callback={() => navigate('save?id=' + subject?._id)} />
+                     <CoreTableActionEdit callback={() => navigate('save?id=' + product?._id)} />
+                     <CoreTableActionView callback={() => navigate('comment/' + product?._id)} title='Xem Bình luận' />
                      <CoreTableActionDelete
                         callback={() =>
                            mutation.mutate({
-                              id: subject?._id
+                              id: product?._id
                            })
                         }
+<<<<<<< HEAD
                         content='Bạn có chắc chắn muốn xoá?'
+=======
+                        content='Bạn có muốn xoá sản phẩm?'
+>>>>>>> test
                      />
                   </Box>
                );

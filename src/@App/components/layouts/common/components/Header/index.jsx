@@ -21,7 +21,7 @@ const headerMenubar = [
    // },
    {
       title: 'SALE OFF',
-      path: '/products'
+      path: '/sale'
    }
 ];
 
@@ -61,9 +61,13 @@ export default function Header() {
                               color: palette.education.text.black,
                               ':hover': {
                                  color: palette.primary.main
+                              },
+                              '&.active': {
+                                 color: palette.primary.main
                               }
                            })}
-                           onMouseOver={() => console.log('hover menu')}>
+                           // onMouseOver={() => console.log('hover menu')}
+                        >
                            {item.title}
                         </Box>
                      );

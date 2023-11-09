@@ -18,7 +18,6 @@ export default function Color() {
       isFetching
    } = useQuery(['getColor'], async () => {
       const rest = await colorService.getAll();
-      console.log(rest.data);
       return rest.data;
    });
 

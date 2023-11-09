@@ -77,9 +77,9 @@ class BaseService {
     * @param {string} id
     * @returns
     */
-   find = (id) => {
+   find = (id, query = {}) => {
       const url = `${this.BASE_ENDPOINT}/${id}`;
-      return this.request.get(url);
+      return this.request.get(url, { query });
    };
 
    /**
