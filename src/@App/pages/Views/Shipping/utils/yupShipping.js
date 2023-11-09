@@ -1,6 +1,6 @@
 import Regex from '@Core/Helper/Regex';
 import * as yup from 'yup';
-import { payment_method } from '.';
+import { payment_methods } from '.';
 
 yup.setLocale({
    mixed: {
@@ -15,7 +15,7 @@ const schemaShipping = yup.object({
    //    district: yup.string().required('Quận / huyện không được để trống'),
    //    ward: yup.string().required('Xã phường không được để trống'),
    address: yup.string().required('Địa chỉ không được để trống'),
-   payment_method: yup.string().required('Hình thức thanh toán không được để trống').default(payment_method[0].value),
+   payment_method: yup.string().required('Hình thức thanh toán không được để trống').default(payment_methods[0].value),
    note: yup.string()
 });
 

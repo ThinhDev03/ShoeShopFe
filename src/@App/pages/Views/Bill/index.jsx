@@ -41,6 +41,7 @@ function Bill() {
    const { user } = useAuth();
    const { control, watch } = useForm({ mode: 'onChange', defaultValues: { status: 'PENDING' } });
    const [page, setPage] = useState(1);
+
    const statusSelected = watch('status');
    const searchValue = watch('search');
 
@@ -49,7 +50,13 @@ function Bill() {
    const { data: bills, isFetching: loading } = useQuery(
       ['getBill', { page, statusSelected, searchValue }],
       async () => {
-         return await billService.find(`${user._id}?page=${page}&status=${statusSelected}&search=${search || ''}`);
+         const rest = await billService.list({
+            search,
+            status: statusSelected,
+            page
+         });
+
+         return rest;
       },
       {
          initialData: {

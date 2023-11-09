@@ -14,7 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import productService from '@App/services/product.service';
 
 function BaseFormProduct(props) {
-   const { form, title, product_id, setSearchParams } = props;
+   const { form, title, product_id, setSearchParams, setIsChangeImages } = props;
 
    const { handleSubmit, control, setValue, getValues } = form;
 
@@ -93,7 +93,7 @@ function BaseFormProduct(props) {
 
    const onSubmit = async (data) => {
       console.log(data);
-      // product_id ? updateProduct(data) : createProduct(data);
+      product_id ? updateProduct(data) : createProduct(data);
    };
 
    return (
@@ -125,7 +125,7 @@ function BaseFormProduct(props) {
             </Grid>
             <Grid item xs={2}>
                <FormLabel required title='Ảnh đại diện' name='thumbnail' gutterBottom />
-               <UploadThumbnail name='thumbnail' control={control} multiple={false} />
+               <UploadThumbnail product_id={product_id} name='thumbnail' control={control} multiple={false} />
             </Grid>
             <Grid item xs={10}>
                <FormLabel required title='Ảnh khác' name='images' gutterBottom />
@@ -136,6 +136,7 @@ function BaseFormProduct(props) {
                   multiple
                   setValue={setValue}
                   product_id={product_id}
+                  setIsChangeImages={setIsChangeImages}
                />
             </Grid>
             <Grid item xs={12}>
@@ -150,7 +151,7 @@ function BaseFormProduct(props) {
                   startIcon={<SaveIcon />}
                   type='submit'
                   sx={{ mt: 4 }}>
-                  {title || 'Thêm mới'}
+                  {title || 'Lưu sản phẩm'}
                </LoadingButton>
             </Grid>
          </Grid>

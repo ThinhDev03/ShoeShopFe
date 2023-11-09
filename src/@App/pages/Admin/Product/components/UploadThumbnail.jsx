@@ -1,16 +1,16 @@
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
-import { Box, CircularProgress, FormHelperText, styled } from '@mui/material';
+import { Box, FormHelperText, styled } from '@mui/material';
 import React from 'react';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 import upload from '@App/assets/svg/upload.svg';
 import { useController } from 'react-hook-form';
 import useFirebaseUpload from '@App/hooks/useFirebaseUpload';
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { errorMessage } from '@Core/Helper/Message';
 import productService from '@App/services/product.service';
 
-function UploadThumbnail({ name, control, multiple = false, sx, title, product_id, setValue, getValues }) {
+function UploadThumbnail({ name, control, multiple = false, sx, title, product_id, setIsChangeImages }) {
    const { uploadFirebaseImage, deleteFirebaseImage } = useFirebaseUpload();
    const {
       field: { onChange, value: imageOrImages },
@@ -20,7 +20,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
    const { refetch: refetchImages } = useQuery(
       ['getImage', product_id, multiple, name],
       async () => {
-         if (product_id) {
+         if (multiple) {
             const res = await productService.getImageProduct(product_id);
 
             return res.data;
@@ -30,7 +30,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
       {
          onSuccess: (data) => {
             console.log(data);
-            onChange(data);
+            multiple && onChange(data);
          },
          initialData: []
       }
@@ -44,9 +44,13 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
             image_url: res
          };
          if (multiple) {
-            const images = getValues('newImages');
-            setValue('newImages', [res, ...images]);
-            onChange([image, ...imageOrImages]);
+            if (product_id) {
+               await productService.createImage({ images: res, product_id });
+               refetchImages();
+            } else {
+               onChange([image, ...imageOrImages]);
+            }
+            setIsChangeImages((prev) => !prev);
          } else {
             onChange(res);
          }
@@ -58,30 +62,31 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
 
    const { mutate: callbackDeleteImage, isLoading: deleteLoading } = useMutation({
       mutationKey: 'uploadImage',
-      mutationFn: async (data) => {
-         const res = await deleteFirebaseImage(data);
-         if (res) {
-            const images = getValues('newImages');
-            if (images.includes(data)) {
-               const newValue = images.filter((image) => image !== data);
-               setValue('newImages', newValue);
-               const newImages = imageOrImages.filter((image) => image !== data);
-               onChange(newImages);
+      mutationFn: async ({ image, id }) => {
+         if (product_id && multiple) {
+            const res = await productService.deleteImage(id);
+            if (res.success) {
+               console.log(res);
+               await deleteFirebaseImage(image);
+               setIsChangeImages((prev) => !prev);
+               refetchImages();
             } else {
-               
-               const newValue = imageOrImages.filter((image) => image !== data);
-               onChange(newValue);
+               errorMessage('Hình ảnh đang được sử dụng.');
             }
+         } else if (!multiple) {
+            await deleteFirebaseImage(image);
+            await productService.deleteThumbnail(product_id);
+            onChange('');
          }
       },
-      onError: () => {
-         errorMessage('Đã có lỗi xảy ra.');
+      onError: (error) => {
+         console.log(error);
+         errorMessage(error?.response?.data?.message || 'Đã có lỗi sảy ra!!');
       }
    });
 
    const handleChangeInputFile = (event) => callbackUploadImage(event);
 
-   const handleDelete = (data) => callbackDeleteImage(data);
    return (
       <React.Fragment>
          <WrapperUploadThumbnail error={Boolean(error)} multiple={multiple}>
@@ -91,25 +96,29 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                   <ImageItem sx={{ height: '180px', position: 'relative', ...sx }}>
                      <LazyLoadingImage src={upload} w={28} h={28} />
                      <Box component='p'>{(title && title) || 'Upload hình ảnh!'}</Box>
-                     {uploadLoading ? (
-                        <ExtendCircularProgress />
-                     ) : (
-                        <InputFileUpload
-                           id={name + '-input_file'}
-                           type='file'
-                           multiple={multiple}
-                           accept='image/*'
-                           onChange={handleChangeInputFile}
-                        />
-                     )}
+
+                     <InputFileUpload
+                        disabled={uploadLoading}
+                        id={name + '-input_file'}
+                        type='file'
+                        multiple={multiple}
+                        accept='image/*'
+                        onChange={handleChangeInputFile}
+                     />
                   </ImageItem>
                   {imageOrImages.length > 0 &&
                      imageOrImages.map((image, index) => {
                         return (
                            <ImageItem key={index} xs={sx}>
                               <LazyLoadingImage src={image.image_url || image} style={{ borderRadius: '5px' }} />
-                              {deleteLoading && <ExtendCircularProgress />}
-                              <DeleteImage onClick={() => handleDelete(image.image_url ? image.image_url : image)} />
+                              <DeleteImage
+                                 onClick={() =>
+                                    callbackDeleteImage({
+                                       image: image.image_url ? image.image_url : image,
+                                       id: image?._id
+                                    })
+                                 }
+                              />
                            </ImageItem>
                         );
                      })}
@@ -119,24 +128,21 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                ((imageOrImages && (
                   <ImageItem sx={{ height: '180px', ...sx }}>
                      <LazyLoadingImage src={imageOrImages} style={{ borderRadius: '5px' }} />
-                     <DeleteImage onClick={() => handleDelete(imageOrImages)} />
-                     {deleteLoading && <ExtendCircularProgress />}
+                     <DeleteImage onClick={() => callbackDeleteImage({ image: imageOrImages, id: '' })} />
                   </ImageItem>
                )) || (
                   <ImageItem sx={{ height: '180px', position: 'relative', ...sx }}>
                      <LazyLoadingImage src={upload} w={28} h={28} />
                      <Box component='p'>{(title && title) || 'Upload hình ảnh!'}</Box>
-                     {uploadLoading ? (
-                        <ExtendCircularProgress />
-                     ) : (
-                        <InputFileUpload
-                           id={name + '-input_file'}
-                           type='file'
-                           multiple={multiple}
-                           accept='image/*'
-                           onChange={handleChangeInputFile}
-                        />
-                     )}
+
+                     <InputFileUpload
+                        disabled={uploadLoading}
+                        id={name + '-input_file'}
+                        type='file'
+                        multiple={multiple}
+                        accept='image/*'
+                        onChange={handleChangeInputFile}
+                     />
                   </ImageItem>
                ))}
          </WrapperUploadThumbnail>
@@ -179,25 +185,6 @@ const InputFileUpload = styled('input')({
    opacity: 0,
    cursor: 'pointer'
 });
-
-const ExtendCircularProgress = () => {
-   return (
-      <Box
-         sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#d0d7de8a'
-         }}>
-         <CircularProgress />
-      </Box>
-   );
-};
 
 export const DeleteImage = ({ onClick }) => {
    return (

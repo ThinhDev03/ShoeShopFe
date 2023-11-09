@@ -24,7 +24,7 @@ function ProductDescription({ productDetails, details, product }) {
          .min(1, 'Vui lòng nhập số lượng lớn hơn hoặc bằng một')
    });
 
-   const { user, isAuthenticated } = useAuth();
+   const { user, isAuththentication } = useAuth();
    const [colorSelected, setColorSelected] = useState(null);
 
    const { control, handleSubmit, watch } = useForm({
@@ -34,7 +34,7 @@ function ProductDescription({ productDetails, details, product }) {
    });
 
    const onSubmit = async (data) => {
-      if (!isAuthenticated) {
+      if (!isAuththentication) {
          return errorMessage('Vui lòng đăng nhập');
       }
       try {

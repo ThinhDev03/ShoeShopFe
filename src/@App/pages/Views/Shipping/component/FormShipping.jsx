@@ -5,10 +5,12 @@ import CoreRadioGroup from '@Core/Components/Input/CoreRadioGroup';
 import { Box, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { payment_method } from '../utils';
+import { bankCode, payment_methods } from '../utils';
+import CoreAutoComplete from '@Core/Components/Input/CoreAutoComplete';
+import paymentService from '@App/services/payment.service';
 
 function FormShipping({ form }) {
-   const { control, register } = form;
+   const { control, register, watch } = form;
 
    // const { data: provinces } = useQuery(['getProvinces'], async () => {
    //    return await getProvinces();
@@ -35,6 +37,8 @@ function FormShipping({ form }) {
    //       queryWards(watch('district'));
    //    }
    // }, [watch('province'), watch('district')]);
+
+   const method = watch('payment_method');
 
    return (
       <Box component='form'>
@@ -79,7 +83,7 @@ function FormShipping({ form }) {
             <ControllerTextField name='address' control={control} />
          </Box>
          <Box mb={2}>
-            <FormLabel title='Ghi chú' gutterBottom required />
+            <FormLabel title='Ghi chú' gutterBottom />
             <Box
                component='textarea'
                sx={{
@@ -106,8 +110,8 @@ function FormShipping({ form }) {
             <Box sx={{ fontSize: '18px' }}>
                <CoreRadioGroup
                   name='payment_method'
-                  defaultValue={payment_method[0].value}
-                  options={payment_method}
+                  defaultValue={payment_methods[0].value}
+                  options={payment_methods}
                   control={control}
                />
             </Box>

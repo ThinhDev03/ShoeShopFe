@@ -15,6 +15,7 @@ import userRouter from './user.router';
 import billRouter from './admin/bill.router';
 import clientRoute from './client';
 import Home from '@App/pages/Views/Home';
+import Payment from '@App/pages/Views/Payment';
 
 const routers = [
    {
@@ -46,6 +47,10 @@ const routers = [
          userRouter,
          billRouter
       ]
+   },
+   {
+      path: 'payment',
+      element: <Payment />
    },
    {
       path: '*',

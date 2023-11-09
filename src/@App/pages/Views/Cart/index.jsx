@@ -63,8 +63,8 @@ function Cart() {
                   </Box>
 
                   <Stack mt={2} gap={2}>
-                     {carts?.map((item) => {
-                        return <CartProductItem data={item} key={item.product_id} getCart={getCart} />;
+                     {carts?.map((item, index) => {
+                        return <CartProductItem data={item} key={item.product_id + index} getCart={getCart} />;
                      })}
                   </Stack>
                </Grid>

@@ -43,12 +43,10 @@ function BillPage() {
       },
       {
          initialData: {
-            data: [],
-            pageSize: 1
+            data: []
          }
       }
    );
-
    const { mutate: onChangeStatus } = useMutation({
       mutationFn: async ({ id, status }) => {
          return await billService.updateStatus(id, status);

@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { breadcrumbsCreate } from './utils';
 import { useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yupProduct from './utils/yupProduct';
-import { useMutation, useQueries } from '@tanstack/react-query';
-import productService from '@App/services/product.service';
-import { errorMessage, successMessage } from '@Core/Helper/Message';
 import BasicPage from '@App/components/customs/BasicPage';
 import { styled } from '@mui/material';
 import BaseFormProduct from './components/BaseFormProduct';
@@ -14,7 +11,7 @@ import BaseFormProductDetail from './components/BaseFormProductDetail';
 
 function SaveProduct() {
    let [searchParams, setSearchParams] = useSearchParams();
-
+   const [isChangeImages, setIsChangeImages] = useState(false);
    const product_id = searchParams.get('id');
 
    const form = useForm({
@@ -25,11 +22,16 @@ function SaveProduct() {
 
    return (
       <BasicPage currentPage='Thêm sản phẩm' breadcrumbs={breadcrumbsCreate}>
-         <BaseFormProduct form={form} product_id={product_id} setSearchParams={setSearchParams} />
+         <BaseFormProduct
+            setIsChangeImages={setIsChangeImages}
+            form={form}
+            product_id={product_id}
+            setSearchParams={setSearchParams}
+         />
          {product_id && (
             <React.Fragment>
                <Divider />
-               <BaseFormProductDetail product_id={product_id} />
+               <BaseFormProductDetail isChangeImages={isChangeImages} product_id={product_id} />
             </React.Fragment>
          )}
       </BasicPage>

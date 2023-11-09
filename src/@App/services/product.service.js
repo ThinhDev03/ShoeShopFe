@@ -16,6 +16,10 @@ class ProductService extends BaseService {
       return this.request.post(this.BASE_ENDPOINT + '/create-image', data);
    }
 
+   addImage(id, data) {
+      return this.request.post(this.BASE_ENDPOINT + '/add-image/' + id, data);
+   }
+
    getAll() {
       return this.request.get(this.BASE_ENDPOINT);
    }
@@ -30,6 +34,9 @@ class ProductService extends BaseService {
 
    deleteImage(id) {
       return this.request.delete(this.BASE_ENDPOINT + `/remove-image/${id}`);
+   }
+   deleteThumbnail(id) {
+      return this.request.put(this.BASE_ENDPOINT + `/delete-thumbnail/${id}`);
    }
 
    getOne(id) {

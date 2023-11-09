@@ -136,9 +136,10 @@ function CartProductItem({ data, getCart }) {
                </Box>
             </Box>
             <Button
-               fullWidth
                sx={({ palette }) => ({
                   py: 1,
+                  width:"90px",
+                  maxWidth:'100%',
                   bgcolor: palette.education.text.black,
                   ':hover': {
                      bgcolor: palette.education.text.black

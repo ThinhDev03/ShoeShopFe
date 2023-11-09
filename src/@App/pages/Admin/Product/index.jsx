@@ -11,18 +11,19 @@ import { successMessage } from '@Core/Helper/Message';
 import toFormatPrice from '@Core/Helper/Price';
 import { Box, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function ProductPage() {
    const navigate = useNavigate();
+   const [currentPage, setCurrentPage] = useState(1);
    const {
       data: dataProducts,
-      refetch: getCategory,
+      refetch: getProduct,
       isFetching
-   } = useQuery(['getProduct'], async () => {
+   } = useQuery(['getProduct', currentPage], async () => {
       const rest = await productService.getAll();
-      return rest.data;
+      return rest;
    });
 
    const mutation = useMutation({
@@ -31,7 +32,7 @@ function ProductPage() {
       },
       onSuccess: () => {
          successMessage('Xóa sản phảm thành công');
-         getCategory();
+         getProduct();
       }
    });
 
@@ -115,10 +116,18 @@ function ProductPage() {
          })
       ];
    }, []);
-
+   console.log(dataProducts);
    return (
       <BasicPage currentPage='Products'>
-         <CoreTable columns={columns} data={dataProducts} isPagination={true} loading={isFetching} />
+         <CoreTable
+            columns={columns}
+            data={dataProducts?.data}
+            handleFetchData={getProduct}
+            handleSetCurrentPage={setCurrentPage}
+            pageSize={dataProducts?.pageSize}
+            isPagination={true}
+            loading={isFetching}
+         />
       </BasicPage>
    );
 }

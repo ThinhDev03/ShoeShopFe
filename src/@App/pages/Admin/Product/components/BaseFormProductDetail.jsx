@@ -59,7 +59,7 @@ const valueDefault = {
 };
 
 function BaseFormProductDetail(props) {
-   const { title, product_id } = props;
+   const { title, product_id, isChangeImages } = props;
 
    const {
       handleSubmit,
@@ -78,7 +78,7 @@ function BaseFormProductDetail(props) {
       control,
       name: 'details'
    });
-   
+
    const { isLoading, mutate: createProductDetail } = useMutation({
       mutationFn: async (data) => {
          const newData = data.map((item) => ({ ...item, product_id }));
@@ -128,8 +128,9 @@ function BaseFormProductDetail(props) {
       },
       {
          onSuccess: (data) => {
-            const newData = data.map((item, index) => {
+            const newData = data.map((item) => {
                return {
+                  _id: item._id,
                   size_id: item.size_id._id,
                   color_id: item.color_id._id,
                   quantity: item.quantity,
@@ -152,13 +153,12 @@ function BaseFormProductDetail(props) {
    });
 
    const onSubmit = (data) => {
-      console.log(data?.details);
       createProductDetail(data?.details);
    };
 
    return (
       <>
-         <Box>
+         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Button type='button' onClick={() => prepend(valueDefault)}>
                Thêm biến thể
             </Button>
@@ -175,20 +175,24 @@ function BaseFormProductDetail(props) {
 
                {fields.map((item, index) => {
                   return (
-                     <Grid item xs={12} key={item.id}>
+                     <Grid item xs={12} key={item._id}>
                         <Grid
                            container
                            spacing={1}
                            sx={{
                               boxShadow: 'rgba(0, 0, 0, 0.08) 0px 4px 12px;',
                               borderRadius: '10px',
-                              padding: '8px 8px 8px 0'
+                              paddingRight: '8px'
                            }}>
                            <Grid
                               item
                               xs={2}
-                              sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                              <Box sx={{ height: '60px' }}>
+                              sx={{
+                                 display: 'flex',
+                                 flexDirection: 'column',
+                                 justifyContent: 'space-between'
+                              }}>
+                              <Box sx={{ height: '40px' }}>
                                  <ControllerSelect
                                     name={`details.${index}.size_id`}
                                     options={sizes?.data || []}
@@ -197,18 +201,18 @@ function BaseFormProductDetail(props) {
                                     control={control}
                                  />
                               </Box>
-                              <Box>
+                              {/* <Box>
                                  <Button
                                     size='small'
                                     color='error'
                                     sx={{ ml: 2 }}
                                     onClick={() => {
-                                       item._id && deleteProductDetail(item._id);
+                                       deleteProductDetail(item._id);
                                        remove(index);
                                     }}>
                                     Xóa
                                  </Button>
-                              </Box>
+                              </Box> */}
                            </Grid>
                            <Grid item xs={2} sx={{ height: '100px' }}>
                               <ControllerSelect
@@ -228,8 +232,12 @@ function BaseFormProductDetail(props) {
                            <Grid item xs={2}>
                               <ControllerTextField name={`details.${index}.sale`} control={control} />
                            </Grid>
-                           <Grid item xs={2} sx={{ height: '110px' }}>
-                              <SelectImageDetail name={`details.${index}.image_id`} control={control} />
+                           <Grid item xs={2} sx={{ height: '70px' }}>
+                              <SelectImageDetail
+                                 isChangeImages={isChangeImages}
+                                 name={`details.${index}.image_id`}
+                                 control={control}
+                              />
                            </Grid>
                         </Grid>
                      </Grid>
@@ -244,7 +252,7 @@ function BaseFormProductDetail(props) {
                   startIcon={<SaveIcon />}
                   type='submit'
                   sx={{ mt: 4 }}>
-                  {title || 'Áp dụng'}
+                  {title || 'Lưu biến thể'}
                </LoadingButton>
             </Box>
          </Box>

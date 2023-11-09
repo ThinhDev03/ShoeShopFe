@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Container, Grid } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import FormShipping from './component/FormShipping';
 import Invoice from './component/Invoice';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -11,11 +11,15 @@ import schemaShipping from './utils/yupShipping';
 import { toDiscountedPrice } from '@Core/Helper/Price';
 import billService from '@App/services/bill.service';
 import { successMessage } from '@Core/Helper/Message';
-import { Navigate } from 'react-router-dom';
+import paymentService from '@App/services/payment.service';
+import { payment_methods } from './utils';
+import { useNavigate } from 'react-router-dom';
 
 function Shipping() {
    const { user } = useAuth();
-
+   const button = useRef();
+   const navigate = useNavigate();
+   const refOrderId = useRef();
    const { handleSubmit, ...form } = useForm({
       resolver: yupResolver(schemaShipping)
    });
@@ -35,17 +39,6 @@ function Shipping() {
       }, 0);
    }, [carts]);
 
-   const { mutate: createBill } = useMutation({
-      mutationFn: async (data) => {
-         const res = await billService.create(data);
-         return res.data;
-      },
-      onSuccess: () => {
-         getCart();
-         successMessage('Đặt hàng thành công');
-      }
-   });
-
    const onSubmit = async (data) => {
       const newData = {
          ...data,
@@ -60,30 +53,24 @@ function Shipping() {
          })
       };
 
-      createBill(newData);
-      getCart();
-      return <Navigate to='/bill' />;
-   };
-
-   const renderShipping = () => {
-      if (carts?.length > 0)
-         return (
-            <Grid container spacing={2}>
-               <Grid item xs={7}>
-                  <FormShipping form={form} />
-               </Grid>
-               <Grid item xs={5}>
-                  <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={carts} totalPrice={totalPrice} />
-               </Grid>
-            </Grid>
-         );
-
-      return <Navigate to='/' />;
+      const res = await billService.create(newData);
+      const paymentMethod = data.payment_method;
+      console.log(res.data.payment_id);
+      refOrderId.current.value = res.data.payment_id._id;
+      await getCart();
+      successMessage('Đặt hàng thành công');
+      if (paymentMethod === payment_methods[1].value) {
+         //case thanh toán trước khi đặt hàng
+         button.current.click();
+      } else {
+         //case thanh toán sau khi nhận hàng
+         navigate('/bill');
+      }
    };
 
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
-         {loading ? (
+         {loading && (
             <Box sx={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
                <Box
                   sx={{
@@ -97,9 +84,28 @@ function Shipping() {
                   <CircularProgress />
                </Box>
             </Box>
-         ) : (
-            renderShipping()
          )}
+         {!loading && (
+            <Grid container spacing={2}>
+               <Grid item xs={7}>
+                  <FormShipping form={form} />
+               </Grid>
+               <Grid item xs={5}>
+                  <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={carts} totalPrice={totalPrice} />
+               </Grid>
+            </Grid>
+         )}
+         <Box
+            component='form'
+            sx={{ visibility: 'hidden', opacity: 0}}
+            action={paymentService.getUrlPayment()}
+            method='post'>
+            <input name='amount' type='number' value={totalPrice} />
+            <input type='text' name='orderId' ref={refOrderId} />
+            <button ref={button} type='submit'>
+               purchase
+            </button>
+         </Box>
       </Container>
    );
 }
