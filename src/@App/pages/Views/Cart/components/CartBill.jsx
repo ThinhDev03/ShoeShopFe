@@ -3,7 +3,7 @@ import { Box, Button, FormLabel, Stack, TextField, Typography } from '@mui/mater
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const CartBill = ({ totalPrice }) => {
+const CartBill = ({totalPrice}) => {
    return (
       <Stack gap='20px' sx={{ bgcolor: '#f1f1f1', pb: '20px', pt: '5px', px: 3 }}>
          <Typography variant='h6' sx={{ fontWeight: 'bold', py: 1, borderBottom: '2px solid black' }}>
