@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const STATUS_PRODUCT = ['Còn hàng', 'Hết hàng'];
 
 const BillDetailItem = ({ data }) => {
-   console.log(data);
+   console.log( data );
    return (
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3, p: 1 }}>
          <Box>
