@@ -22,7 +22,7 @@ function ProductDescription({ productDetails, details, product }) {
       resolver: yupResolver(yupCart),
       defaultValues: yupCart.getDefault()
    });
-   const onSubmit = async (data) => {
+   const onSubmit = async ( data ) => {
       try {
          await cartService.create({
             user_id: user._id,
