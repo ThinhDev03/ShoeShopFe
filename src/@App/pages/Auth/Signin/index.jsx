@@ -32,7 +32,7 @@ function Signin() {
    const handleSubmitForm = async (data) => {
       setLoading(true);
       try {
-         const rest = await authService.login(data);
+         const rest = await authService.login( data );
          authLogin(rest.user);
          localStorage.setItem('token', rest.token);
          successMessage('Đăng nhập thành công!');
