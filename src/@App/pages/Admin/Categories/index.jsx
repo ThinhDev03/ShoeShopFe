@@ -29,6 +29,7 @@ function Categories() {
       }
    });
 
+
    const columns = useMemo(() => {
       return [
          columnHelper.accessor((row, index) => index + 1, {
@@ -60,7 +61,8 @@ function Categories() {
             }
          })
       ];
-   }, []);
+   },[]);
+
 
    return (
       <BasicPage currentPage='Danh mục sản phẩm'>

@@ -86,12 +86,11 @@ function ProductDescription() {
             </Box>
 
             <Divider />
-
             <Box component='form' onSubmit={handleSubmit(onSubmit)}>
                <Stack gap={3} flexDirection='row' alignItems='center'>
                   {getUniqueListBy(details?.data || [], '_id').map((color) => {
                      console.log(color[1].color_code);
-                     return <ColorRender color={color[1]} check={} onClick={setIndexActive} />;
+                     return <ColorRender color={color[1]} check= {} onClick={setIndexActive} />;
                   })}
                </Stack>
 

@@ -25,7 +25,7 @@ const ListTitle = [
       required: true
    },
    {
-      title: 'Màu sắc',
+      title: 'Màu sắc ',
       grid: 2,
       required: true
    },
@@ -50,6 +50,7 @@ const ListTitle = [
       required: true
    }
 ];
+
 
 const valueDefault = {
    size_id: '',

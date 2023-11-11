@@ -98,11 +98,11 @@ function BaseFormProduct(props) {
       <Box component='form' onSubmit={handleSubmit(onSubmit)}>
          <Grid container spacing={2}>
             <Grid item xs={6}>
-               <FormLabel required title='Tên sản phẩm' name='name' gutterBottom />
+               <FormLabel required title=' Tên sản phẩm ' name='name' gutterBottom />
                <ControllerTextField name='name' control={control} />
             </Grid>
             <Grid item xs={3}>
-               <FormLabel required title='Danh mục sản phẩm' name='category_id' gutterBottom />
+               <FormLabel required title=' Danh mục sản phẩm ' name='category_id' gutterBottom />
                <ControllerSelect
                   name='category_id'
                   options={categories?.data}
@@ -122,7 +122,7 @@ function BaseFormProduct(props) {
                />
             </Grid>
             <Grid item xs={2}>
-               <FormLabel required title='Ảnh đại diện' name='thumbnail' gutterBottom />
+               <FormLabel required title='Ảnh đại diện ' name='thumbnail' gutterBottom />
                <UploadThumbnail name='thumbnail' control={control} multiple={false} product_id={product_id} />
             </Grid>
             <Grid item xs={10}>
