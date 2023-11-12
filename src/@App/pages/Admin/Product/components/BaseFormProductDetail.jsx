@@ -139,8 +139,9 @@ function BaseFormProductDetail(props) {
                   image_id: item.image_id._id
                };
             });
+
             reset({
-               details: newData
+               details: newData.length > 0 ? newData : [valueDefault]
             });
          }
       }
@@ -175,7 +176,7 @@ function BaseFormProductDetail(props) {
 
                {fields.map((item, index) => {
                   return (
-                     <Grid item xs={12} key={item._id}>
+                     <Grid item xs={12} key={index}>
                         <Grid
                            container
                            spacing={1}

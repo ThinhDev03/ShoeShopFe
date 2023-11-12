@@ -1,6 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import SearchIcon from '@mui/icons-material/Search';
-import { Box, Grid, InputAdornment, Stack, TextField, styled } from '@mui/material';
+import { Box, Grid, Stack, styled } from '@mui/material';
 
 import Nav from './components/Nav';
 import logo from '../../../../../assets/svg/logo.svg';
@@ -12,7 +11,7 @@ const headerMenubar = [
       path: '/'
    },
    {
-      title: 'Nam',
+      title: 'Sản phẩm',
       path: '/products'
    },
    // {
@@ -29,10 +28,10 @@ export default function Header() {
    return (
       <NavHeader>
          <Nav />
-         <Grid container spacing={2} margin={0}>
+         <Grid container margin={0}>
             <Grid item xs={2}>
                <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }} component={Link} to='/'>
-                  <img src={logo} alt='' width='39.997px' height='66.92px' />
+                  <img src={logo} alt='' width='39.997px' height='52.92px' />
                </Box>
             </Grid>
             <Grid item xs={8}>
@@ -94,7 +93,8 @@ export default function Header() {
             </Box> */}
             {/* </FlexBox> */}
          </Grid>
-         <FlexBox sx={{ padding: '14px 0px 13px 0px', backgroundColor: '#F1F1F1', justifyContent: 'center' }}>
+         <FlexBox
+            sx={{ padding: '8px 0px 6px 0px', backgroundColor: '#F1F1F1', justifyContent: 'center', fontSize: '12px' }}>
             BUY 2 GET 10% OFF - ÁP DỤNG VỚI TẤT CẢ BASIC TEE
          </FlexBox>
       </NavHeader>
@@ -107,7 +107,8 @@ const NavHeader = styled('nav')(({ theme }) => ({
    left: 0,
    right: 0,
    width: '100%',
-   height: theme.palette.education.header.height,
+   // height: theme.palette.education.header.height,
+   boxShadow: '0px 1px 1px 0px rgb(0 0 0 / 8%)',
    backgroundColor: '#FFFFFF',
    zIndex: theme.palette.education.header.zIndex
 }));

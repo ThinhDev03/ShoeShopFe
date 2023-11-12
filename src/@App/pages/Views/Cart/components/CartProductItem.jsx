@@ -7,15 +7,15 @@ import { errorMessage } from '@Core/Helper/Message';
 import { useMutation } from '@tanstack/react-query';
 import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
+import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 
 function CartProductItem({ data, getCart }) {
-   console.log(data);
-   const [quantity, setQuantity] = useState(data.quantity);
+   const [quantity, setQuantity] = useState(data?.quantity);
    const { user } = useAuth();
 
    const { mutate: updateCart } = useMutation({
       mutationFn: async (quantity) => {
-         return await cartService.updateOne({ product_id: data.product_id, user_id: user._id, quantity }, data.cart_id);
+         return await cartService.updateOne({ product_id: data?.product_id, user_id: user._id, quantity }, data?.cart_id);
       },
       onSuccess: () => {
          getCart();
@@ -24,7 +24,7 @@ function CartProductItem({ data, getCart }) {
 
    const { mutate: deleteCart } = useMutation({
       mutationFn: async () => {
-         return await cartService.delete(data.cart_id);
+         return await cartService.delete(data?.cart_id);
       },
       onSuccess: () => {
          getCart();
@@ -33,7 +33,7 @@ function CartProductItem({ data, getCart }) {
 
    const handleSetQuantity = (e) => {
       const value = e.target.value;
-      if (value <= data.totalQuantity && value > 0) {
+      if (value <= data?.totalQuantity && value > 0) {
          updateCart(value);
          setQuantity(value);
       }
@@ -43,36 +43,38 @@ function CartProductItem({ data, getCart }) {
          setQuantity(1);
       }
 
-      if (value > data.totalQuantity) {
+      if (value > data?.totalQuantity) {
          errorMessage('Số lượng sản phẩm quá lớn');
          setQuantity(1);
       }
    };
-
+   console.log(data);
    return (
       <Grid container spacing={2}>
          <Grid item xs={3}>
-            <img src={data.image} width='100%' height='100%' alt='' />
+            <Box sx={{ maxHeight: 150 }}>
+               <Box component={LazyLoadingImage} src={data?.image} sx={{ height: 150 }} />
+            </Box>
          </Grid>
          <Grid item xs={6}>
             <Stack height='100%' justifyContent='space-between'>
                <Typography variant='h5' sx={{ fontSize: '22px !important', fontWeight: 'bold' }}>
-                  {data.name}
+                  {data?.name}
                </Typography>
                <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                   <Box>
                      <Box sx={{ my: 1, display: 'flex', alignItems: 'center', gap: 2, color: '#808080' }}>
                         <Typography>Giá: </Typography>
                         <Typography sx={{ fontSize: '18px !important', fontWeight: 'bold', color: 'red' }}>
-                           {toFormatMoney(toDiscountedPrice(data.price, data.sale))}
+                           {toFormatMoney(toDiscountedPrice(data?.price, data?.sale))}
                         </Typography>
                         <Typography sx={{ fontSize: '18px', fontWeight: 'bold', textDecoration: 'line-through' }}>
-                           {toFormatMoney(data.price)}
+                           {toFormatMoney(data?.price)}
                         </Typography>
                      </Box>
                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Typography sx={{ color: '#808080' }}>Size: </Typography>
-                        <Typography>{data.size}</Typography>
+                        <Typography>{data?.size}</Typography>
                      </Box>
                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, my: 1 }}>
                         <Typography sx={{ color: '#808080' }}>Color: </Typography>
@@ -89,7 +91,7 @@ function CartProductItem({ data, getCart }) {
                                  position: 'relative',
                                  width: 28,
                                  height: 28,
-                                 backgroundColor: data.color.color_code,
+                                 backgroundColor: data?.color,
                                  borderRadius: '50%',
                                  border: '1px solid #E5E5E5'
                               }}></Box>
@@ -123,7 +125,7 @@ function CartProductItem({ data, getCart }) {
                      fontWeight: 'bold ',
                      color: palette.education.text.main
                   })}>
-                  {toFormatMoney(toDiscountedPrice(data.price, data.sale) * data.quantity)}
+                  {toFormatMoney(toDiscountedPrice(data?.price, data?.sale) * data?.quantity)}
                </Typography>
                <Box
                   component='p'
@@ -132,14 +134,14 @@ function CartProductItem({ data, getCart }) {
                      fontSize: '20px',
                      color: palette.education.text.main
                   })}>
-                  {data.totalQuantity > 0 ? `Còn hàng` : 'Hết hàng'}
+                  {data?.totalQuantity > 0 ? `Còn hàng` : 'Hết hàng'}
                </Box>
             </Box>
             <Button
                sx={({ palette }) => ({
                   py: 1,
-                  width:"90px",
-                  maxWidth:'100%',
+                  width: '90px',
+                  maxWidth: '100%',
                   bgcolor: palette.education.text.black,
                   ':hover': {
                      bgcolor: palette.education.text.black

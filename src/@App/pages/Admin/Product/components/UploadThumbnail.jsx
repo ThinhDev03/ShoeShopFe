@@ -29,7 +29,6 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
       },
       {
          onSuccess: (data) => {
-            console.log(data);
             multiple && onChange(data);
          },
          initialData: []
@@ -48,7 +47,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                await productService.createImage({ images: res, product_id });
                refetchImages();
             } else {
-               onChange([image, ...imageOrImages]);
+               onChange([...res, ...imageOrImages]);
             }
             setIsChangeImages((prev) => !prev);
          } else {
@@ -66,7 +65,6 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
          if (product_id && multiple) {
             const res = await productService.deleteImage(id);
             if (res.success) {
-               console.log(res);
                await deleteFirebaseImage(image);
                setIsChangeImages((prev) => !prev);
                refetchImages();
@@ -75,18 +73,17 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
             }
          } else if (!multiple) {
             await deleteFirebaseImage(image);
-            await productService.deleteThumbnail(product_id);
+            product_id && (await productService.deleteThumbnail(product_id));
             onChange('');
          }
       },
       onError: (error) => {
-         console.log(error);
          errorMessage(error?.response?.data?.message || 'Đã có lỗi sảy ra!!');
       }
    });
 
    const handleChangeInputFile = (event) => callbackUploadImage(event);
-
+   
    return (
       <React.Fragment>
          <WrapperUploadThumbnail error={Boolean(error)} multiple={multiple}>

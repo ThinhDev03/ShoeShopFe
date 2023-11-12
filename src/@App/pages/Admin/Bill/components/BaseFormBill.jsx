@@ -14,7 +14,10 @@ import { paymentMethodOptions, paymentStatusOptions } from '../utils';
 
 export default function BaseFormBill(props) {
    const { billStatus, billDetail, form, onSubmit } = props;
-   const { control, handleSubmit } = form;
+   const { control, handleSubmit, watch } = form;
+
+   const payment_status = watch('payment_status');
+
    return (
       <Box component='form' onSubmit={handleSubmit(onSubmit)}>
          <Grid container gap={3}>
@@ -91,6 +94,15 @@ export default function BaseFormBill(props) {
                      <ControllerSelect name='status' options={billStatus} control={control} />
                   </FormGroup>
                </Grid>
+
+               {/* {payment_status === billStatus[3] ||
+                  (payment_status === billStatus[4] && (
+                     <Grid marginTop={3} marginLeft={3} item md={12}>
+                        <Button variant='contained' color='secondary' startIcon={<SaveIcon />} type='submit'>
+                           Lưu đơn hàng
+                        </Button>
+                     </Grid>
+                  ))} */}
 
                <Grid marginTop={3} marginLeft={3} item md={12}>
                   <Button variant='contained' color='secondary' startIcon={<SaveIcon />} type='submit'>

@@ -17,7 +17,7 @@ export function financial(x) {
    return Number.parseFloat(x).toFixed(0);
 }
 
-const toFormatMoney = (number, space = '.', currencyUnit = 'đ') => {
+const toFormatMoney = (number, space = '.', currencyUnit = '₫') => {
    if (!number || number === 0) {
       return 0 + currencyUnit;
    }

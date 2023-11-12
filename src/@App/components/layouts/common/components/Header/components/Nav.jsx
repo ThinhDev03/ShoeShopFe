@@ -27,33 +27,36 @@ const headerListAction = [
 ];
 
 function Nav() {
+   const { isAuththentication } = useAuth();
+
    return (
       <FlexBox
          sx={{
             backgroundColor: '#303030',
             padding: '6px 60px 4px 2px'
          }}>
-         {headerListAction.map((item) => {
-            const CompIcon = item.icon;
+         {isAuththentication &&
+            headerListAction.map((item) => {
+               const CompIcon = item.icon;
 
-            return (
-               <Stack
-                  key={item.id}
-                  sx={{
-                     flexDirection: 'row',
-                     alignItems: 'center',
-                     gap: 0.5,
-                     color: '#FFFFFF',
-                     fontSize: 14,
-                     textDecoration: 'none'
-                  }}
-                  component={NavLink}
-                  to={item.href}>
-                  <CompIcon sx={{ width: '14px', height: '14px' }} />
-                  <Box component='span'>{item.title}</Box>
-               </Stack>
-            );
-         })}
+               return (
+                  <Stack
+                     key={item.id}
+                     sx={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        color: '#FFFFFF',
+                        fontSize: 14,
+                        textDecoration: 'none'
+                     }}
+                     component={NavLink}
+                     to={item.href}>
+                     <CompIcon sx={{ width: '14px', height: '14px' }} />
+                     <Box component='span'>{item.title}</Box>
+                  </Stack>
+               );
+            })}
          <ChangeUserLogin />
       </FlexBox>
    );
