@@ -14,8 +14,11 @@ import categoryRouter from './admin/category.router';
 import userRouter from './user.router';
 import billRouter from './admin/bill.router';
 import clientRoute from './client';
-import Home from '@App/pages/Views/Home';
-import Payment from '@App/pages/Views/Payment';
+import Loadable from './components/Loadable';
+
+const Payment = Loadable(lazy(() => import('@App/pages/Views/Payment')));
+const Home = Loadable(lazy(() => import('@App/pages/Views/Home')));
+const Dashboard = Loadable(lazy(() => import('@App/pages/Admin/Dashboard')));
 
 const routers = [
    {
@@ -39,7 +42,7 @@ const routers = [
       children: [
          {
             index: true,
-            element: <Outlet />
+            element: <Dashboard />
          },
          categoryRouter,
          brandRouter,
