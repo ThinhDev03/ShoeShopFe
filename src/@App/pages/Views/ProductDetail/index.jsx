@@ -17,16 +17,16 @@ import * as yup from 'yup';
 import CoreRating from '@Core/Components/Input/CoreRating';
 function ProductDetail() {
    const { id } = useParams();
-   const { isAuththentication } = useAuth();
-   const { control, handleSubmit } = useForm({
+   const { isAuththentication, user } = useAuth();
+   const { control, handleSubmit, reset } = useForm({
       resolver: yupResolver(
          yup.object().shape({
-            comment: yup.string().required('Vui lòng nhập bình luận'),
+            description: yup.string().required('Vui lòng nhập bình luận'),
             rate: yup.string().required('Vui lòng chọn số sao')
          })
       )
    });
-   const [{ data: product }, { data: details }, { data: comments }] = useQueries({
+   const [{ data: product }, { data: details }, { data: comments, refetch: refetchComment }] = useQueries({
       queries: [
          {
             queryKey: 'products',
@@ -65,7 +65,9 @@ function ProductDetail() {
    const productDetails = getUniqueProductWithColor(details);
 
    const onSubmit = async (data) => {
-      console.log(data);
+      await commentService.createComment({ ...data, user_id: user._id, product_id: id });
+      await refetchComment();
+      reset({});
    };
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
@@ -102,7 +104,7 @@ function ProductDetail() {
                      <CoreRating control={control} name='rate' />
                      <ControllerTextField
                         control={control}
-                        name='comment'
+                        name='description'
                         id='outlined-multiline-static'
                         label='Bình luận'
                         multiline
@@ -110,7 +112,7 @@ function ProductDetail() {
                         variant='outlined'
                      />
                   </Box>
-                  <Button>Bình luận</Button>
+                  <Button type='submit'>Bình luận</Button>
                </form>
             )}
             <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>

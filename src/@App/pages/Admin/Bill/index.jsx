@@ -94,9 +94,10 @@ function BillPage() {
             },
             cell({ getValue }) {
                const status = getValue();
+               console.log(status);
                return (
                   <Chip
-                     color={paymentStatus.PAID === getValue() ? 'secondary' : 'primary'}
+                     color={'PAID' === status ? 'secondary' : 'primary'}
                      variant='outlined'
                      label={paymentStatus[status ? status : 'UNPAID']}
                   />

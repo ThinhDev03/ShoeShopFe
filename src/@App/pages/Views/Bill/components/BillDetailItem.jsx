@@ -71,7 +71,7 @@ const BillDetailItem = ({ data }) => {
                </Box>
                <Box sx={{ flex: 1, display: 'flex', justifyContent: 'end' }}>
                   <Typography sx={{ color: '#808080' }}>
-                     Ngày đặt: {format(new Date(data.createdAt), 'mm-dd-yyyy')}
+                     Ngày đặt: {format(new Date(data.createdAt), 'yyyy-mm-dd')}
                   </Typography>
                </Box>
             </Box>

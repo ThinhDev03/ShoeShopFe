@@ -14,6 +14,7 @@ import { successMessage } from '@Core/Helper/Message';
 import paymentService from '@App/services/payment.service';
 import { payment_methods } from './utils';
 import { useNavigate } from 'react-router-dom';
+import sleep from '@Core/Helper/Sleep';
 
 function Shipping() {
    const { user } = useAuth();
@@ -56,11 +57,12 @@ function Shipping() {
       const res = await billService.create(newData);
       const paymentMethod = data.payment_method;
       console.log(res.data.payment_id);
-      refOrderId.current.value = res.data.payment_id._id;
-      await getCart();
+
       successMessage('Đặt hàng thành công');
       if (paymentMethod === payment_methods[1].value) {
          //case thanh toán trước khi đặt hàng
+         refOrderId.current.value = res.data.payment_id._id;
+         await getCart();
          button.current.click();
       } else {
          //case thanh toán sau khi nhận hàng
@@ -97,11 +99,11 @@ function Shipping() {
          )}
          <Box
             component='form'
-            sx={{ visibility: 'hidden', opacity: 0}}
+            sx={{ visibility: 'hidden', opacity: 0 }}
             action={paymentService.getUrlPayment()}
             method='post'>
             <input name='amount' type='number' value={totalPrice} />
-            <input type='text' name='orderId' ref={refOrderId} />
+            <input type='text' name='paymentId' ref={refOrderId} />
             <button ref={button} type='submit'>
                purchase
             </button>

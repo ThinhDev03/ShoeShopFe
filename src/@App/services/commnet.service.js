@@ -7,6 +7,10 @@ class CommentService extends BaseService {
       super(params);
       this.setRequest();
    }
+
+   async createComment(body) {
+      this.request.post(this.BASE_ENDPOINT + '/create', body);
+   }
 }
 
 const commentService = new CommentService();
