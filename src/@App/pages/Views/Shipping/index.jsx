@@ -2,7 +2,7 @@ import { Box, CircularProgress, Container, Grid } from '@mui/material';
 import React, { useMemo, useRef } from 'react';
 import FormShipping from './component/FormShipping';
 import Invoice from './component/Invoice';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {  useQuery } from '@tanstack/react-query';
 import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
 import { useForm } from 'react-hook-form';
@@ -68,6 +68,8 @@ function Shipping() {
       successMessage('Đặt hàng thành công');
       if (paymentMethod === payment_methods[1].value) {
          //case thanh toán trước khi đặt hàng
+         refOrderId.current.value = res.data.payment_id._id;
+         await getCart();
          button.current.click();
       } else {
          //case thanh toán sau khi nhận hàng
@@ -108,7 +110,7 @@ function Shipping() {
             action={paymentService.getUrlPayment()}
             method='post'>
             <input name='amount' type='number' value={totalPrice} />
-            <input type='text' name='orderId' ref={refOrderId} />
+            <input type='text' name='paymentId' ref={refOrderId} />
             <button ref={button} type='submit'>
                purchase
             </button>

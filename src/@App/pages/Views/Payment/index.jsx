@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 function Payment() {
    const params = useQueryParams();
    const navigate = useNavigate();
-   console.log(params);
    useQuery(
       ['payment', params],
       async () => {
@@ -18,13 +17,14 @@ function Payment() {
       {
          onSuccess(data) {
             console.log(data);
+            navigate('/bill');
          },
          onError(err) {
-            console.log(err);
+            navigate('/');
          }
       }
    );
-   return <div></div>;
+   return <></>;
 }
 
 export default Payment;

@@ -134,7 +134,7 @@ function Bill() {
          align: 'center',
          format: (v) => (
             <Chip
-               color={paymentStatus.PAID === v?.payment_id?.status ? 'secondary' : 'primary'}
+               color={'PAID' === v?.payment_id?.status ? 'secondary' : 'primary'}
                variant='outlined'
                label={paymentStatus[v?.payment_id?.status ? v?.payment_id?.status : 'UNPAID']}
             />
@@ -156,7 +156,7 @@ function Bill() {
             return (
                <Box>
                   <CoreTableActionView callback={() => handleClickModal(v._id)} />
-                  {v.status === BILL_STATUS[0] ? (
+                  {v.status === BILL_STATUS[0] && 'UNPAID' === v?.payment_id?.status ? (
                      <CoreTableReplay content='Bạn có muốn hủy đơn hàng này?' callback={() => cancelBill(v?._id)} />
                   ) : (
                      <Box display='inline-block' width='37px' height='37px'></Box>
