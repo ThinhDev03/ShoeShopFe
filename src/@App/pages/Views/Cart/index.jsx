@@ -32,6 +32,7 @@ function Cart() {
    }, [carts, cart]);
 
    const handleChangeCart = (product_id) => {
+      console.log(product_id);
       if (cart.includes(product_id)) {
          updateCart(CART_ACTION[1], product_id);
       } else {
@@ -66,13 +67,18 @@ function Cart() {
 
                   <Stack mt={2} gap={2}>
                      {carts?.map((item, index) => {
+                        console.log(item.totalQuantity > 0);
+
                         return (
-                           <Box key={item.product_id + index}>
+                           <Box
+                              key={item.product_id + index}
+                              sx={{ backgroundColor: item?.totalQuantity === 0 && '#f1f1f1', borderRadius: '5px' }}>
                               <Box display='flex' alignItems='center' mb={1}>
                                  <Box>
                                     <Checkbox
-                                       checked={cart.includes(item.product_id)}
-                                       onChange={() => handleChangeCart(item.product_id)}
+                                       disabled={item.totalQuantity === 0}
+                                       checked={item.totalQuantity > 0 && cart.includes(item.product_id)}
+                                       onChange={() => item.totalQuantity > 0 && handleChangeCart(item.product_id)}
                                     />
                                  </Box>
                                  <CartProductItem data={item} getCart={getCart} />

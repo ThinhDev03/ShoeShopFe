@@ -35,7 +35,8 @@ export const useCart = () => {
    const cart = useSelector((state) => state.cart);
 
    const updateCart = (action, cart) => {
-      dispatch(updateCartReducer({ action, cart }));
+      const productArray = cart.filter((item) => item.totalQuantity > 0);
+      dispatch(updateCartReducer({ action, cart: productArray }));
    };
 
    return { cart, updateCart };

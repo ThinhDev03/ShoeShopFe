@@ -1,21 +1,28 @@
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import { Box, Button, Grid, Stack, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toFormatMoney, { toDiscountedPrice } from '@Core/Helper/Price';
 import { errorMessage } from '@Core/Helper/Message';
 import { useMutation } from '@tanstack/react-query';
 import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
+import { MAX_QUANTITY } from '../../ProductDetail/components/ProductDescription';
 
 function CartProductItem({ data, getCart }) {
    const [quantity, setQuantity] = useState(data?.quantity);
    const { user } = useAuth();
 
+   const messageErrorQuantity =
+      data.totalQuantity > 0 ? 'Số lượng sản phẩm lớn hơn số lượng trong kho' : 'Sản phẩm đã hết hàng';
+
    const { mutate: updateCart } = useMutation({
       mutationFn: async (quantity) => {
-         return await cartService.updateOne({ product_id: data?.product_id, user_id: user._id, quantity }, data?.cart_id);
+         return await cartService.updateOne(
+            { product_id: data?.product_id, user_id: user._id, quantity },
+            data?.cart_id
+         );
       },
       onSuccess: () => {
          getCart();
@@ -31,26 +38,24 @@ function CartProductItem({ data, getCart }) {
       }
    });
 
-   const handleSetQuantity = (e) => {
-      const value = e.target.value;
-      if (value <= data?.totalQuantity && value > 0) {
-         updateCart(value);
-         setQuantity(value);
+   useEffect(() => {
+      if (Number(quantity) > 0) {
+         if (quantity > data?.totalQuantity) {
+            setQuantity(data.totalQuantity > MAX_QUANTITY ? MAX_QUANTITY : data.totalQuantity);
+            errorMessage(messageErrorQuantity);
+            updateCart(data.totalQuantity > MAX_QUANTITY ? MAX_QUANTITY : data.totalQuantity)
+         } else if (Number(quantity) > MAX_QUANTITY) {
+            setQuantity(5);
+            updateCart(5)
+         } else if (Number(quantity) < 0) {
+            setQuantity(1);
+            updateCart(1)
+         }
       }
+   }, [quantity]);
 
-      if (value == 0) {
-         errorMessage('Số lượng sản phẩm không hợp lệ');
-         setQuantity(1);
-      }
-
-      if (value > data?.totalQuantity) {
-         errorMessage('Số lượng sản phẩm quá lớn');
-         setQuantity(1);
-      }
-   };
-   console.log(data);
    return (
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{ px: 2, py: 1 }}>
          <Grid item xs={3}>
             <Box sx={{ maxHeight: 150 }}>
                <Box component={LazyLoadingImage} src={data?.image} sx={{ height: 150 }} />
@@ -101,11 +106,13 @@ function CartProductItem({ data, getCart }) {
                   <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 2 }}>
                      <FormLabel title='Số lượng' gutterBottom required />
                      <TextField
-                        type='number'
                         variant='standard'
                         sx={{ width: 40 }}
                         value={quantity}
-                        onChange={handleSetQuantity}
+                        disabled={data.totalQuantity === 0}
+                        onChange={(e) =>
+                           setQuantity(e.target.value.match(/[^0-9]/g) ? quantity : Number(e.target.value))
+                        }
                      />
                   </Box>
                </Stack>
