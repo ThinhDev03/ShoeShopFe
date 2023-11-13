@@ -5,12 +5,7 @@ import { BILL_STATUS, billStatus, paymentStatus, transferStatus } from '@App/pag
 import billService from '@App/services/bill.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
-import {
-   CoreTableActionDelete,
-   CoreTableActionEdit,
-   CoreTableActionView,
-   CoreTableReplay
-} from '@Core/Components/Table/components/CoreTableActions';
+import { CoreTableActionView, CoreTableReplay } from '@Core/Components/Table/components/CoreTableActions';
 import toFormatMoney from '@Core/Helper/Price';
 import {
    Box,
@@ -25,9 +20,7 @@ import {
    TableCell,
    TableContainer,
    TableHead,
-   TablePagination,
    TableRow,
-   TextField,
    Typography
 } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -35,10 +28,12 @@ import { format } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import BillDetailItem from './components/BillDetailItem';
+import { Link } from 'react-router-dom';
+import { routerPath } from '@App/configs/routerConfig';
 
 function Bill() {
    const [open, setOpen] = React.useState(false);
-   const { user } = useAuth();
+   const { user, isAuththentication } = useAuth();
    const { control, watch } = useForm({ mode: 'onChange', defaultValues: { status: 'PENDING' } });
    const [page, setPage] = useState(1);
 
@@ -47,14 +42,21 @@ function Bill() {
 
    const search = useDebounceInput(searchValue);
 
-   const { data: bills, isFetching: loading } = useQuery(
-      ['getBill', { page, statusSelected, searchValue }],
+   const {
+      data: bills,
+      refetch: getbills,
+      isFetching: loading
+   } = useQuery(
+      ['getBill', { page, statusSelected, search }],
       async () => {
-         const rest = await billService.list({
-            search,
-            status: statusSelected,
-            page
-         });
+         const rest = await billService.list(
+            {
+               page,
+               status: statusSelected,
+               search
+            },
+            '/' + user?._id
+         );
 
          return rest;
       },
@@ -81,11 +83,20 @@ function Bill() {
       getBillDetail(bill_id);
    };
 
+   const { mutate: cancelBill } = useMutation({
+      mutationFn: (id) => {
+         return billService.updateStatus(id, BILL_STATUS[4]);
+      },
+      onSuccess: () => {
+         return getbills();
+      }
+   });
+
    const handleClose = () => setOpen(false);
 
    const columns = [
       { label: 'STT', minWidth: 50, align: 'center', format: (v, i) => i + 1 },
-      { label: 'Người đặt hàng', minWidth: 170, format: (v) => v.user_id.fullname },
+      { label: 'Người đặt hàng', minWidth: 170, format: (v) => v.user_id?.fullname },
       {
          label: 'Người nhận hàng',
          minWidth: 170,
@@ -118,8 +129,8 @@ function Bill() {
       },
       {
          path_1: 'payment_id',
-         label: 'Trạng thái đơn hàng',
-         minWidth: 170,
+         label: 'Trạng thái thanh toán',
+         minWidth: 200,
          align: 'center',
          format: (v) => (
             <Chip
@@ -145,8 +156,8 @@ function Bill() {
             return (
                <Box>
                   <CoreTableActionView callback={() => handleClickModal(v._id)} />
-                  {v.status === BILL_STATUS[0] &&'UNPAID' === v?.payment_id?.status  ? (
-                     <CoreTableReplay content='Bạn có muốn hủy đơn hàng này?' />
+                  {v.status === BILL_STATUS[0] && 'UNPAID' === v?.payment_id?.status ? (
+                     <CoreTableReplay content='Bạn có muốn hủy đơn hàng này?' callback={() => cancelBill(v?._id)} />
                   ) : (
                      <Box display='inline-block' width='37px' height='37px'></Box>
                   )}
@@ -157,7 +168,9 @@ function Bill() {
    ];
 
    return (
-      <Container maxWidth='lg' sx={{ py: 3 }}>
+      <Container
+         maxWidth='lg'
+         sx={{ py: 3, backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid  #D1D5DB' }}>
          <Stack direction='row' gap={3}>
             <Box width={200} mb={3}>
                <ControllerSelect label='Trạng thái đơn hàng' options={billStatus} name='status' control={control} />
@@ -192,7 +205,7 @@ function Bill() {
                         </TableRow>
                      </TableHead>
                      <TableBody sx={{ height: '100%' }}>
-                        {!loading &&
+                        {!loading && bills?.data.length > 0 ? (
                            bills?.data?.map((row, i) => {
                               return (
                                  <TableRow hover role='checkbox' tabIndex={-1} key={row._id}>
@@ -208,7 +221,16 @@ function Bill() {
                                     })}
                                  </TableRow>
                               );
-                           })}
+                           })
+                        ) : (
+                           <TableRow>
+                              <TableCell colSpan={columns.length}>
+                                 <Box component='h4' sx={{ color: '#555555', textAlign: 'center' }}>
+                                    Chúng tôi không tìm thấy dữ liệu đơn hàng nào của bạn.
+                                 </Box>
+                              </TableCell>
+                           </TableRow>
+                        )}
                      </TableBody>
                   </Table>
                </Scrollbar>
@@ -241,12 +263,26 @@ function Bill() {
                <Scrollbar>
                   <Typography
                      id='modal-modal-title'
-                     variant='h6'
+                     variant='h5'
                      component='h2'
-                     sx={{ px: 3, py: 2, bgcolor: '#dadada52' }}>
+                     sx={{
+                        px: 3,
+                        py: 1,
+                        fontSize: '20px !important',
+                        fontWeight: 500,
+                        border: '1px solid #DADADA'
+                     }}>
                      Chi tiết hóa đơn
                   </Typography>
-                  <Box sx={{ mt: 2, px: 2, display: 'flex', flexDirection: 'column', gap: 1, height: '100%' }}>
+                  <Box
+                     sx={{
+                        mt: 2,
+                        px: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1,
+                        height: '100%'
+                     }}>
                      {!loadingBillDetail && billItemdetail?.data?.map((bill) => <BillDetailItem data={bill} />)}
                   </Box>
                </Scrollbar>
@@ -261,10 +297,11 @@ const style = {
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
-   width: 650,
+   width: 550,
    height: 600,
    bgcolor: 'background.paper',
-   borderRadius: 1,
+   overflow: 'hidden',
+   borderRadius: '8px',
    boxShadow: 24
 };
 

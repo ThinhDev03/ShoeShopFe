@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Stack, Typography, styled } from '@mui/material';
@@ -12,35 +12,54 @@ import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import * as yup from 'yup';
+import ControllerInputNumber from '@Core/Components/FormControl/ControllerInputNumber';
+
+export const MAX_QUANTITY = 5
 
 function ProductDescription({ productDetails, details, product }) {
    const [quantity, setQuantity] = useState(0);
    const yupCart = yup.object().shape({
       product_id: yup.string().strict(true).required('Vui lòng chọn size').default(''),
       quantity: yup
-         .number()
+         .string()
+         .trim()
+         .strict(true)
          .required('Vui lòng nhập vào số lượng')
-         .max(quantity, 'Vượt quá số lượng sản phẩm trong kkho')
+         .test('max_quantity', (value, ctx) => {
+            if (Number(value) > MAX_QUANTITY) {
+               return ctx.createError({ message: 'Số lượng sản phẩm vượt quá giới hạn cho phép' });
+            }
+
+            if (Number(value) > quantity) {
+               return ctx.createError({ message: 'Vượt quá số lượng sản phẩm trong kho' });
+            }
+
+            return true;
+         })
          .min(1, 'Vui lòng nhập số lượng lớn hơn hoặc bằng một')
    });
-
+   console.log(quantity);
    const { user, isAuththentication } = useAuth();
    const [colorSelected, setColorSelected] = useState(null);
 
-   const { control, handleSubmit, watch } = useForm({
+   const {
+      control,
+      handleSubmit,
+      watch,
+      formState: errors
+   } = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCart),
       defaultValues: yupCart.getDefault()
    });
 
    const onSubmit = async (data) => {
-      if (!isAuththentication) {
-         return errorMessage('Vui lòng đăng nhập');
-      }
+      if (!isAuththentication) return errorMessage('Vui lòng đăng nhập');
       try {
          await cartService.create({
             user_id: user._id,
-            ...data
+            ...data,
+            quantity: Number(data.quantity)
          });
          successMessage('Thêm vào giỏ hàng thành công');
       } catch (error) {
@@ -58,7 +77,9 @@ function ProductDescription({ productDetails, details, product }) {
    };
 
    const currentProductId = watch('product_id');
-   const currentProduct = details ? details.find((product) => product._id === currentProductId) || details[0] : {};
+   const currentProduct = useMemo(() => {
+      return details ? details.find((product) => product._id === currentProductId) || details[0] : {};
+   }, [currentProductId]);
    const sizes = getSizeWithColor(details, colorSelected);
    const hasQuantity = currentProduct && currentProduct.quantity === 0;
 
@@ -69,7 +90,20 @@ function ProductDescription({ productDetails, details, product }) {
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '18px' }}>
-            <Typography variant='h5'>{product?.name}</Typography>
+            <Box sx={{ fontWeight: 500 }}>
+               <Box sx={{ lineHeight: '1.2', fontWeight: 600, fontSize: '24px', mb: 1 }}>{product?.name}</Box>
+               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: 3 }}>
+                     <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.category_id?.category_name}</Box>
+                     <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.brand_id?.brand_name}</Box>
+                  </Box>
+                  {currentProduct?.quantity && (
+                     <Box sx={{ color: '#707072' }}>
+                        Số lượng: <span>{currentProduct?.quantity} Sp</span>
+                     </Box>
+                  )}
+               </Box>
+            </Box>
             {/* <Stack flexDirection='row' justifyContent='space-between'>
                <Box sx={{ display: 'flex', gap: 2, fontSize: '18px' }}>
                   Mã sản phẩm:
@@ -80,7 +114,7 @@ function ProductDescription({ productDetails, details, product }) {
                   <strong>{}</strong>
                </Box>
             </Stack> */}
-            {colorSelected ? (
+            {currentProductId ? (
                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Typography
                      variant='h5'
@@ -88,7 +122,13 @@ function ProductDescription({ productDetails, details, product }) {
                      {details && toFormatMoney(toDiscountedPrice(currentProduct?.price, currentProduct?.sale))}
                   </Typography>
                   <Typography
-                     sx={{ color: '#808080', fontSize: '20px', textDecoration: 'line-through', fontWeight: 500 }}>
+                     variant='h5'
+                     sx={{
+                        color: '#808080',
+                        textDecoration: 'line-through',
+                        fontSize: '18px !important',
+                        fontWeight: 500
+                     }}>
                      {details && toFormatMoney(currentProduct?.price)}
                   </Typography>
                </Box>
@@ -97,9 +137,7 @@ function ProductDescription({ productDetails, details, product }) {
                   variant='h5'
                   sx={({ palette }) => ({
                      color: palette.education.text.main,
-                     fontWeight: 600,
-                     bgcolor: '#fafafa',
-                     padding: '15px 20px'
+                     fontWeight: 600
                   })}>
                   {product?.toPrice === product?.fromPrice ? (
                      toFormatMoney(product?.toPrice)
@@ -147,8 +185,7 @@ function ProductDescription({ productDetails, details, product }) {
                   </Box>
                   <Box sx={{ width: '50%', minHeight: '100px' }}>
                      <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }}>Số lượng</Typography>
-                     <ControllerTextField
-                        type='number'
+                     <ControllerInputNumber
                         disabled={!colorSelected || hasQuantity}
                         name='quantity'
                         control={control}

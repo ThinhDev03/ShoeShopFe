@@ -55,7 +55,6 @@ function BaseFormProduct(props) {
       {
          onSuccess(data) {
             if (product_id) {
-               console.log(data);
                setValue('name', data.name);
                setValue('category_id', data.category_id._id);
                setValue('brand_id', data.brand_id._id);

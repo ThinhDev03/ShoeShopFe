@@ -2,7 +2,7 @@ import { Box, CircularProgress, Container, Grid } from '@mui/material';
 import React, { useMemo, useRef } from 'react';
 import FormShipping from './component/FormShipping';
 import Invoice from './component/Invoice';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {  useQuery } from '@tanstack/react-query';
 import cartService from '@App/services/cart.service';
 import useAuth from '@App/hooks/useAuth';
 import { useForm } from 'react-hook-form';
@@ -14,10 +14,12 @@ import { successMessage } from '@Core/Helper/Message';
 import paymentService from '@App/services/payment.service';
 import { payment_methods } from './utils';
 import { useNavigate } from 'react-router-dom';
-import sleep from '@Core/Helper/Sleep';
+import { useCart } from '@App/redux/slices/cart.slice';
 
 function Shipping() {
    const { user } = useAuth();
+   const { cart } = useCart();
+
    const button = useRef();
    const navigate = useNavigate();
    const refOrderId = useRef();
@@ -34,18 +36,22 @@ function Shipping() {
       return res.data;
    });
 
+   const newCart = carts ? carts.filter((item) => cart.includes(item.product_id)) : [];
+
    const totalPrice = useMemo(() => {
-      return carts?.reduce((currentPrice, item) => {
+      return newCart?.reduce((currentPrice, item) => {
          return currentPrice + toDiscountedPrice(item.price, item.sale) * item.quantity;
       }, 0);
-   }, [carts]);
+   }, [carts, cart]);
 
    const onSubmit = async (data) => {
+      const newCart = carts ? carts.filter((item) => cart.includes(item.product_id)) : [];
+
       const newData = {
          ...data,
          user_id: user._id,
          total_money: totalPrice,
-         products: carts?.map((cart) => {
+         products: newCart?.map((cart) => {
             return {
                cart_id: cart.cart_id,
                product_id: cart.product_id,
@@ -56,8 +62,9 @@ function Shipping() {
 
       const res = await billService.create(newData);
       const paymentMethod = data.payment_method;
-      console.log(res.data.payment_id);
 
+      refOrderId.current.value = res.data.payment_id._id;
+      await getCart();
       successMessage('Đặt hàng thành công');
       if (paymentMethod === payment_methods[1].value) {
          //case thanh toán trước khi đặt hàng
@@ -93,7 +100,7 @@ function Shipping() {
                   <FormShipping form={form} />
                </Grid>
                <Grid item xs={5}>
-                  <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={carts} totalPrice={totalPrice} />
+                  <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={newCart} totalPrice={totalPrice} />
                </Grid>
             </Grid>
          )}

@@ -3,6 +3,7 @@ import SwiperSlider from './components/SwiperSlider';
 import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import PostItem from './components/PostItem';
 import { Link } from 'react-router-dom';
+import RelatedProducts from '../ProductDetail/components/RelatedProducts';
 
 const posts = [
    {
@@ -46,7 +47,7 @@ function Home() {
                {posts.map((item, index) => {
                   return (
                      <Grid item xs={6} key={index}>
-                        <Box>
+                        <Box width="100%" height="308.470px">
                            <img src={item.image} width='100%' height='100%' alt='' />
                         </Box>
                         <Stack gap={1} mt={2}>
@@ -154,6 +155,10 @@ function Home() {
                   </Grid>
                </Grid>
             </Grid>
+         </Container>
+
+         <Container maxWidth="lg" sx={{ marginTop: 10 }}>
+            <RelatedProducts />
          </Container>
       </React.Fragment>
    );
