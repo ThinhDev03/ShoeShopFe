@@ -13,6 +13,8 @@
  * ----------	---	----------------------------------------------------------
  */
 
+import numeral from 'numeral';
+
 export function financial(x) {
    return Number.parseFloat(x).toFixed(0);
 }
@@ -45,3 +47,15 @@ export function toDiscountedPrice(originalPrice, discountPercentage) {
 }
 
 export default toFormatMoney;
+
+export function toShortenNumber(number) {
+   const format = number ? numeral(number).format('0.00a') : '';
+
+   return result(format, '.00');
+}
+
+function result(format, key = '.00') {
+   const isInteger = format.includes(key);
+
+   return isInteger ? format.replace(key, '') : format;
+}

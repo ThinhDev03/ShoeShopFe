@@ -1,3 +1,5 @@
+import { alpha } from '@mui/material/styles';
+
 // education palette
 const education = {
    pagination: '#fde428',
@@ -19,6 +21,21 @@ const education = {
       zIndex: 999
    }
 };
+export const grey = {
+   0: '#FFFFFF',
+   100: '#F9FAFB',
+   200: '#F4F6F8',
+   300: '#DFE3E8',
+   400: '#C4CDD5',
+   500: '#919EAB',
+   600: '#637381',
+   700: '#454F5B',
+   800: '#212B36',
+   900: '#161C24'
+};
+const transparent1 = alpha(grey[500], 0.2);
+const transparent2 = alpha(grey[500], 0.14);
+const transparent3 = alpha(grey[500], 0.12);
 
 const palette = {
    palette: {
@@ -51,8 +68,8 @@ const palette = {
    },
    shadows: [
       'none',
-      '0px 1px 3px 0px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.12)',
-      '0 2px 0 rgb(90 97 105 / 11%), 0 4px 8px rgb(90 97 105 / 10%), 0 3px 3px rgb(90 97 105 / 4%), 0 2px 3px rgb(90 97 105 / 5%)',
+      `0px 2px 1px -1px ${transparent1},0px 1px 1px 0px ${transparent2},0px 1px 3px 0px ${transparent3}`,
+      `0px 3px 1px -2px ${transparent1},0px 2px 2px 0px ${transparent2},0px 1px 5px 0px ${transparent3}`,
       '0px 1px 8px 0px rgba(0, 0, 0, 0.2),0px 3px 4px 0px rgba(0, 0, 0, 0.14),0px 3px 3px -2px rgba(0, 0, 0, 0.12)',
       '0px 2px 4px -1px rgba(0, 0, 0, 0.2),0px 4px 5px 0px rgba(0, 0, 0, 0.14),0px 1px 10px 0px rgba(0, 0, 0, 0.12)',
       '0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 5px 8px 0px rgba(0, 0, 0, 0.14),0px 1px 14px 0px rgba(0, 0, 0, 0.12)',

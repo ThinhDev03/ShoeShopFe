@@ -29,8 +29,11 @@
       "date-fns": "^2.30.0",
       "dotenv": "^16.0.3",
       "firebase": "^10.5.0",
+      "highcharts": "^11.1.0",
+      "highcharts-react-official": "^3.2.0",
       "lodash": "^4.17.21",
       "nprogress": "^0.2.0",
+      "numeral": "^2.0.6",
       "query-string": "^8.1.0",
       "react": "^18.2.0",
       "react-dom": "^18.2.0",
@@ -42,9 +45,7 @@
       "simplebar-react": "^3.2.4",
       "swiper": "^10.3.1",
       "vite-jsconfig-paths": "^2.0.1",
-      "yup": "^1.0.2",
-      "highcharts": "^11.1.0",
-      "highcharts-react-official": "^3.2.0"
+      "yup": "^1.0.2"
    },
    "devDependencies": {
       "@tanstack/eslint-plugin-query": "^4.36.1",

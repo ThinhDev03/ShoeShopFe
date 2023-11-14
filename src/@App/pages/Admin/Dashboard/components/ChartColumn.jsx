@@ -5,21 +5,33 @@ import { Box, Paper, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import statisticService from '@App/services/statistic.service';
 import '../index.css';
-function ChartPie() {
+
+function ChartColumn() {
    const { data } = useQuery(
-      ['get-best-seller'],
+      ['get-top-rate'],
       async () => {
-         const res = await statisticService.getBestSeller();
+         const res = await statisticService.getTopRate();
+         const category = [];
          const newData = res.data.map((item, index) => {
+            category.push(item.product_name);
             if (index === 1) {
-               return { name: item.product_name, y: item.quantity, sliced: true, selected: true };
+               return {
+                  name: item.product_name,
+                  y: parseFloat(item.rate.toFixed(1)),
+                  sliced: true,
+                  selected: true,
+                  drilldown: item.product_name
+               };
             }
-            return { name: item.product_name, y: item.quantity };
+            return { name: item.product_name, y: parseFloat(item.rate.toFixed(1)), drilldown: item.product_name };
          });
-         return newData;
+         return {
+            data: newData,
+            category
+         };
       },
       {
-         initialData: []
+         initialData: { data: [] }
       }
    );
    const options = {
@@ -39,9 +51,9 @@ function ChartPie() {
 
       series: [
          {
-            name: 'Đã bán',
+            name: 'Đánh giá sao',
             colorByPoint: true,
-            data: data
+            data: data.data
          }
       ],
       plotOptions: {
@@ -71,38 +83,18 @@ function ChartPie() {
             ]
          }
       },
-      summarized: false,
-      drilldown: {
-         series: [
-            {
-               name: 'Other',
-               id: 'other',
-               data: [
-                  {
-                     name: '1',
-                     y: 13,
-                     color: '#7DA7D9',
-                     visible: true,
-                     sliced: false,
-                     selected: false
-                  },
-                  {
-                     name: '2',
-                     y: 19,
-                     color: '#C74542',
-                     visible: true,
-                     sliced: false,
-                     selected: false
-                  }
-               ]
-            }
-         ]
+      xAxis: {
+         categories: data.category,
+         crosshair: true,
+         accessibility: {
+            description: 'Countries'
+         }
       },
       boost: {
          enabled: false
       },
       chart: {
-         type: 'pie',
+         type: 'column',
          height: 380,
          events: {
             drillup: function (e) {}
@@ -114,10 +106,10 @@ function ChartPie() {
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
 
          <Typography mt={4} textAlign='center'>
-            Biểu đồ thống kê sản phẩm bán chạy
+            Biểu đồ thống kê sản phẩm có đánh giá cao
          </Typography>
       </Box>
    );
 }
 
-export default ChartPie;
+export default ChartColumn;
