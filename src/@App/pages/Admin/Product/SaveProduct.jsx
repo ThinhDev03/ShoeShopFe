@@ -8,6 +8,9 @@ import BasicPage from '@App/components/customs/BasicPage';
 import { styled } from '@mui/material';
 import BaseFormProduct from './components/BaseFormProduct';
 import BaseFormProductDetail from './components/BaseFormProductDetail';
+import { useQueries } from '@tanstack/react-query';
+import sizeService from '@App/services/size.service';
+import colorService from '@App/services/color.service';
 
 function SaveProduct() {
    let [searchParams, setSearchParams] = useSearchParams();
@@ -18,6 +21,33 @@ function SaveProduct() {
       mode: 'onChange',
       resolver: yupResolver(yupProduct),
       defaultValues: yupProduct.getDefault()
+   });
+
+   const [sizes, colors] = useQueries({
+      queries: [
+         {
+            queryKey: ['getSize'],
+            queryFn: async () => {
+               try {
+                  const res = await sizeService.getAll();
+                  return res.data;
+               } catch (error) {
+                  errorMessage();
+               }
+            }
+         },
+         {
+            queryKey: ['getColor'],
+            queryFn: async () => {
+               try {
+                  const res = await colorService.getAll();
+                  return res.data;
+               } catch (error) {
+                  errorMessage();
+               }
+            }
+         }
+      ]
    });
 
    return (
@@ -31,7 +61,12 @@ function SaveProduct() {
          {product_id && (
             <React.Fragment>
                <Divider />
-               <BaseFormProductDetail isChangeImages={isChangeImages} product_id={product_id} />
+               <BaseFormProductDetail
+                  isChangeImages={isChangeImages}
+                  product_id={product_id}
+                  sizes={sizes || []}
+                  colors={colors || []}
+               />
             </React.Fragment>
          )}
       </BasicPage>

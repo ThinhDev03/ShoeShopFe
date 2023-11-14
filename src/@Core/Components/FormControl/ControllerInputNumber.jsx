@@ -20,7 +20,9 @@ const ControllerInputNumber = (props) => {
                placeholder={disabled ? void 0 : placeholder}
                disabled={disabled}
                {...field}
-               onChange={(event) => field.onChange(event.target.value.replace(/[^0-9]/g, ''))}
+               onChange={(event) =>
+                  field.onChange(event.target.value.match(/[^0-9]/g) ? 1 : Number(event.target.value))
+               }
                {...rest}
             />
          )}

@@ -12,6 +12,10 @@ class ProductDetailService extends BaseService {
       return this.request.post(this.BASE_ENDPOINT + '/create-detail', data);
    }
 
+   updateProductDetail(data) {
+      return this.request.post(this.BASE_ENDPOINT + '/update-detail', data);
+   }
+
    getAll() {
       return this.request(this.BASE_ENDPOINT);
    }

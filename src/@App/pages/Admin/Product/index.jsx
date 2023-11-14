@@ -83,8 +83,6 @@ function ProductPage() {
       ]
    });
 
-   console.log(categories);
-
    const columns = useMemo(() => {
       return [
          columnHelper.accessor((_, index) => index + 1, {
