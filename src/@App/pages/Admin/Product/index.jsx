@@ -81,8 +81,6 @@ function ProductPage() {
       ]
    });
 
-   console.log(categories);
-
    const columns = useMemo(() => {
       return [
          columnHelper.accessor((_, index) => index + 1, {
@@ -163,7 +161,7 @@ function ProductPage() {
          })
       ];
    }, []);
-   console.log(dataProducts);
+
    return (
       <BasicPage currentPage='Products'>
          <Stack direction='row' gap={3}>

@@ -32,10 +32,10 @@ function Cart() {
    }, [carts, cart]);
 
    const handleChangeCart = (product_id) => {
-      console.log(product_id);
       if (cart.includes(product_id)) {
          updateCart(CART_ACTION[1], product_id);
       } else {
+         console.log(product_id);
          updateCart(CART_ACTION[0], product_id);
       }
    };
@@ -67,8 +67,6 @@ function Cart() {
 
                   <Stack mt={2} gap={2}>
                      {carts?.map((item, index) => {
-                        console.log(item.totalQuantity > 0);
-
                         return (
                            <Box
                               key={item.product_id + index}
