@@ -11,8 +11,10 @@ import { ListItemButton, ListItemText } from '@mui/material';
 import List from '@mui/material/List';
 import menuCofig from '@App/configs/menuConfig';
 import { Stack } from '@mui/system';
+import useAuth from '@App/hooks/useAuth';
 
 export default function SidebarItem({ setOpenSidebar }) {
+   const { userPermission } = useAuth();
    const [expanded, setExpanded] = React.useState([]);
    const handleChange = (panel) => (event, newExpanded) => {
       setExpanded((prev) => {
@@ -33,6 +35,9 @@ export default function SidebarItem({ setOpenSidebar }) {
          <List>
             {menuCofig.map((menu, index) => {
                const Icon = menu.icon;
+               if (!menu.role.includes(userPermission)) {
+                  return <></>;
+               }
                if (!menu?.children) {
                   return (
                      <ListItemButton

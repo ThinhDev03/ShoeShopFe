@@ -1,4 +1,6 @@
 import BasicPage from '@App/components/customs/BasicPage';
+import { ROLE } from '@App/configs/role';
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
 import commentService from '@App/services/commnet.service';
 import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
@@ -52,10 +54,12 @@ function Comment() {
                const comment = row?.original;
                return (
                   <Box sx={{ display: 'flex' }}>
-                     <CoreTableActionDelete
-                        callback={async () => deleteComment(comment._id)}
-                        content='Bạn có muốn xoá bình luận?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={async () => deleteComment(comment._id)}
+                           content='Bạn có muốn xoá bình luận?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }

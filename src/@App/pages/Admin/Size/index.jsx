@@ -1,4 +1,6 @@
 import BasicPage from '@App/components/customs/BasicPage';
+import { ROLE } from '@App/configs/role';
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
 import classesService from '@App/services/category.service';
 import sizeService from '@App/services/size.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
@@ -52,14 +54,16 @@ export default function Size() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject?._id)} />
-                     <CoreTableActionDelete
-                        callback={() => {
-                           mutation.mutate({
-                              id: subject?._id
-                           });
-                        }}
-                        content='Bạn có muốn xoá size này?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() => {
+                              mutation.mutate({
+                                 id: subject?._id
+                              });
+                           }}
+                           content='Bạn có muốn xoá size này?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }
