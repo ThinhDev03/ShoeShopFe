@@ -21,10 +21,8 @@ function ProductDescription({ productDetails, details, product }) {
    const yupCart = yup.object().shape({
       product_id: yup.string().strict(true).required('Vui lòng chọn size').default(''),
       quantity: yup
-         .string()
-         .trim()
+         .number()
          .strict(true)
-         .required('Vui lòng nhập vào số lượng')
          .test('max_quantity', (value, ctx) => {
             if (Number(value) > MAX_QUANTITY) {
                return ctx.createError({ message: 'Số lượng sản phẩm vượt quá giới hạn cho phép' });
@@ -36,9 +34,7 @@ function ProductDescription({ productDetails, details, product }) {
 
             return true;
          })
-         .min(1, 'Vui lòng nhập số lượng lớn hơn hoặc bằng một')
    });
-   console.log(quantity);
    const { user, isAuththentication } = useAuth();
    const [colorSelected, setColorSelected] = useState(null);
 
