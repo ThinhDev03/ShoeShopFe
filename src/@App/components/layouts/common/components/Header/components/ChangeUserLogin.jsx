@@ -14,7 +14,7 @@ function ChangeUserLogin() {
       <React.Fragment>
          <UserMenu />
 
-         {isAuththentication && userPermission === ROLE[1] && (
+         {isAuththentication && (userPermission === ROLE[1] || userPermission === ROLE[2]) && (
             <Stack
                sx={{
                   flexDirection: 'row',

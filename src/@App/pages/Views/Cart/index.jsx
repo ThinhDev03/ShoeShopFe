@@ -14,11 +14,7 @@ function Cart() {
    const { user } = useAuth();
    const { cart, updateCart } = useCart();
 
-   const {
-      data: carts,
-      isFetching: loading,
-      refetch: getCart
-   } = useQuery(['getCart'], async () => {
+   const { data: carts, refetch: getCart } = useQuery(['getCart'], async () => {
       const res = await cartService.getCart(user._id);
       return res.data;
    });

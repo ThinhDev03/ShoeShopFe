@@ -11,10 +11,12 @@ import { Box } from '@mui/system';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 import toFormatMoney from '@Core/Helper/Price';
 import { paymentMethodOptions, paymentStatusOptions } from '../utils';
+import useAuth from '@App/hooks/useAuth';
 
 export default function BaseFormBill(props) {
    const { billStatus, billDetail, form, onSubmit } = props;
    const { control, handleSubmit, watch } = form;
+   const { userPermission } = useAuth();
 
    const payment_status = watch('payment_status');
 
@@ -79,12 +81,7 @@ export default function BaseFormBill(props) {
                <Grid item xs={12} md={6}>
                   <FormGroup>
                      <FormLabel required title='Trạng thái thanh toán' name='payment_status' gutterBottom />
-                     <ControllerSelect
-                        name='payment_status'
-                        options={paymentStatusOptions}
-                        control={control}
-                        disabled
-                     />
+                     <ControllerSelect name='payment_status' options={paymentStatusOptions} control={control} />
                   </FormGroup>
                </Grid>
 

@@ -1,16 +1,10 @@
-import { ROLE } from '@App/configs/role';
 import useAuth from '@App/hooks/useAuth';
-import cartService from '@App/services/cart.service';
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-
-const ROUTE_PRIVATE = ['/shipping'];
+import { Navigate } from 'react-router-dom';
 
 export default function PrivateRouter({ children }) {
-   const { isAuhthentication, isInitialized, userPermission, user } = useAuth();
-
-   if (!isAuhthentication && isInitialized && userPermission !== ROLE[1]) {
+   const { isAuththentication, isInitialized } = useAuth();
+   if (!isAuththentication && isInitialized) {
       return <Navigate to='/sign-in' replace />;
    }
 

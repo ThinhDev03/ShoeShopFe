@@ -1,5 +1,5 @@
 import statisticService from '@App/services/statistic.service';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
@@ -31,70 +31,7 @@ function ChartLine() {
       },
 
       rangeSelector: {
-         enabled: false,
-         inputEnabled: false,
-         buttonSpacing: 25,
-         buttonTheme: {
-            states: {
-               select: {
-                  fill: 'white',
-                  style: {
-                     color: '#333',
-                     fontWeight: 'bold',
-                     textDecoration: 'underline'
-                  }
-               }
-            },
-            fill: 'white',
-            style: {
-               color: 'black',
-               fontSize: '18px',
-               textDecoration: 'none'
-            }
-         },
-
-         buttons: [
-            {
-               type: 'day',
-               count: 1,
-               text: '1D'
-            },
-            {
-               type: 'day',
-               count: 5,
-               text: '5D'
-            },
-            {
-               type: 'month',
-               count: 1,
-               text: '1M'
-            },
-            {
-               type: 'month',
-               count: 6,
-               text: '6M'
-            },
-            {
-               type: 'ytd',
-               count: 1,
-               text: 'YTD'
-            },
-            {
-               type: 'year',
-               count: 1,
-               text: '1Y'
-            },
-            {
-               type: 'year',
-               count: 5,
-               text: '5Y'
-            },
-            {
-               type: 'all',
-               text: 'MAX'
-            }
-         ],
-         selected: 1
+         enabled: false
       },
       plotOptions: {
          series: {
@@ -118,7 +55,7 @@ function ChartLine() {
          }
       ],
       chart: {
-         height: 400
+         height: 380
       },
       series: [
          {
@@ -133,17 +70,17 @@ function ChartLine() {
             data: data,
             pointInterval: 24 * 3600 * 1000,
             tooltip: {
-               valueDecimals: 2,
+               valueDecimals: 0,
                headerFormat: '<span style="font-size:12px"><b>{point.key}</b></span><br>'
             }
          }
       ]
    };
    return (
-      <div>
+      <Box sx={{ borderRadius: 2, overflow: 'hidden' }}>
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
-         <Typography textAlign='center'>Biểu đồ thống kê doanh số</Typography>
-      </div>
+         <Typography mt={4} textAlign='center'>Biểu đồ thống kê doanh số</Typography>
+      </Box>
    );
 }
 

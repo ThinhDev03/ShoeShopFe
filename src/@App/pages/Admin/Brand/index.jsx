@@ -1,4 +1,6 @@
 import BasicPage from '@App/components/customs/BasicPage';
+import { ROLE } from '@App/configs/role';
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
 import brandService from '@App/services/brand.service';
 import categoryService from '@App/services/category.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
@@ -51,14 +53,16 @@ function Brand() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject._id)} />
-                     <CoreTableActionDelete
-                        callback={() =>
-                           mutation.mutate({
-                              id: subject._id
-                           })
-                        }
-                        content='Bạn có muốn xoá môn học này?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() =>
+                              mutation.mutate({
+                                 id: subject._id
+                              })
+                           }
+                           content='Bạn có muốn xoá môn học này?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }

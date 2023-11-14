@@ -1,6 +1,8 @@
 import BasicPage from '@App/components/customs/BasicPage';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
+import { ROLE } from '@App/configs/role';
 import useDebounceInput from '@App/hooks/useDebounceInput';
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
 import brandService from '@App/services/brand.service';
 import categoryService from '@App/services/category.service';
 import productService from '@App/services/product.service';
@@ -147,14 +149,16 @@ function ProductPage() {
                   <Box sx={{ display: 'flex' }}>
                      <CoreTableActionEdit callback={() => navigate('save?id=' + product?._id)} />
                      <CoreTableActionView callback={() => navigate('comment/' + product?._id)} title='Xem Bình luận' />
-                     <CoreTableActionDelete
-                        callback={() =>
-                           mutation.mutate({
-                              id: product?._id
-                           })
-                        }
-                        content='Bạn có muốn xoá sản phẩm?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() =>
+                              mutation.mutate({
+                                 id: product?._id
+                              })
+                           }
+                           content='Bạn có muốn xoá sản phẩm?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }
