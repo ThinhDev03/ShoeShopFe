@@ -19,7 +19,7 @@ function BaseFormRegister({ form }) {
       try {
          await authService.register( data );
          successMessage('Đăng ký thành công!');
-         navigate('/signin');
+         navigate('/sign-in');
       } catch (error) {
          setLoading(false);
          errorMessage(error);
