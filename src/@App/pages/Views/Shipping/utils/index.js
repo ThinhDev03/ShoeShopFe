@@ -8,6 +8,7 @@ export const getProvinces = async () => {
 };
 export const getDistricts = async (provinces_code) => {
    const response = await axios.get(baseUrlProvince + `p/${provinces_code}?depth=2`);
+   console.log(response.data.districts);
    return response.data.districts;
 };
 

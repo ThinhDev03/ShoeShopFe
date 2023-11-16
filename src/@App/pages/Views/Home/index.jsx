@@ -47,7 +47,7 @@ function Home() {
                {posts.map((item, index) => {
                   return (
                      <Grid item xs={6} key={index}>
-                        <Box width="100%" height="308.470px">
+                        <Box width='100%' height='308.470px'>
                            <img src={item.image} width='100%' height='100%' alt='' />
                         </Box>
                         <Stack gap={1} mt={2}>
@@ -132,32 +132,13 @@ function Home() {
             </Grid>
          </Container>
          <Box mt={5} width='100%'>
-            <img src='https://ananas.vn/wp-content/uploads/Banner_Clothing.jpg' width='100%' alt='' />
+            <img
+               src='https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_1423,c_limit/10e7b4a4-9c81-409d-b70a-7a86e1a1b8c6/jordan.png'
+               width='100%'
+               alt=''
+            />
          </Box>
          <Container maxWidth='lg' sx={{ marginTop: 10 }}>
-            <Grid container spacing={4}>
-               <Grid item xs={12} md={6}>
-                  <Typography variant='h4' textAlign='center'>
-                     INSTAGRAM
-                  </Typography>
-               </Grid>
-               <Grid item xs={12} md={6}>
-                  <Typography variant='h4' textAlign='center'>
-                     TIN TỨC & BÀI VIẾT
-                  </Typography>
-                  <Grid container spacing={2} mt={1}>
-                     <Grid item xs={12} md={6}>
-                        <PostItem />
-                     </Grid>
-                     <Grid item xs={12} md={6}>
-                        <PostItem />
-                     </Grid>
-                  </Grid>
-               </Grid>
-            </Grid>
-         </Container>
-
-         <Container maxWidth="lg" sx={{ marginTop: 10 }}>
             <RelatedProducts />
          </Container>
       </React.Fragment>

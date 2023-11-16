@@ -13,55 +13,40 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ControllerInputNumber from '@Core/Components/FormControl/ControllerInputNumber';
-
-const schema = yup.object().shape({
-   quantity: yup
-      .string()
-      .required('Vui lòng nhập vào số lượng')
-      .test('max-quantity', (value, ctx) => {
-         if (Number(value) < 1) {
-            return ctx.createError({ message: 'Số lượng không hợp lệ' });
-         }
-
-         if (Number(value) > MAX_QUANTITY) {
-            return ctx.createError({ message: 'Vượt quá số lượng cho phép' });
-         }
-
-         if (Number(value) > data?.totalQuantity) {
-            return ctx.createError({ message: 'Vượt quá số lượn trong kho' });
-         }
-
-         return true;
-      })
-});
+import { error } from 'highcharts';
 
 function CartProductItem({ data, getCart }) {
-   const [quantity, setQuantity] = useState(data?.quantity);
    const { user } = useAuth();
+   const [errorQuantity, setErrorQuantity] = useState('');
 
-   const {
-      control,
-      watch,
-      formState: { errors }
-   } = useForm({
-      resolver: yupResolver(schema),
+   const { control, watch } = useForm({
       defaultValues: {
          quantity: data?.quantity
       }
    });
 
-   console.log(errors);
-
    const quantityProduct = watch('quantity');
 
    const { mutate: updateCart } = useMutation({
       mutationFn: async () => {
-         if (!errors.quantity) {
-            return await cartService.updateOne(
-               { product_id: data?.product_id, user_id: user._id, quantity: quantityProduct },
-               data?.cart_id
-            );
+         if (Number(quantityProduct) < 1) {
+            return setErrorQuantity('Số lượng không hợp lệ');
          }
+
+         if (Number(quantityProduct) > MAX_QUANTITY) {
+            return setErrorQuantity('Vượt quá số lượng cho phép');
+         }
+
+         if (Number(quantityProduct) > data?.totalQuantity) {
+            return setErrorQuantity('Vượt quá số lượn trong kho');
+         }
+
+         // Update cart only if there are no errors
+         setErrorQuantity('');
+         return await cartService.updateOne(
+            { product_id: data?.product_id, user_id: user._id, quantity: quantityProduct },
+            data?.cart_id
+         );
       },
       onSuccess: () => {
          getCart();
@@ -136,6 +121,9 @@ function CartProductItem({ data, getCart }) {
                      </Box>
                   </Box>
                </Stack>
+               {errorQuantity && (
+                  <Box sx={{ textAlign: 'end', mt: 0.5, fontSize: '13px', color: 'red' }}>{errorQuantity}</Box>
+               )}
             </Stack>
          </Grid>
          <Grid

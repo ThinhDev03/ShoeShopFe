@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 const STATUS_PRODUCT = ['Còn hàng', 'Hết hàng'];
 
 const BillDetailItem = ({ data }) => {
-   console.log(data);
    return (
       <React.Fragment>
          <Flex sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

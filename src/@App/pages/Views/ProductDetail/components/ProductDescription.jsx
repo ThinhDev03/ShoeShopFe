@@ -14,10 +14,11 @@ import { errorMessage, successMessage } from '@Core/Helper/Message';
 import * as yup from 'yup';
 import ControllerInputNumber from '@Core/Components/FormControl/ControllerInputNumber';
 
-export const MAX_QUANTITY = 5
+export const MAX_QUANTITY = 5;
 
 function ProductDescription({ productDetails, details, product }) {
    const [quantity, setQuantity] = useState(0);
+   const [loading, setLoading] = useState(false);
    const yupCart = yup.object().shape({
       product_id: yup.string().strict(true).required('Vui lòng chọn size').default(''),
       quantity: yup
@@ -42,7 +43,8 @@ function ProductDescription({ productDetails, details, product }) {
       control,
       handleSubmit,
       watch,
-      formState: errors
+      formState: errors,
+      setError
    } = useForm({
       mode: 'onChange',
       resolver: yupResolver(yupCart),
@@ -52,6 +54,7 @@ function ProductDescription({ productDetails, details, product }) {
    const onSubmit = async (data) => {
       if (!isAuththentication) return errorMessage('Vui lòng đăng nhập');
       try {
+         setLoading(true);
          await cartService.create({
             user_id: user._id,
             ...data,
@@ -59,7 +62,12 @@ function ProductDescription({ productDetails, details, product }) {
          });
          successMessage('Thêm vào giỏ hàng thành công');
       } catch (error) {
-         errorMessage('Thêm sản phẩm vào giỏ thất bại');
+         console.log(error);
+         if (error.response.status === 400) {
+            setError('quantity', { message: 'Sản phẩm trong giỏ hàng đã đạt quá giới hạn cho phép.' });
+         }
+      } finally {
+         setLoading(false);
       }
    };
 
@@ -192,7 +200,7 @@ function ProductDescription({ productDetails, details, product }) {
                   <Button
                      type='submit'
                      fullWidth
-                     disabled={hasQuantity}
+                     disabled={hasQuantity || loading}
                      sx={({ palette }) => ({
                         textTransform: 'uppercase',
                         py: '18px',
