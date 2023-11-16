@@ -29,8 +29,8 @@ function RelatedProducts() {
          </Typography>
          <Box sx={{ my: 3 }}>
             <Swiper
-               slidesPerView={3}
-               spaceBetween={30}
+               slidesPerView={4}
+               spaceBetween={12}
                pagination={{
                   clickable: true
                }}
