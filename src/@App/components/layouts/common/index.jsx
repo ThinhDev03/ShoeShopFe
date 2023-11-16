@@ -4,7 +4,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { Box, Container } from '@mui/material';
+import { Box } from '@mui/material';
 
 export default function CommonLayout() {
    return (
@@ -18,9 +18,6 @@ export default function CommonLayout() {
    );
 }
 
-const Flex = styled(Stack)(({ theme }) => ({
-   // marginTop: theme.palette.education.header.height
-}));
 const Main = styled(Box)(({ theme }) => ({
    flex: 1,
    display: 'flex',
@@ -28,7 +25,9 @@ const Main = styled(Box)(({ theme }) => ({
    boxSizing: 'border-box',
    paddingBottom: '48px',
    // backgroundColor: theme.palette.background.default,
+   // backgroundColor: '#F8F9FA',
    marginTop: theme.palette.education.header.height,
+   paddingTop: 12,
    minHeight: `calc(100vh - ${theme.palette.education.header.height}px)`
    // [theme.breakpoints.down('lg')]: {
    //    // padding: '10px',

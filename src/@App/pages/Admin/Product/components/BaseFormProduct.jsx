@@ -14,8 +14,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import productService from '@App/services/product.service';
 
 function BaseFormProduct(props) {
-   const { form, title, product_id, setSearchParams } = props;
-   const { handleSubmit, control, reset } = form;
+   const { form, title, product_id, setSearchParams, setIsChangeImages } = props;
+
+   const { handleSubmit, control, setValue, getValues } = form;
 
    const [categories, brands] = useQueries({
       queries: [
@@ -53,14 +54,13 @@ function BaseFormProduct(props) {
       },
       {
          onSuccess(data) {
-            product_id &&
-               reset({
-                  name: data.name,
-                  category_id: data.category_id._id,
-                  brand_id: data.brand_id._id,
-                  description: data.description,
-                  thumbnail: data.thumbnail
-               });
+            if (product_id) {
+               setValue('name', data.name);
+               setValue('category_id', data.category_id._id);
+               setValue('brand_id', data.brand_id._id);
+               setValue('description', data.description);
+               setValue('thumbnail', data.thumbnail);
+            }
          }
       }
    );
@@ -91,6 +91,7 @@ function BaseFormProduct(props) {
    });
 
    const onSubmit = async (data) => {
+      console.log(data);
       product_id ? updateProduct(data) : createProduct(data);
    };
 
@@ -98,11 +99,11 @@ function BaseFormProduct(props) {
       <Box component='form' onSubmit={handleSubmit(onSubmit)}>
          <Grid container spacing={2}>
             <Grid item xs={6}>
-               <FormLabel required title=' Tên sản phẩm ' name='name' gutterBottom />
+               <FormLabel required title='Tên sản phẩm' name='name' gutterBottom />
                <ControllerTextField name='name' control={control} />
             </Grid>
             <Grid item xs={3}>
-               <FormLabel required title=' Danh mục sản phẩm ' name='category_id' gutterBottom />
+               <FormLabel required title='Danh mục sản phẩm' name='category_id' gutterBottom />
                <ControllerSelect
                   name='category_id'
                   options={categories?.data}
@@ -122,12 +123,20 @@ function BaseFormProduct(props) {
                />
             </Grid>
             <Grid item xs={2}>
-               <FormLabel required title='Ảnh đại diện ' name='thumbnail' gutterBottom />
-               <UploadThumbnail name='thumbnail' control={control} multiple={false} product_id={product_id} />
+               <FormLabel required title='Ảnh đại diện' name='thumbnail' gutterBottom />
+               <UploadThumbnail product_id={product_id} name='thumbnail' control={control} multiple={false} />
             </Grid>
             <Grid item xs={10}>
                <FormLabel required title='Ảnh khác' name='images' gutterBottom />
-               <UploadThumbnail name='images' control={control} multiple={true} product_id={product_id} />
+               <UploadThumbnail
+                  getValues={getValues}
+                  name='images'
+                  control={control}
+                  multiple
+                  setValue={setValue}
+                  product_id={product_id}
+                  setIsChangeImages={setIsChangeImages}
+               />
             </Grid>
             <Grid item xs={12}>
                <FormLabel title='Mô tả sản phẩm' name='description' gutterBottom />
@@ -141,7 +150,7 @@ function BaseFormProduct(props) {
                   startIcon={<SaveIcon />}
                   type='submit'
                   sx={{ mt: 4 }}>
-                  {title || 'Thêm mới'}
+                  {title || 'Lưu sản phẩm'}
                </LoadingButton>
             </Grid>
          </Grid>

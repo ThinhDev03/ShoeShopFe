@@ -53,23 +53,6 @@ function FormShipping({ form }) {
             <FormLabel title='Số điện thoại' gutterBottom required />
             <ControllerTextField name='phone_number' control={control} />
          </Box>
-<<<<<<< HEAD
-         <Box mb={2}>
-            <FormLabel title='Email' gutterBottom required />
-            <ControllerTextField name='Email' control={control} />
-         </Box>
-         <Box mb={2}>
-            <FormLabel title='Tỉnh/ Thành phố' gutterBottom required />
-            <ControllerSelect name='' control={control} />
-         </Box>
-         <Box mb={2}>
-            <FormLabel title='Quận/ Huyện' gutterBottom required />
-            <ControllerSelect name='' control={control} />
-         </Box>
-         <Box mb={2}>
-            <FormLabel title='Phường/ Xã' gutterBottom required />
-            <ControllerSelect name='' control={control} />
-=======
          {/* <Box mb={2}>
             <FormLabel title='Tỉnh/ thành phố' gutterBottom required />
             <CoreAutoComplete
@@ -128,7 +111,6 @@ function FormShipping({ form }) {
                   control={control}
                />
             </Box>
->>>>>>> test
          </Box>
       </Box>
    );
