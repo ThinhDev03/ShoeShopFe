@@ -27,7 +27,7 @@ function Register() {
                   Bạn đã có tài khoản? Hãy
                   <Box
                      component={Link}
-                     to={'/signin'}
+                     to={'/sign-in'}
                      sx={({ palette }) => ({
                         color: palette.education.text.main,
                         textDecoration: 'none',
