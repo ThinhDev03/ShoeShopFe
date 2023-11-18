@@ -4,6 +4,11 @@ import { Box, Container, Grid, Stack, Typography } from '@mui/material';
 import PostItem from './components/PostItem';
 import { Link } from 'react-router-dom';
 import RelatedProducts from '../ProductDetail/components/RelatedProducts';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import statisticService from '@App/services/statistic.service';
+import ProductCard from '@App/components/customs/common/ProductCard';
+import productDetailService from '@App/services/product-detail.service';
+import productService from '@App/services/product.service';
 
 const posts = [
    {
@@ -39,6 +44,12 @@ const category = [
 ];
 
 function Home() {
+   const { data: bestSales } = useQuery(['get-best-sale'], async () => {
+      const res = await productService.getAll();
+      return res.data;
+   });
+
+   console.log(bestSales);
    return (
       <React.Fragment>
          <SwiperSlider />
@@ -47,7 +58,7 @@ function Home() {
                {posts.map((item, index) => {
                   return (
                      <Grid item xs={6} key={index}>
-                        <Box width="100%" height="308.470px">
+                        <Box width='100%' height='308.470px'>
                            <img src={item.image} width='100%' height='100%' alt='' />
                         </Box>
                         <Stack gap={1} mt={2}>
@@ -74,90 +85,27 @@ function Home() {
                <Grid container spacing={3} mt={10}>
                   <Grid item xs={12}>
                      <Typography variant='h4' textAlign='center'>
-                        DANH MỤC MUA HÀNG
+                        Sản phẩm bán chạy
                      </Typography>
                   </Grid>
-                  {category.map((item, index) => {
-                     return (
-                        <Grid item xs={4} key={index}>
-                           <Box sx={{ position: 'relative' }}>
-                              <img src={item.image} alt='' />
-                              <Box
-                                 sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                 }}>
-                                 <Typography
-                                    variant='h5'
-                                    sx={({ palette }) => ({
-                                       fontWeight: 'bold',
-                                       color: palette.education.text.white
-                                    })}>
-                                    {item.title}
-                                 </Typography>
-                                 <Stack gap={1} mt={1}>
-                                    {item.list.map((content, index) => {
-                                       return (
-                                          <Typography
-                                             key={index}
-                                             variant='p'
-                                             component={Link}
-                                             to='/'
-                                             sx={({ palette }) => ({
-                                                color: palette.education.text.white,
-                                                textDecoration: 'none',
-                                                fontSize: '22px !important',
-                                                ':hover': {
-                                                   color: palette.education.text.main
-                                                }
-                                             })}>
-                                             {content}
-                                          </Typography>
-                                       );
-                                    })}
-                                 </Stack>
-                              </Box>
-                           </Box>
-                        </Grid>
-                     );
-                  })}
+                  {bestSales &&
+                     bestSales?.map((item, index) => {
+                        if (index <= 8) {
+                           return (
+                              <Grid item xs={3} key={index}>
+                                 <ProductCard data={item} />
+                              </Grid>
+                           );
+                        }
+                     })}
                </Grid>
             </Grid>
          </Container>
          <Box mt={5} width='100%'>
             <img src='https://ananas.vn/wp-content/uploads/Banner_Clothing.jpg' width='100%' alt='' />
          </Box>
-         <Container maxWidth='lg' sx={{ marginTop: 10 }}>
-            <Grid container spacing={4}>
-               <Grid item xs={12} md={6}>
-                  <Typography variant='h4' textAlign='center'>
-                     INSTAGRAM
-                  </Typography>
-               </Grid>
-               <Grid item xs={12} md={6}>
-                  <Typography variant='h4' textAlign='center'>
-                     TIN TỨC & BÀI VIẾT
-                  </Typography>
-                  <Grid container spacing={2} mt={1}>
-                     <Grid item xs={12} md={6}>
-                        <PostItem />
-                     </Grid>
-                     <Grid item xs={12} md={6}>
-                        <PostItem />
-                     </Grid>
-                  </Grid>
-               </Grid>
-            </Grid>
-         </Container>
 
-         <Container maxWidth="lg" sx={{ marginTop: 10 }}>
+         <Container maxWidth='lg' sx={{ marginTop: 10 }}>
             <RelatedProducts />
          </Container>
       </React.Fragment>

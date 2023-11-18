@@ -1,5 +1,5 @@
-import { Box, Breadcrumbs, Button, Container, Grid, Link, Rating, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import React from 'react';
 import SwiperSlider from './components/SwiperSlider';
 import ProductDescription from './components/ProductDescription';
 import RelatedProducts from './components/RelatedProducts';
@@ -18,7 +18,7 @@ import CoreRating from '@Core/Components/Input/CoreRating';
 function ProductDetail() {
    const { id } = useParams();
    const { isAuththentication, user } = useAuth();
-   const { control, handleSubmit, reset } = useForm({
+   const { control, handleSubmit, reset, setError } = useForm({
       resolver: yupResolver(
          yup.object().shape({
             description: yup.string().required('Vui lòng nhập bình luận'),

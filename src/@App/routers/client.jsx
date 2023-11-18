@@ -4,6 +4,7 @@ import { lazy } from 'react';
 import PublicRouter from './components/PublicRouter';
 import Profile from '@App/pages/Views/Profile';
 import CheckLoginUser from './components/CheckLoginUser';
+import Sale from '@App/pages/Views/Sale';
 
 const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
 const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
@@ -21,6 +22,10 @@ const clientRoute = [
    {
       path: routerPath.PRODUCTS + '/:id',
       element: <ProductDetail />
+   },
+   {
+      path: '/sale',
+      element: <Sale />
    },
 
    {

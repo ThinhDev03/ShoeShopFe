@@ -1,7 +1,7 @@
 import Scrollbar from '@App/components/customs/Scrollbar';
 import useAuth from '@App/hooks/useAuth';
 import useDebounceInput from '@App/hooks/useDebounceInput';
-import { BILL_STATUS, billStatus, paymentStatus, transferStatus } from '@App/pages/Admin/Bill/utils';
+import { BILL_STATUS, billStatus, paymentMethod, paymentStatus, transferStatus } from '@App/pages/Admin/Bill/utils';
 import billService from '@App/services/bill.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
@@ -11,6 +11,8 @@ import {
    Box,
    Chip,
    Container,
+   Divider,
+   Grid,
    Modal,
    Pagination,
    Paper,
@@ -25,16 +27,15 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import BillDetailItem from './components/BillDetailItem';
-import { Link } from 'react-router-dom';
-import { routerPath } from '@App/configs/routerConfig';
 
 function Bill() {
    const [open, setOpen] = React.useState(false);
    const { user, isAuththentication } = useAuth();
    const { control, watch } = useForm({ mode: 'onChange', defaultValues: { status: 'PENDING' } });
+   const [bill, setBill] = useState({});
    const [page, setPage] = useState(1);
 
    const statusSelected = watch('status');
@@ -73,14 +74,19 @@ function Bill() {
       mutate: getBillDetail,
       isFetching: loadingBillDetail
    } = useMutation({
-      mutationFn: (bill_id) => {
-         return billService.request.get('bill/bill-detail/' + bill_id);
+      mutationFn: async (bill_id) => {
+         return await billService.request.get('bill/bill-detail/' + bill_id);
       }
    });
 
    const handleClickModal = (bill_id) => {
       setOpen(true);
       getBillDetail(bill_id);
+      if (bills.data) {
+         const bill = bills.data.find((item) => item._id === bill_id);
+         console.log(bill);
+         setBill(bill);
+      }
    };
 
    const { mutate: cancelBill } = useMutation({
@@ -166,7 +172,6 @@ function Bill() {
          }
       }
    ];
-
    return (
       <Container
          maxWidth='lg'
@@ -260,20 +265,110 @@ function Bill() {
             aria-labelledby='modal-modal-title'
             aria-describedby='modal-modal-description'>
             <Box sx={style}>
-               <Scrollbar>
-                  <Typography
-                     id='modal-modal-title'
-                     variant='h5'
-                     component='h2'
-                     sx={{
-                        px: 3,
-                        py: 1,
-                        fontSize: '20px !important',
-                        fontWeight: 500,
-                        border: '1px solid #DADADA'
-                     }}>
-                     Chi tiết hóa đơn
-                  </Typography>
+               <Typography
+                  id='modal-modal-title'
+                  variant='h5'
+                  component='h2'
+                  sx={{
+                     px: 3,
+                     py: 1,
+                     fontSize: '20px !important',
+                     fontWeight: 500,
+                     border: '1px solid #DADADA'
+                  }}>
+                  Thông tin hóa đơn
+               </Typography>
+               <Box sx={{ width: '100%', height: '100%', overflow: 'auto' }}>
+                  <Stack gap={1} py={2} px={2}>
+                     <Grid container spacing={1}>
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Người Đặt:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           {bill?.user_id?.fullname}
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Người nhận:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           {bill?.receiver}
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Số điện thoại
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           {bill?.phone_number}
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Tổng tiền:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           <Chip color='secondary' label={toFormatMoney(bill?.total_money)} />
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Mã đơn hàng
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           {bill?._id}
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Trạng thái đơng hàng
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           <Chip
+                              variant='outlined'
+                              color={BILL_STATUS[3] === bill?.status ? 'secondary' : 'primary'}
+                              label={transferStatus[bill?.status]}
+                           />
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Thanh toán:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           <Chip
+                              color={'PAID' === bill?.payment_id?.status ? 'secondary' : 'primary'}
+                              variant='outlined'
+                              label={paymentStatus[bill?.payment_id?.status ? bill?.payment_id?.status : 'UNPAID']}
+                           />
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Hình thức thanh toán:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           <Chip
+                              color='default'
+                              label={
+                                 bill?.payment_id?.payment_method === paymentMethod.PAYMENT_ON_DELIVEY
+                                    ? 'Thanh toán khi nhận hàng'
+                                    : 'Thanh toán trước'
+                              }
+                           />
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Địa chỉ nhận hàng:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           {bill?.address}
+                        </Grid>
+
+                        <Grid item xs={4} sx={{ py: 1 }}>
+                           Ghi chú:
+                        </Grid>
+                        <Grid item xs={8} sx={{ py: 1 }}>
+                           {bill?.note || ''}
+                        </Grid>
+                     </Grid>
+                     {/* <Box>Thời gian đặt hàng: {format(new Date(bill?.createdAt), 'dd-mm-yyyy')}</Box> */}
+                  </Stack>
+                  <Divider />
                   <Box
                      sx={{
                         mt: 2,
@@ -283,9 +378,20 @@ function Bill() {
                         gap: 1,
                         height: '100%'
                      }}>
+                     <Typography
+                        id='modal-modal-title'
+                        variant='h5'
+                        component='h2'
+                        sx={{
+                           py: 1,
+                           fontSize: '20px !important',
+                           fontWeight: 500
+                        }}>
+                        Danh sách sản phẩm
+                     </Typography>
                      {!loadingBillDetail && billItemdetail?.data?.map((bill) => <BillDetailItem data={bill} />)}
                   </Box>
-               </Scrollbar>
+               </Box>
             </Box>
          </Modal>
       </Container>
@@ -297,10 +403,10 @@ const style = {
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
-   width: 550,
+   width: 700,
    height: 600,
-   bgcolor: 'background.paper',
    overflow: 'hidden',
+   bgcolor: 'background.paper',
    borderRadius: '8px',
    boxShadow: 24
 };

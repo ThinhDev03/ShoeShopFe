@@ -9,7 +9,7 @@ import { toDiscountedPrice } from '@Core/Helper/Price';
 import { Link } from 'react-router-dom';
 import { CART_ACTION, useCart } from '@App/redux/slices/cart.slice';
 import { compareArrays } from './helper';
-
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 function Cart() {
    const { user } = useAuth();
    const { cart, updateCart } = useCart();
@@ -40,7 +40,8 @@ function Cart() {
       if (compareArrays(carts, cart)) {
          updateCart(CART_ACTION[3], []);
       } else {
-         updateCart(CART_ACTION[2], carts);
+         const newCart = carts.filter((item) => item.totalQuantity > 0);
+         updateCart(CART_ACTION[2], newCart);
       }
    };
 
@@ -48,9 +49,26 @@ function Cart() {
       <Container maxWidth='lg'>
          {carts && carts?.length > 0 ? (
             <Grid container spacing={2}>
+               <Grid item xs={12}>
+                  <Box
+                     component={Link}
+                     to='/products'
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        color: '#111',
+                        '&:hover': { textDecoration: 'underline' }
+                     }}>
+                     <KeyboardArrowLeftIcon /> Tiếp tục mua hàng
+                  </Box>
+               </Grid>
                <Grid item xs={8}>
-                  <Box sx={{ padding: '8px 12px', backgroundColor: '#f1f1f1' }}>
-                     <Typography variant='h5' fontWeight='bold'>
+                  <Box sx={{ padding: '6px 12px',borderBottom: '2px solid black' }}>
+                     <Typography
+                        variant='h5'
+                        fontWeight='bold'
+                        sx={{ lineHeight: '1.6' }}>
                         Giỏ hàng
                      </Typography>
                   </Box>
