@@ -11,7 +11,6 @@ import { Box } from '@mui/system';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 import toFormatMoney from '@Core/Helper/Price';
 import { paymentMethodOptions, paymentStatusOptions } from '../utils';
-<<<<<<< HEAD
 import useAuth from '@App/hooks/useAuth';
 
 export default function BaseFormBill(props) {
@@ -21,12 +20,6 @@ export default function BaseFormBill(props) {
 
    const payment_status = watch('payment_status');
 
-=======
-export default function BaseFormBill(props) {
-   const { billStatus, billDetail, form, onSubmit } = props;
-   const { control, handleSubmit, watch } = form;
-   const payment_status = watch('payment_status');
->>>>>>> 27c24d661bb9c17be0bcb2a5209af2d03b014fd0
    return (
       <Box component='form' onSubmit={handleSubmit(onSubmit)}>
          <Grid container gap={3}>

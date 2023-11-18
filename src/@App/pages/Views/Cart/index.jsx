@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, Container, Divider, Grid, Stack, Typography } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import CartProductItem from './components/CartProductItem';
 import CartBill from './components/CartBill';
 import { useQuery } from '@tanstack/react-query';
@@ -14,10 +14,18 @@ function Cart() {
    const { user } = useAuth();
    const { cart, updateCart } = useCart();
 
-   const { data: carts, refetch: getCart } = useQuery(['getCart'], async () => {
-      const res = await cartService.getCart(user._id);
-      return res.data;
-   });
+   const { data: carts, refetch: getCart } = useQuery(
+      ['getCart'],
+      async () => {
+         const res = await cartService.getCart(user._id);
+         return res.data;
+      },
+      {
+         onSuccess(data) {
+            updateCart(CART_ACTION[2], data);
+         }
+      }
+   );
 
    const totalPrice = useMemo(() => {
       const newCart = carts ? carts?.filter((item) => cart.includes(item.product_id)) : [];
@@ -64,11 +72,8 @@ function Cart() {
                   </Box>
                </Grid>
                <Grid item xs={8}>
-                  <Box sx={{ padding: '6px 12px',borderBottom: '2px solid black' }}>
-                     <Typography
-                        variant='h5'
-                        fontWeight='bold'
-                        sx={{ lineHeight: '1.6' }}>
+                  <Box sx={{ padding: '6px 12px', borderBottom: '2px solid black' }}>
+                     <Typography variant='h5' fontWeight='bold' sx={{ lineHeight: '1.6' }}>
                         Giỏ hàng
                      </Typography>
                   </Box>
@@ -79,73 +84,6 @@ function Cart() {
                      </Typography>
                   </Box>
 
-<<<<<<< HEAD
-               <Stack mt={2} gap={2}>
-                  <ProductCartItem />
-                  <ProductCartItem />
-                  <ProductCartItem />
-               </Stack>
-            </Grid>
-            <Grid item xs={4}>
-               <Stack gap='20px' sx={{ bgcolor: '#f1f1f1', pb: '20px', pt: '5px', px: 3 }}>
-                  <Typography variant='h6' sx={{ fontWeight: 'bold', py: 1, borderBottom: '2px solid black' }}>
-                     Đơn hàng
-                  </Typography>
-                  <Box>
-                     <FormLabel sx={{ display: 'block', fontSize: '20px', fontWeight: 'bold', mb: 0.5 }}>
-                        NHẬP MÃ KHUYẾN MÃI
-                     </FormLabel>
-                     <Box sx={{ display: 'flex', gap: 1 }}>
-                        <TextField />
-                        <Button>Áp dụng</Button>
-                     </Box>
-                  </Box>
-                  <Box sx={{ borderBottom: '2px dashed #000', my: '2px' }}></Box>
-                  <Stack
-                     gap={2}
-                     sx={{
-                        color: '#808080',
-                        fontWeight: 'bold',
-                        fontSize: '18px'
-                     }}>
-                     <Box display='flex' justifyContent='space-between'>
-                        <Box component='p' m={0}>
-                           Đơn hàng
-                        </Box>
-                        <Box component='p' m={0}>
-                           350.000 VND
-                        </Box>
-                     </Box>
-                     <Box display='flex' justifyContent='space-between' >
-                        <Box component='p' m={0}>
-                           Giảm
-                        </Box>
-                        <Box component='p' m={0}>
-                           0 VND
-                        </Box>
-                     </Box>
-                  </Stack>
-                  <Box sx={{ borderBottom: '2px dashed #000', my: '2px' }}></Box>
-                  <Box
-                     sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        color: '#000',
-                        fontSize: '20px',
-                        fontWeight: 'bold'
-                     }}>
-                     <Box component='p' m={0}>
-                        Tạm tính
-                     </Box>
-                     <Box component='p' m={0}>
-                        350.000 VND
-                     </Box>
-                  </Box>
-                  <Button fullWidth sx={{ textTransform: 'uppercase', py: '10px', fontWeight: 'bold' }} >
-                     Tiếp tục thanh toán
-                  </Button>
-               </Stack>
-=======
                   <Stack mt={2} gap={2}>
                      {carts?.map((item, index) => {
                         return (
@@ -171,7 +109,6 @@ function Cart() {
                <Grid item xs={4}>
                   <CartBill totalPrice={totalPrice} />
                </Grid>
->>>>>>> test
             </Grid>
          ) : (
             <Stack gap={3}>

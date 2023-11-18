@@ -133,7 +133,7 @@ function Shipping() {
          )}
          <Box
             component='form'
-            // sx={{ visibility: 'hidden', opacity: 0 }}
+            sx={{ visibility: 'hidden', opacity: 0 }}
             action={paymentService.getUrlPayment()}
             method='post'>
             <input name='amount' type='number' value={refPrice.current} />

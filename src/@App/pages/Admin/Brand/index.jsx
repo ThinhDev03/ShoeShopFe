@@ -53,14 +53,16 @@ function Brand() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject._id)} />
-                     <CoreTableActionDelete
-                        callback={() =>
-                           mutation.mutate({
-                              id: subject._id
-                           })
-                        }
-                        content='Bạn có chắc chắn muốn xoá?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() =>
+                              mutation.mutate({
+                                 id: subject._id
+                              })
+                           }
+                           content='Bạn có muốn xoá môn học này?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }
