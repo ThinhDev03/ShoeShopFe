@@ -7,10 +7,8 @@ class BillService extends BaseService {
       super(params);
       this.setRequest();
    }
-   async updateStatus(id, status) {
-      console.log(status);
-
-      return this.request.put(this.BASE_ENDPOINT + '/update-status' + '/' + id, { status });
+   async updateStatus(id, body) {
+      return this.request.put(this.BASE_ENDPOINT + '/update-status' + '/' + id, body);
    }
 }
 

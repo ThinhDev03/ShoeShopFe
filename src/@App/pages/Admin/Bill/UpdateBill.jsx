@@ -26,20 +26,20 @@ export default function UpdateBill() {
       {
          onSuccess(data) {
             const extendData = data.data;
-            console.log(extendData.payment_id.payment_method);
             form.reset({
                ...extendData,
                user_order: extendData.user_id?.fullname,
                payment_method: extendData?.payment_id ? extendData.payment_id.payment_method : '',
-               payment_status: extendData?.payment_id ? extendData.payment_id.status : ''
+               payment_status: extendData?.payment_id ? extendData.payment_id.status : '',
+               payment_id: extendData?.payment_id ? extendData.payment_id._id : ''
             });
          },
          initialData: { billDetail: [] }
       }
    );
    const { mutate: onChangeStatus } = useMutation({
-      mutationFn: async ({ id, status }) => {
-         return await billService.updateStatus(id, status);
+      mutationFn: async ({ id, ...rest }) => {
+         return await billService.updateStatus(id, rest);
       },
       onSuccess: () => {
          successMessage('Cập nhật đơn hàng thành công');
@@ -56,7 +56,12 @@ export default function UpdateBill() {
          content: 'Bạn có chắc muốn cập nhật trạng thái của đơn hàng?',
          okText: 'Cập nhật',
          onOk: () => {
-            onChangeStatus({ id: data._id, status: data.status });
+            onChangeStatus({
+               id: data._id,
+               status: data.status,
+               payment_id: data.payment_id,
+               payment_status: data.payment_status
+            });
          }
       });
    };

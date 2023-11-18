@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
-import { Box, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import statisticService from '@App/services/statistic.service';
 import '../index.css';
@@ -102,13 +102,13 @@ function ChartColumn() {
       }
    };
    return (
-      <Box sx={{ borderRadius: 2, overflow: 'hidden' }}>
+      <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
 
          <Typography mt={4} textAlign='center'>
             Biểu đồ thống kê sản phẩm có đánh giá cao
          </Typography>
-      </Box>
+      </Paper>
    );
 }
 
