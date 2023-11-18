@@ -28,7 +28,7 @@ export default function Size() {
          return await sizeService.deleteSize(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phẩm thành công!');
          getCategory();
       },
       onError: (error) => {

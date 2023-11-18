@@ -27,7 +27,7 @@ function Brand() {
          return await brandService.deleteBrand(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa thương hiệu thành công');
          getCategory();
       }
    });
@@ -53,16 +53,14 @@ function Brand() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject._id)} />
-                     <PermissionRestricted roleNames={ROLE[1]}>
-                        <CoreTableActionDelete
-                           callback={() =>
-                              mutation.mutate({
-                                 id: subject._id
-                              })
-                           }
-                           content='Bạn có muốn xoá môn học này?'
-                        />
-                     </PermissionRestricted>
+                     <CoreTableActionDelete
+                        callback={() =>
+                           mutation.mutate({
+                              id: subject._id
+                           })
+                        }
+                        content='Bạn có chắc chắn muốn xoá?'
+                     />
                   </Box>
                );
             }

@@ -1,4 +1,3 @@
-// import { lazy } from "react";
 import { lazy } from 'react';
 import { Outlet, useRoutes } from 'react-router-dom';
 

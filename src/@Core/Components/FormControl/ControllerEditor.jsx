@@ -12,6 +12,7 @@ function ControllerEditor({ name, setValue, control, ...props }) {
       fieldState: { error }
    } = useController({ name, control });
 
+
    function uploadAdapter(loader) {
       return {
          upload: () => {

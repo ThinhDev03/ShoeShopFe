@@ -7,7 +7,7 @@ export default function CommentItem({ description, user_name, createdAt, rate })
       <Paper style={{ padding: '20px', marginTop: 10 }}>
          <Grid container wrap='nowrap' spacing={2}>
             <Grid item>
-               <Avatar alt='Remy Sharp' />
+               <Avatar alt='Remy Sharp'/>
             </Grid>
             <Grid justifyContent='left' item xs zeroMinWidth>
                <h4 style={{ margin: 0, textAlign: 'left', textTransform: 'capitalize' }}>{user_name}</h4>

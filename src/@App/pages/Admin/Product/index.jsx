@@ -53,8 +53,8 @@ function ProductPage() {
          return await productService.deleteProduct(id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
-         getProduct();
+         successMessage('Xóa sản phẩm thành công');
+         getCategory();
       }
    });
 
@@ -149,6 +149,7 @@ function ProductPage() {
                   <Box sx={{ display: 'flex' }}>
                      <CoreTableActionEdit callback={() => navigate('save?id=' + product?._id)} />
                      <CoreTableActionView callback={() => navigate('comment/' + product?._id)} title='Xem Bình luận' />
+
                      <PermissionRestricted roleNames={ROLE[1]}>
                         <CoreTableActionDelete
                            callback={() =>

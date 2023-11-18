@@ -18,11 +18,11 @@ export default function BaseFormSize(props) {
          <Grid container spacing={3}>
             <Grid item xs={6} sx={{ minHeight: '120px' }}>
                <FormLabel required title='Kích thước' name='size_name' gutterBottom />
-               <ControllerTextField name='size_name' control={control} />
+               <ControllerTextField name='size_name' control={ control } />
             </Grid>
             <Grid item xs={6} sx={{ minHeight: '120px' }}>
                <FormLabel title='Mô tả' name='description' gutterBottom required />
-               <ControllerTextarea name='description' control={control} />
+               <ControllerTextarea name='description' control={ control } />
             </Grid>
             <Grid item xs={12} sx={{ mt: 3 }}>
                <LoadingButton

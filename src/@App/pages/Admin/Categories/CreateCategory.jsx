@@ -33,7 +33,7 @@ function CreateCategory() {
       },
       onSuccess: () => {
          form.reset();
-         successMessage('Thêm thương hiệu thành công');
+         successMessage(' Thêm thương hiệu thành công ');
       }
    });
 
@@ -42,7 +42,7 @@ function CreateCategory() {
    };
 
    return (
-      <BasicPage currentPage='Thêm danh mục sản phẩm' breadcrumbs={breadcrumbs}>
+      <BasicPage currentPage='Thêm danh mục sản phẩm ' breadcrumbs={breadcrumbs}>
          <BaseFormCategory form={form} onSubmit={onSubmit} isLoading={isLoading} />
       </BasicPage>
    );

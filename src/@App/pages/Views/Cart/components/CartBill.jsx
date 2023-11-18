@@ -4,9 +4,13 @@ import { Box, Button, FormLabel, Stack, TextField, Typography } from '@mui/mater
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+<<<<<<< HEAD
 const CartBill = ({ totalPrice }) => {
    const { cart } = useCart();
 
+=======
+const CartBill = ({totalPrice}) => {
+>>>>>>> 27c24d661bb9c17be0bcb2a5209af2d03b014fd0
    return (
       <Stack gap='20px' sx={{ bgcolor: '#f1f1f1', pb: '20px', pt: '5px', px: 3 }}>
          <Typography variant='h6' sx={{ fontWeight: 'bold', py: 1, borderBottom: '2px solid black' }}>

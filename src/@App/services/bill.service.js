@@ -13,4 +13,5 @@ class BillService extends BaseService {
 }
 
 const billService = new BillService();
+
 export default billService;

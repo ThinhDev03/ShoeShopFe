@@ -12,18 +12,18 @@ import ChangeUserLogin from './ChangeUserLogin';
 import { routerPath } from '@App/configs/routerConfig';
 
 const headerListAction = [
-   {
-      id: 1,
-      title: 'Danh sách đơn hàng',
-      icon: Inventory2SharpIcon,
-      href: 'bill'
-   },
-   {
-      id: 5,
-      icon: ShoppingCartIcon,
-      title: 'Giỏ hàng',
-      href: routerPath.CART
-   }
+    {
+        id: 1,
+        title: 'Danh sách đơn hàng',
+        icon: Inventory2SharpIcon,
+        href: 'bill'
+    },
+    {
+        id: 5,
+        icon: ShoppingCartIcon,
+        title: 'Giỏ hàng',
+        href: routerPath.CART
+    }
 ];
 
 function Nav() {
@@ -63,10 +63,10 @@ function Nav() {
 }
 
 const FlexBox = styled(Stack)(({ theme }) => ({
-   flexDirection: 'row',
-   justifyContent: 'end',
-   alignItems: 'center',
-   gap: 24
+    flexDirection: 'row',
+    justifyContent: 'end',
+    alignItems: 'center',
+    gap: 24
 }));
 
 export default React.memo(Nav);
