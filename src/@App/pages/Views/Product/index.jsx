@@ -59,7 +59,7 @@ function Product() {
 
                   <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
                      <Pagination
-                        count={productList?.totalPage || 1}
+                        count={productList?.pageSize || 1}
                         onChange={(_, page) => {
                            setCurrentPage(page);
                         }}
