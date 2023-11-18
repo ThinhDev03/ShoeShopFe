@@ -8,7 +8,8 @@ import colorService from '@App/services/color.service';
 import BasicPage from '@App/components/customs/BasicPage';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
-
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
+import { ROLE } from '@App/configs/role';
 
 export default function Color() {
    const navigate = useNavigate();
@@ -18,7 +19,6 @@ export default function Color() {
       isFetching
    } = useQuery(['getColor'], async () => {
       const rest = await colorService.getAll();
-      console.log(rest.data);
       return rest.data;
    });
 
@@ -27,7 +27,7 @@ export default function Color() {
          return await colorService.deleteColor(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phảm thành công');
+         successMessage('Xóa sản phẩm thành công');
          getCategory();
       }
    });
@@ -60,7 +60,7 @@ export default function Color() {
             }
          }),
          columnHelper.accessor('description', {
-            header: 'Mô tả',
+            header: 'Mô tả'
          }),
          columnHelper.accessor('', {
             header: 'Thao tác',
@@ -69,14 +69,16 @@ export default function Color() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject?._id)} />
-                     <CoreTableActionDelete
-                        callback={() =>
-                           mutation.mutate({
-                              id: subject?._id
-                           })
-                        }
-                        content='Bạn có muốn xoá môn học này?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() =>
+                              mutation.mutate({
+                                 id: subject?._id
+                              })
+                           }
+                           content='Bạn có muốn xoá màu này?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }

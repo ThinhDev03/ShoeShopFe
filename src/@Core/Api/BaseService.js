@@ -65,21 +65,23 @@ class BaseService {
     * @param {Object} query
     * @returns
     */
-   list = (query = {}) => {
+   list = (query = {}, path) => {
       const params = {
          ...this.requestParams,
          ...query
       };
-      return this.request.get(this.BASE_ENDPOINT, { params });
+
+      const url = path ? this.BASE_ENDPOINT + path : this.BASE_ENDPOINT;
+      return this.request.get(url, { params });
    };
 
    /**
     * @param {string} id
     * @returns
     */
-   find = (id) => {
+   find = (id, query = {}) => {
       const url = `${this.BASE_ENDPOINT}/${id}`;
-      return this.request.get(url);
+      return this.request.get(url, query);
    };
 
    /**

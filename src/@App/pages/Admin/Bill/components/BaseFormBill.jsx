@@ -11,10 +11,15 @@ import { Box } from '@mui/system';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 import toFormatMoney from '@Core/Helper/Price';
 import { paymentMethodOptions, paymentStatusOptions } from '../utils';
+import useAuth from '@App/hooks/useAuth';
 
 export default function BaseFormBill(props) {
    const { billStatus, billDetail, form, onSubmit } = props;
-   const { control, handleSubmit } = form;
+   const { control, handleSubmit, watch } = form;
+   const { userPermission } = useAuth();
+
+   const payment_status = watch('payment_status');
+
    return (
       <Box component='form' onSubmit={handleSubmit(onSubmit)}>
          <Grid container gap={3}>
@@ -76,12 +81,7 @@ export default function BaseFormBill(props) {
                <Grid item xs={12} md={6}>
                   <FormGroup>
                      <FormLabel required title='Trạng thái thanh toán' name='payment_status' gutterBottom />
-                     <ControllerSelect
-                        name='payment_status'
-                        options={paymentStatusOptions}
-                        control={control}
-                        disabled
-                     />
+                     <ControllerSelect name='payment_status' options={paymentStatusOptions} control={control} />
                   </FormGroup>
                </Grid>
 
@@ -91,6 +91,15 @@ export default function BaseFormBill(props) {
                      <ControllerSelect name='status' options={billStatus} control={control} />
                   </FormGroup>
                </Grid>
+
+               {/* {payment_status === billStatus[3] ||
+                  (payment_status === billStatus[4] && (
+                     <Grid marginTop={3} marginLeft={3} item md={12}>
+                        <Button variant='contained' color='secondary' startIcon={<SaveIcon />} type='submit'>
+                           Lưu đơn hàng
+                        </Button>
+                     </Grid>
+                  ))} */}
 
                <Grid marginTop={3} marginLeft={3} item md={12}>
                   <Button variant='contained' color='secondary' startIcon={<SaveIcon />} type='submit'>

@@ -3,53 +3,19 @@ import sizeService from '@App/services/size.service';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Grid } from '@mui/material';
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import yupDetail from '../utils/yupProductDetail';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
-import UploadThumbnail from './UploadThumbnail';
 import { LoadingButton } from '@mui/lab';
 import SaveIcon from '@mui/icons-material/Save';
 import productDetailService from '@App/services/product-detail.service';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import SelectImageDetail from './SelectImageDetail';
-import productService from '@App/services/product.service';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
-import { data } from 'autoprefixer';
+import { ListTitle } from '../utils';
 
-const ListTitle = [
-   {
-      title: 'Kích thước',
-      grid: 2,
-      required: true
-   },
-   {
-      title: 'Màu sắc',
-      grid: 2,
-      required: true
-   },
-   {
-      title: 'Số lượng',
-      grid: 2,
-      required: true
-   },
-   {
-      title: 'Giá bán',
-      grid: 2,
-      required: true
-   },
-   {
-      title: 'Sale (%)',
-      grid: 2,
-      required: false
-   },
-   {
-      title: 'Hình ảnh',
-      grid: 2,
-      required: true
-   }
-];
 
 const valueDefault = {
    size_id: '',
@@ -61,13 +27,14 @@ const valueDefault = {
 };
 
 function BaseFormProductDetail(props) {
-   const { title, product_id } = props;
-
+   const { title, product_id, isChangeImages, sizes, colors } = props;
    const {
       handleSubmit,
       control,
+      reset,
       formState: { errors }
    } = useForm({
+      mode: 'onSubmit',
       resolver: yupResolver(yupDetail),
       defaultValues: {
          details: [valueDefault]
@@ -85,6 +52,20 @@ function BaseFormProductDetail(props) {
          return await productDetailService.createProductDetail(newData);
       },
       onSuccess: (data) => {
+         getProductDetail();
+         successMessage(data.message);
+      },
+      onError: (error) => {
+         errorMessage(error);
+      }
+   });
+   const { mutate: updateProductDetail } = useMutation({
+      mutationFn: async (data) => {
+         const newData = data.map((item) => ({ ...item, product_id }));
+         return await productDetailService.updateProductDetail(newData);
+      },
+      onSuccess: (data) => {
+         getProductDetail();
          successMessage(data.message);
       },
       onError: (error) => {
@@ -92,34 +73,7 @@ function BaseFormProductDetail(props) {
       }
    });
 
-   const [sizes, colors] = useQueries({
-      queries: [
-         {
-            queryKey: ['getSize'],
-            queryFn: async () => {
-               try {
-                  const rest = await sizeService.getAll();
-                  return rest.data;
-               } catch (error) {
-                  errorMessage();
-               }
-            }
-         },
-         {
-            queryKey: ['getColor'],
-            queryFn: async () => {
-               try {
-                  const rest = await colorService.getAll();
-                  return rest.data;
-               } catch (error) {
-                  errorMessage();
-               }
-            }
-         }
-      ]
-   });
-
-   useQuery(
+   const { data: productDetails, refetch: getProductDetail } = useQuery(
       ['getProductDetail', { product_id }],
       async () => {
          const res = await productDetailService.getOne(product_id);
@@ -127,107 +81,151 @@ function BaseFormProductDetail(props) {
       },
       {
          onSuccess: (data) => {
-            data.map((item) => {
-               append({
-                  size_id: item.size_id._id || '',
-                  color_id: item.color_id._id || '',
-                  quantity: item.quantity || '',
-                  price: item.price || '',
+            const newData = data.map((item) => {
+               return {
+                  _id: item._id,
+                  size_id: item.size_id._id,
+                  color_id: item.color_id._id,
+                  quantity: item.quantity,
+                  price: item.price,
                   sale: item.sale || '',
-                  image_id: item.image_id._id || ''
-               });
+                  image_id: item.image_id._id
+               };
+            });
+
+            reset({
+               details: newData.length > 0 ? newData : [valueDefault]
             });
          }
       }
    );
+
+   const { mutate: deleteProductDetail } = useMutation({
+      mutationFn: async (id) => {
+         return await productDetailService.deleteProductDetail(id);
+      }
+   });
+
    const onSubmit = (data) => {
+      // /update-detail
+      if (product_id) {
+         updateProductDetail(data?.details);
+         return;
+      }
       createProductDetail(data?.details);
    };
 
+   const newColors = useMemo(() => {
+      const newDetails = productDetails ? productDetails.map((item) => item.color_id._id) : [];
+
+      return (colors?.data?.length > 0 && colors.data.filter((color) => !newDetails.includes(color._id))) || [];
+   }, [colors.isLoading, productDetails]);
+   const newSizes = useMemo(() => {
+      const newDetails = productDetails ? productDetails.map((item) => item.size_id._id) : [];
+
+      return (sizes?.data?.length > 0 && sizes?.data.filter((size) => !newDetails.includes(size._id))) || [];
+   }, [sizes.isLoading, productDetails]);
+
    return (
-      <Box component='form' onSubmit={handleSubmit(onSubmit)}>
-         <Grid item xs={12}>
-            <Button onClick={() => prepend(valueDefault)}>Thêm biến thể</Button>
-         </Grid>
+      <>
+         <Box component='form' onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={2}>
+               {ListTitle.map((label, index) => {
+                  return (
+                     <Grid item xs={label.grid} key={index} mt={4}>
+                        <FormLabel required={label.required} title={label.title} name='color_id' />
+                     </Grid>
+                  );
+               })}
 
-         <Grid container spacing={2}>
-            {ListTitle.map((label, index) => {
-               return (
-                  <Grid item xs={label.grid} key={index} mt={4}>
-                     <FormLabel required={label.required} title={label.title} name='color_id' />
-                  </Grid>
-               );
-            })}
-
-            {fields.map((item, index) => {
-               return (
-                  <Grid item xs={12} key={item.id}>
-                     <Grid
-                        container
-                        spacing={1}
-                        sx={{
-                           boxShadow: 'rgba(0, 0, 0, 0.08) 0px 4px 12px;',
-                           borderRadius: '10px',
-                           padding: '8px 8px 8px 0'
-                        }}>
+               {fields.map((item, index) => {
+                  return (
+                     <Grid item xs={12} key={index}>
                         <Grid
-                           item
-                           xs={2}
-                           sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                           <Box sx={{ height: '60px' }}>
+                           container
+                           spacing={1}
+                           sx={{
+                              boxShadow: 'rgba(0, 0, 0, 0.08) 0px 4px 12px;',
+                              borderRadius: '10px',
+                              paddingRight: '8px'
+                           }}>
+                           <Grid
+                              item
+                              xs={2}
+                              sx={{
+                                 display: 'flex',
+                                 flexDirection: 'column',
+                                 justifyContent: 'space-between'
+                              }}>
+                              <Box sx={{ height: '60px' }}>
+                                 <ControllerSelect
+                                    name={`details.${index}.size_id`}
+                                    options={item._id ? sizes.data || [] : newSizes}
+                                    _value='_id'
+                                    _title='size_name'
+                                    control={control}
+                                    disabled={Boolean(item._id)}
+                                 />
+                              </Box>
+                              <Box>
+                                 <Button
+                                    size='small'
+                                    color='error'
+                                    sx={{ mb: '4px' }}
+                                    onClick={() => {
+                                       deleteProductDetail(item._id);
+                                       remove(index);
+                                    }}>
+                                    Xóa
+                                 </Button>
+                              </Box>
+                           </Grid>
+                           <Grid item xs={2} sx={{ height: '100px' }}>
                               <ControllerSelect
-                                 name={`details.${index}.size_id`}
-                                 options={sizes?.data || []}
+                                 name={`details.${index}.color_id`}
+                                 options={item._id ? colors.data || [] : newColors}
                                  _value='_id'
-                                 _title='size_name'
+                                 _title='color_name'
+                                 control={control}
+                                 disabled={Boolean(item._id)}
+                              />
+                           </Grid>
+                           <Grid item xs={2}>
+                              <ControllerTextField name={`details.${index}.quantity`} control={control} />
+                           </Grid>
+                           <Grid item xs={2}>
+                              <ControllerTextField name={`details.${index}.price`} control={control} />
+                           </Grid>
+                           <Grid item xs={2}>
+                              <ControllerTextField name={`details.${index}.sale`} control={control} />
+                           </Grid>
+                           <Grid item xs={2} sx={{ height: '70px' }}>
+                              <SelectImageDetail
+                                 isChangeImages={isChangeImages}
+                                 name={`details.${index}.image_id`}
                                  control={control}
                               />
-                           </Box>
-                           <Box>
-                              <Button size='small' color='error' sx={{ ml: 2 }} onClick={() => remove(index)}>
-                                 Xóa
-                              </Button>
-                           </Box>
-                        </Grid>
-                        <Grid item xs={2} sx={{ height: '100px' }}>
-                           <ControllerSelect
-                              name={`details.${index}.color_id`}
-                              options={colors?.data || []}
-                              _value='_id'
-                              _title='color_name'
-                              control={control}
-                           />
-                        </Grid>
-                        <Grid item xs={2}>
-                           <ControllerTextField name={`details.${index}.quantity`} control={control} />
-                        </Grid>
-                        <Grid item xs={2}>
-                           <ControllerTextField name={`details.${index}.price`} control={control} />
-                        </Grid>
-                        <Grid item xs={2}>
-                           <ControllerTextField name={`details.${index}.sale`} control={control} />
-                        </Grid>
-                        <Grid item xs={2} sx={{ height: '110px' }}>
-                           <SelectImageDetail name={`details.${index}.image_id`} control={control} />
+                           </Grid>
                         </Grid>
                      </Grid>
-                  </Grid>
-               );
-            })}
-         </Grid>
-         <Box>
-            <LoadingButton
-               loading={isLoading}
-               loadingPosition='start'
-               variant='contained'
-               startIcon={<SaveIcon />}
-               type='submit'
-               sx={{ mt: 4 }}>
-               {title || 'Thêm mới'}
-            </LoadingButton>
+                  );
+               })}
+            </Grid>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+               <Button onClick={() => append(valueDefault)}>Thêm biến thể mới</Button>
+               <LoadingButton
+                  loading={isLoading}
+                  loadingPosition='start'
+                  variant='contained'
+                  startIcon={<SaveIcon />}
+                  type='submit'
+                  sx={{ mt: 4 }}>
+                  {title || 'Lưu biến thể'}
+               </LoadingButton>
+            </Box>
          </Box>
-      </Box>
+      </>
    );
 }
 
-export default BaseFormProductDetail;
+export default React.memo(BaseFormProductDetail);

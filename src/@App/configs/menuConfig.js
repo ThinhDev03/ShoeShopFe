@@ -10,7 +10,7 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 const menuCofig = [
    {
       id: 1,
-      role: ['*'],
+      role: [ROLE[1], ROLE[2]],
       title: 'Trang Chủ',
       aceptPermission: true,
       icon: DashboardOutlinedIcon,
@@ -47,13 +47,13 @@ const menuCofig = [
       children: [
          { title: 'Tổng quan', path: routerPath.PRODUCTS },
          { title: 'Tạo mới', path: routerPath.PRODUCTS + '/save' },
-         { title: 'Màu sắc', path: routerPath.PRODUCTS + "/" + routerPath.COLOR },
-         { title: 'Kích thước', path: routerPath.PRODUCTS + "/" + routerPath.SIZE },
+         { title: 'Màu sắc', path: routerPath.PRODUCTS + '/' + routerPath.COLOR },
+         { title: 'Kích thước', path: routerPath.PRODUCTS + '/' + routerPath.SIZE }
       ]
    },
    {
       id: 7,
-      role: [ROLE[1], ROLE[2]],
+      role: [ROLE[1]],
       title: 'Người dùng',
       icon: PersonIcon,
       path: routerPath.USER,

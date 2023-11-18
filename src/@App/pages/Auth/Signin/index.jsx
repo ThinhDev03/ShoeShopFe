@@ -25,19 +25,21 @@ function Signin() {
    const [loading, setLoading] = useState(false);
    const { authLogin } = useAuth();
    const {} = useLocalStorage();
-   const { handleSubmit, control } = useForm({
+   const { handleSubmit, control, setError, setValue } = useForm({
       resolver: yupResolver(schemaLogin)
    });
 
    const handleSubmitForm = async (data) => {
       setLoading(true);
       try {
-         const rest = await authService.login(data);
+         const rest = await authService.login( data );
          authLogin(rest.user);
          localStorage.setItem('token', rest.token);
          successMessage('Đăng nhập thành công!');
       } catch (error) {
          errorMessage('Đăng nhập thất bại!');
+         setError('username', { type: 'custom', message: 'Tài khoản hoặc mật khẩu không chính xác.' });
+         setValue('password', '');
       }
       setLoading(false);
    };
@@ -71,15 +73,6 @@ function Signin() {
                   Đăng nhập
                </LoadingButton>
             </form>
-            <Divider sx={{ my: 2, opacity: 0.5, fontWeight: 'medium' }}>Hoặc</Divider>
-            <Stack flexDirection='row' gap={2}>
-               <ButtonLoginSocial fullWidth variant='outlined' startIcon={<FacebookIcon sx={{ color: '#1877f2' }} />}>
-                  Facebook
-               </ButtonLoginSocial>
-               <ButtonLoginSocial fullWidth variant='outlined' startIcon={<GoogleIcon sx={{ color: '#1877f2' }} />}>
-                  Google
-               </ButtonLoginSocial>
-            </Stack>
             <Typography component='p' textAlign='center' mt={2}>
                Bạn không có tài khoản? Hãy{' '}
                <Box

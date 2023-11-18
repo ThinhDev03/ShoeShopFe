@@ -14,8 +14,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import productService from '@App/services/product.service';
 
 function BaseFormProduct(props) {
-   const { form, title, product_id, setSearchParams } = props;
-   const { handleSubmit, control, reset } = form;
+   const { form, title, product_id, setSearchParams, setIsChangeImages } = props;
+
+   const { handleSubmit, control, setValue, getValues } = form;
 
    const [categories, brands] = useQueries({
       queries: [
@@ -42,21 +43,24 @@ function BaseFormProduct(props) {
       ]
    });
 
-   const {} = useQuery(
+   useQuery(
       ['getProduct', { product_id }],
       async () => {
-         const res = await productService.getOne(product_id);
-         return res.data;
+         if (product_id) {
+            const res = await productService.getOne(product_id);
+            return res.data;
+         }
+         return true;
       },
       {
          onSuccess(data) {
-            reset({
-               name: data.name,
-               category_id: data.category_id._id,
-               brand_id: data.brand_id._id,
-               description: data.description,
-               thumbnail: data.thumbnail
-            });
+            if (product_id) {
+               setValue('name', data.name);
+               setValue('category_id', data.category_id._id);
+               setValue('brand_id', data.brand_id._id);
+               setValue('description', data.description);
+               setValue('thumbnail', data.thumbnail);
+            }
          }
       }
    );
@@ -87,6 +91,7 @@ function BaseFormProduct(props) {
    });
 
    const onSubmit = async (data) => {
+      console.log(data);
       product_id ? updateProduct(data) : createProduct(data);
    };
 
@@ -119,11 +124,19 @@ function BaseFormProduct(props) {
             </Grid>
             <Grid item xs={2}>
                <FormLabel required title='Ảnh đại diện' name='thumbnail' gutterBottom />
-               <UploadThumbnail name='thumbnail' control={control} />
+               <UploadThumbnail product_id={product_id} name='thumbnail' control={control} multiple={false} />
             </Grid>
             <Grid item xs={10}>
                <FormLabel required title='Ảnh khác' name='images' gutterBottom />
-               <UploadThumbnail name='images' control={control} multiple={true} />
+               <UploadThumbnail
+                  getValues={getValues}
+                  name='images'
+                  control={control}
+                  multiple
+                  setValue={setValue}
+                  product_id={product_id}
+                  setIsChangeImages={setIsChangeImages}
+               />
             </Grid>
             <Grid item xs={12}>
                <FormLabel title='Mô tả sản phẩm' name='description' gutterBottom />
@@ -137,7 +150,7 @@ function BaseFormProduct(props) {
                   startIcon={<SaveIcon />}
                   type='submit'
                   sx={{ mt: 4 }}>
-                  {title || 'Thêm mới'}
+                  {title || 'Lưu sản phẩm'}
                </LoadingButton>
             </Grid>
          </Grid>

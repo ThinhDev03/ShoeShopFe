@@ -17,9 +17,9 @@ function BaseFormRegister({ form }) {
    const handleSubmitForm = async (data) => {
       setLoading(true);
       try {
-         await authService.register(data);
+         await authService.register( data );
          successMessage('Đăng ký thành công!');
-         navigate('/signin');
+         navigate('/sign-in');
       } catch (error) {
          setLoading(false);
          errorMessage(error);

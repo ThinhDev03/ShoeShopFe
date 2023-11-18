@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import MuiFormGroup from '@mui/material/FormGroup';
 import { styled } from '@mui/material/styles';
+
 const FormGroup = (props) => {
    const { hidden, children, fullWidth, ...rest } = props;
    if (hidden) {
@@ -29,4 +30,5 @@ FormGroup.propTypes = {
    fullWidth: PropTypes.bool,
    hidden: PropTypes.bool
 };
+
 export default FormGroup;

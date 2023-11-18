@@ -1,11 +1,12 @@
 import { Avatar, Box, Menu, MenuItem, ListItemIcon, Divider, Stack } from '@mui/material';
 import { Logout, Settings } from '@mui/icons-material';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import React, { useState } from 'react';
 import useAuth from '@App/hooks/useAuth';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
+import { routerPath } from '@App/configs/routerConfig';
 
 function UserMenu() {
    const { user, isAuththentication, logout } = useAuth();
@@ -35,6 +36,7 @@ function UserMenu() {
    };
 
    const handleLogout = async () => {
+      handleClose();
       confirm({ title: 'Đăng xuất', content: 'Bạn có chắc muốn đăng xuất?', okText: 'Đăng xuất', onOk: logout });
    };
 
@@ -51,7 +53,7 @@ function UserMenu() {
                   textDecoration: 'none'
                }}
                component={NavLink}
-               to='signin'>
+               to='sign-in'>
                <LoginIcon sx={{ width: '14px', height: '14px' }} />
                <Box component='span'>{isAuththentication ? user.username : 'Đăng nhập'}</Box>
             </Stack>
@@ -78,21 +80,15 @@ function UserMenu() {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                   getContentAnchorEl={null}>
-                  <MenuItem key={'Profile'} onClick={handleClose}>
-                     <Avatar /> Profile
+                  <MenuItem key={'Profile'} component={Link} to={routerPath.PROFILE} onClick={handleClose}>
+                     <Avatar /> Trang cá nhân
                   </MenuItem>
                   <Divider />
-                  <MenuItem key={'Settings'} onClick={handleOptionClick}>
-                     <ListItemIcon>
-                        <Settings fontSize='small' />
-                     </ListItemIcon>
-                     Settings
-                  </MenuItem>
                   <MenuItem key={'Logout'} onClick={handleLogout}>
                      <ListItemIcon>
                         <Logout fontSize='small' />
                      </ListItemIcon>
-                     Logout
+                     Đăng xuất
                   </MenuItem>
                </Menu>
             </Box>

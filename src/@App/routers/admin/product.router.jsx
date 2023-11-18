@@ -13,6 +13,7 @@ const UpdateSize = Loadable(lazy(() => import('@App/pages/Admin/Size/UpdateSize'
 const Color = Loadable(lazy(() => import('@App/pages/Admin/Color')));
 const CreateColor = Loadable(lazy(() => import('@App/pages/Admin/Color/CreateColor')));
 const UpdateColor = Loadable(lazy(() => import('@App/pages/Admin/Color/UpdateColor')));
+const Comment = Loadable(lazy(() => import('@App/pages/Admin/Comment')));
 
 const productRouter = {
    path: routerPath.PRODUCTS,
@@ -65,6 +66,10 @@ const productRouter = {
                element: <UpdateColor />
             }
          ]
+      },
+      {
+         path: 'comment/:id',
+         element: <Comment />
       }
    ]
 };

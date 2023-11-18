@@ -8,7 +8,7 @@ import productService from '@App/services/product.service';
 import { useSearchParams } from 'react-router-dom';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
-function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, title }) {
+function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, isChangeImages }) {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
@@ -25,7 +25,7 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
    } = useController({ name, control, defaultValue: defaultValue || '' });
 
    const { data, isFetched } = useQuery(
-      ['getImageProduct', { product_id }],
+      ['getImageProduct', { product_id }, isChangeImages],
       async () => {
          const rest = await productService.getImageProduct(product_id);
          return rest.data;
@@ -35,8 +35,10 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
             data.filter((item) => {
                if (item._id === value) {
                   setImageUrl(item.image_url);
+                  return item;
                }
             });
+            return data;
          }
       }
    );
@@ -44,14 +46,13 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
    const handleChangeImage = (image) => {
       onChange(image._id);
       setImageUrl(image.image_url);
+      handleClose();
    };
 
    const handleDelete = () => {
       onChange('');
       setImageUrl('');
    };
-
-   console.log(imageUrl);
 
    return (
       <React.Fragment>
@@ -67,8 +68,8 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
                cursor: 'pointer'
             }}>
             {(imageUrl.length > 0 && (
-               <Box sx={{ position: 'relative' }}>
-                  <LazyLoadingImage src={imageUrl} />
+               <Box sx={{ position: 'relative', height: '100%', width: '100%' }}>
+                  <LazyLoadingImage h='100%' src={imageUrl} />
                   <DeleteImage onClick={() => handleDelete()} />
                </Box>
             )) || (
@@ -126,8 +127,9 @@ export const DeleteImage = ({ onClick }) => {
       <Box
          sx={{
             position: 'absolute',
-            top: '-5px',
-            right: '-10px'
+            top: '-7px',
+            right: '-10px',
+            zIndex: 400
          }}
          onClick={onClick}>
          <RemoveCircleIcon />

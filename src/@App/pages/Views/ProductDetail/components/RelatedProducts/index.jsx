@@ -8,16 +8,20 @@ import 'swiper/css/pagination';
 
 import '../SwiperSlider/style.css';
 import ProductCard from '@App/components/customs/common/ProductCard';
-
-const array = [
-   'https://ananas.vn/wp-content/uploads/Pro_AGLT0028_1.jpg',
-   'https://ananas.vn/wp-content/uploads/Hover-6-2.jpg',
-   'https://ananas.vn/wp-content/uploads/Pro_AGLT0028_0.jpg',
-   'https://ananas.vn/wp-content/uploads/Pro_AGLT0028_1.jpg',
-   'https://ananas.vn/wp-content/uploads/Pro_AGLT0028_2.jpg'
-];
+import { useQuery } from '@tanstack/react-query';
+import productService from '@App/services/product.service';
 
 function RelatedProducts() {
+   const { data } = useQuery(
+      ['relateProducts'],
+      async () => {
+         const rest = await productService.getAll();
+         return rest.data;
+      },
+      {
+         initialData: []
+      }
+   );
    return (
       <React.Fragment>
          <Typography variant='h5' sx={{ textAlign: 'center', textTransform: 'uppercase' }}>
@@ -25,19 +29,22 @@ function RelatedProducts() {
          </Typography>
          <Box sx={{ my: 3 }}>
             <Swiper
-               slidesPerView={3}
-               spaceBetween={30}
+               slidesPerView={4}
+               spaceBetween={12}
                pagination={{
                   clickable: true
                }}
                className='mySwiper'>
-               {array.map((item, index) => {
-                  return (
-                     <SwiperSlide key={index} style={{ opacity: 1 }}>
-                        <ProductCard />
-                     </SwiperSlide>
-                  );
-               })}
+               {data &&
+                  data.map((item, index) => {
+                     if (index <= 4) {
+                        return (
+                           <SwiperSlide key={index} style={{ opacity: 1 }}>
+                              <ProductCard data={item} />
+                           </SwiperSlide>
+                        );
+                     }
+                  })}
             </Swiper>
          </Box>
       </React.Fragment>

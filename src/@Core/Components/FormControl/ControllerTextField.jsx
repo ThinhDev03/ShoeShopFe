@@ -28,10 +28,12 @@ const ControllerTextField = (props) => {
       />
    );
 };
+
 ControllerTextField.propTypes = {
    control: PropTypes.object.isRequired,
    name: PropTypes.string.isRequired,
    placeholder: PropTypes.string,
    disabled: PropTypes.bool
 };
+
 export default ControllerTextField;

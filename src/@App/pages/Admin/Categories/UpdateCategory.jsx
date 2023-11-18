@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 
 const breadcrumbs = [
    {
-      name: 'Trang chủ',
+      name: 'Trang chủ ',
       link: '/'
    },
    {
@@ -29,7 +29,6 @@ function UpdateCategory() {
       return rest.data;
    },{
       onSuccess: (data) => {
-         console.log(data);
          form.reset(data);
       }
    });
@@ -45,7 +44,7 @@ function UpdateCategory() {
       },
       onSuccess: () => {
          findOneCategory();
-         successMessage('Cập nhật danh mục thành công');
+         successMessage(' Cập nhật danh mục thành công ');
       }
    });
 
