@@ -1,23 +1,7 @@
-import useAuth from '@App/hooks/useAuth';
-import cartService from '@App/services/cart.service';
-import CoreRadioGroup from '@Core/Components/Input/CoreRadioGroup';
 import toFormatMoney, { toDiscountedPrice } from '@Core/Helper/Price';
 import { Box, Button, Stack, Typography, styled } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { rest } from 'lodash';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-
-const payment_method = [
-   {
-      label: 'Thanh toán online',
-      value: 'PAYMENT_ON_DELIVEY'
-   },
-   {
-      label: 'Thanh toán khi nhận hàng',
-      value: 'PAYMENT_IN_ADVANCE'
-   }
-];
 
 function Invoice({ handleSubmit, onSubmit, cart, totalPrice }) {
    return (
@@ -96,8 +80,6 @@ function Invoice({ handleSubmit, onSubmit, cart, totalPrice }) {
          </FlexBetween>
          <Button
             fullWidth
-            component={Link}
-            to=''
             type='submit'
             onClick={handleSubmit(onSubmit)}
             sx={{ fontSize: 22, fontWeight: 'bold', mt: 2 }}>

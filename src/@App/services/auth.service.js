@@ -45,6 +45,10 @@ class AuthService extends BaseService {
    refeshToken() {
       return this.find(authEndpoint.refestToken);
    }
+
+   updateUser(id, data) {
+      return this.request.put(this.BASE_ENDPOINT + '/' + authEndpoint.locked + '/' + id, data);
+   }
 }
 
 const authService = new AuthService();

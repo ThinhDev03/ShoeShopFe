@@ -1,4 +1,6 @@
 import BasicPage from '@App/components/customs/BasicPage';
+import { ROLE } from '@App/configs/role';
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
 import categoryService from '@App/services/category.service';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
@@ -48,14 +50,16 @@ function Categories() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject._id)} />
-                     <CoreTableActionDelete
-                        callback={() =>
-                           mutation.mutate({
-                              id: subject._id
-                           })
-                        }
-                        content='Bạn có chắc chắn muốn xoá?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() =>
+                              mutation.mutate({
+                                 id: subject._id
+                              })
+                           }
+                           content='Bạn có muốn xoá danh mục này?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }

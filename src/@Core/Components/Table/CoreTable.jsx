@@ -24,7 +24,7 @@ export const columnHelper = createColumnHelper();
 
 const CoreTable = (props) => {
    const { data, columns, pageSize, handleSetCurrentPage, loading, isPagination, query } = props;
-
+   console.log(pageSize);
    const pagination = React.useMemo(
       () => ({
          pageIndex: 1,

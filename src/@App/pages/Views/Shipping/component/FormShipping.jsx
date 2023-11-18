@@ -1,40 +1,54 @@
-import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import CoreRadioGroup from '@Core/Components/Input/CoreRadioGroup';
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React from 'react';
-import { payment_method } from '../utils';
+import React, { useEffect } from 'react';
+import { bankCode, getDistricts, getProvinces, getWards, payment_methods } from '../utils';
+import { useWatch } from 'react-hook-form';
+import AutoComplateProvince from './AutoComplateProvince';
 
 function FormShipping({ form }) {
-   const { control, register } = form;
+   const { control, register, watch } = form;
+   const watchProvince = useWatch({ control, name: 'province' });
+   const watchDistrict = useWatch({ control, name: 'district' });
+   // const [wards, setWards] = useState([]);
 
-   // const { data: provinces } = useQuery(['getProvinces'], async () => {
-   //    return await getProvinces();
-   // });
+   const { data: provinces } = useQuery(['getProvinces'], async () => {
+      const res = await getProvinces();
+      return res.map((item) => ({ value: item.code + '-' + item.name, title: item.name }));
+   });
+   console.log(watchProvince);
+   const { data: districts, mutate: queryDistricts } = useMutation({
+      mutationFn: async (code) => {
+         const res = await getDistricts(code);
+         console.log(res);
+         return res.map((item) => ({ value: item.code + '-' + item.name, title: item.name }));
+      }
+   });
 
-   // const { data: districts, mutate: queryDistricts } = useMutation({
-   //    mutationFn: async (code) => {
-   //       return await getDistricts(code);
-   //    }
-   // });
+   const { data: wards, mutate: queryWards } = useMutation({
+      mutationFn: async (code) => {
+         const res = await getWards(code);
+         return res.map((item) => ({ value: item.code + '-' + item.name, title: item.name }));
+      }
+   });
 
-   // const { data: wards, mutate: queryWards } = useMutation({
-   //    mutationFn: async (code) => {
-   //       return await getWards(code);
-   //    }
-   // });
+   useEffect(() => {
+      if (watchProvince) {
+         const province_code = watchProvince.split('-');
+         queryDistricts(province_code[0]);
+      }
+   }, [watchProvince]);
 
-   // useEffect(() => {
-   //    if (watch('province')) {
-   //       queryDistricts(watch('province'));
-   //    }
+   useEffect(() => {
+      if (watchDistrict) {
+         const district_code = watchDistrict.split('-');
+         queryWards(district_code[0]);
+      }
+   }, [watchDistrict]);
 
-   //    if (watch('district')) {
-   //       queryWards(watch('district'));
-   //    }
-   // }, [watch('province'), watch('district')]);
+   const method = watch('payment_method');
 
    return (
       <Box component='form'>
@@ -53,33 +67,54 @@ function FormShipping({ form }) {
             <FormLabel title='Số điện thoại' gutterBottom required />
             <ControllerTextField name='phone_number' control={control} />
          </Box>
-         {/* <Box mb={2}>
-            <FormLabel title='Tỉnh/ thành phố' gutterBottom required />
-            <CoreAutoComplete
-               name='province'
-               valuePath='code'
-               labelPath='name'
-               filterOptions={(options) => options}
-               onChangeSelect={(value) => console.log(value)}
-               returnValueType='enum'
-               control={control}
-               options={provinces}
-            />
-         </Box> */}
-         {/* <Box mb={2}>
-            <FormLabel title='Quận/ Huyện' gutterBottom required />
-            <ControllerSelect name='district' _value='code' _title='name' options={districts || []} control={control} />
-         </Box>
-         <Box mb={2}>
-            <FormLabel title='Phường Xã' gutterBottom required />
-            <ControllerSelect name='ward' _value='code' _title='name' options={wards || []} control={control} />
-         </Box> */}
+         <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+               <Box mb={2}>
+                  <FormLabel title='Tỉnh/ thành phố' gutterBottom required />
+                  <AutoComplateProvince
+                     name='province'
+                     valuePath='value'
+                     labelPath='title'
+                     returnValueType='enum'
+                     control={control}
+                     options={provinces || []}
+                  />
+               </Box>
+            </Grid>
+            <Grid item xs={12} md={4}>
+               <Box mb={2}>
+                  <FormLabel title='Quận/ Huyện' gutterBottom required />
+                  <AutoComplateProvince
+                     name='district'
+                     valuePath='value'
+                     labelPath='title'
+                     returnValueType='enum'
+                     control={control}
+                     options={districts || []}
+                  />
+               </Box>
+            </Grid>
+            <Grid item xs={12} md={4}>
+               <Box mb={2}>
+                  <FormLabel title='Xã/ Phường' gutterBottom required />
+                  <AutoComplateProvince
+                     name='ward'
+                     valuePath='value'
+                     labelPath='title'
+                     returnValueType='enum'
+                     control={control}
+                     options={wards || []}
+                  />
+               </Box>
+            </Grid>
+         </Grid>
+
          <Box mb={2}>
             <FormLabel title='Địa chỉ cụ thể' gutterBottom required />
             <ControllerTextField name='address' control={control} />
          </Box>
          <Box mb={2}>
-            <FormLabel title='Ghi chú' gutterBottom required />
+            <FormLabel title='Ghi chú' gutterBottom />
             <Box
                component='textarea'
                sx={{
@@ -106,8 +141,8 @@ function FormShipping({ form }) {
             <Box sx={{ fontSize: '18px' }}>
                <CoreRadioGroup
                   name='payment_method'
-                  defaultValue={payment_method[0].value}
-                  options={payment_method}
+                  defaultValue={payment_methods[0].value}
+                  options={payment_methods}
                   control={control}
                />
             </Box>

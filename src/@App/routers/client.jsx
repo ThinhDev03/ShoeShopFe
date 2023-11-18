@@ -2,6 +2,9 @@ import { routerPath } from '@App/configs/routerConfig';
 import Loadable from './components/Loadable';
 import { lazy } from 'react';
 import PublicRouter from './components/PublicRouter';
+import Profile from '@App/pages/Views/Profile';
+import CheckLoginUser from './components/CheckLoginUser';
+import Sale from '@App/pages/Views/Sale';
 
 const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
 const Register = Loadable(lazy(() => import('@App/pages/Auth/Register')));
@@ -21,23 +24,38 @@ const clientRoute = [
       element: <ProductDetail />
    },
    {
-      path: routerPath.CART,
-      element: <Cart />
+      path: '/sale',
+      element: <Sale />
    },
+
    {
-      path: routerPath.SHIPPING,
-      element: <Shipping />
-   },
-   {
-      path: routerPath.BILL,
-      element: <Bill />
+      path: '',
+      element: <CheckLoginUser />,
+      children: [
+         {
+            path: routerPath.CART,
+            element: <Cart />
+         },
+         {
+            path: routerPath.SHIPPING,
+            element: <Shipping />
+         },
+         {
+            path: routerPath.BILL,
+            element: <Bill />
+         },
+         {
+            path: routerPath.PROFILE,
+            element: <Profile />
+         }
+      ]
    },
    {
       path: '/',
       element: <PublicRouter />,
       children: [
          {
-            path: 'signin',
+            path: 'sign-in',
             element: <Signin />
          },
          {

@@ -37,11 +37,13 @@ function RelatedProducts() {
                className='mySwiper'>
                {data &&
                   data.map((item, index) => {
-                     return (
-                        <SwiperSlide key={index} style={{ opacity: 1 }}>
-                           <ProductCard data={item} />
-                        </SwiperSlide>
-                     );
+                     if (index <= 4) {
+                        return (
+                           <SwiperSlide key={index} style={{ opacity: 1 }}>
+                              <ProductCard data={item} />
+                           </SwiperSlide>
+                        );
+                     }
                   })}
             </Swiper>
          </Box>

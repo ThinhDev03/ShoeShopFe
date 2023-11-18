@@ -83,7 +83,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
    });
 
    const handleChangeInputFile = (event) => callbackUploadImage(event);
-
+   
    return (
       <React.Fragment>
          <WrapperUploadThumbnail error={Boolean(error)} multiple={multiple}>

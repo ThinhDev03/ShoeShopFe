@@ -8,6 +8,7 @@ import banner from '@App/assets/images/banner.png';
 import { useForm } from 'react-hook-form';
 import useDebounceInput from '@App/hooks/useDebounceInput';
 import { useState } from 'react';
+import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 function Product() {
    const [currentPage, setCurrentPage] = useState(1);
    const form = useForm({ mode: 'onChange', defaultValues: { search: '', category: '' } });
@@ -24,15 +25,23 @@ function Product() {
       }
    );
 
+   console.log(productList);
+
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
-         <Grid container spacing={4}>
+         <Grid container spacing={3}>
             <Grid item xs={4} md={3}>
-               <Filter form={form} category={category} brand={brand} />
+               <Box sx={{ backgroundColor: '#FFFFFF', py: 2, px: 1 }}>
+                  <Filter form={form} category={category} brand={brand} />
+               </Box>
             </Grid>
             <Grid item xs={8} md={9}>
                <Grid container spacing={2}>
-                  <Box component='img' src={banner} alt='banner' mb={2} mt={2} borderRadius='5px' />
+                  <Grid item xs={12}>
+                     <Box sx={{ width: '100%', overflow: 'hidden', borderRadius: '5px', mb: 2 }}>
+                        <Box component={LazyLoadingImage} src={banner} alt='banner' sx={{ width: '100%' }} />
+                     </Box>
+                  </Grid>
 
                   {isFetching
                      ? Array.from({ length: 6 }, (_, index) => index).map((item) => (
@@ -50,7 +59,7 @@ function Product() {
 
                   <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 4 }}>
                      <Pagination
-                        count={productList?.totalPage || 1}
+                        count={productList?.pageSize || 1}
                         onChange={(_, page) => {
                            setCurrentPage(page);
                         }}

@@ -4,7 +4,7 @@ import React from 'react';
 import BreadCrumbs from './@mui/BreadCrumbs';
 import { Link } from 'react-router-dom';
 
-export default function BasicPage({ currentPage, breadcrumbs, createTitle = '', children }) {
+export default function BasicPage({ currentPage, breadcrumbs, createTitle = '', sx, paperProps, children }) {
    return (
       <>
          <Box sx={{ display: 'flex', justifyContent: createTitle ? 'space-between' : 'start' }}>
@@ -17,7 +17,10 @@ export default function BasicPage({ currentPage, breadcrumbs, createTitle = '', 
                </Box>
             )}
          </Box>
-         <Paper elevation={2} sx={{ flex: 1, m: 3, p: 3, display: 'flex', flexDirection: 'column' }}>
+         <Paper
+            elevation={2}
+            sx={{ flex: 1, m: 3, p: 3, display: 'flex', flexDirection: 'column', ...sx }}
+            {...paperProps}>
             {children}
          </Paper>
       </>

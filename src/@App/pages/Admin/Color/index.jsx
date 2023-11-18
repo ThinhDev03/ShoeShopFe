@@ -8,7 +8,8 @@ import colorService from '@App/services/color.service';
 import BasicPage from '@App/components/customs/BasicPage';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import { CoreTableActionDelete, CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
-
+import PermissionRestricted from '@App/routers/components/PermissionRestricted';
+import { ROLE } from '@App/configs/role';
 
 export default function Color() {
    const navigate = useNavigate();
@@ -59,7 +60,7 @@ export default function Color() {
             }
          }),
          columnHelper.accessor('description', {
-            header: 'Mô tả',
+            header: 'Mô tả'
          }),
          columnHelper.accessor('', {
             header: 'Thao tác',
@@ -68,14 +69,16 @@ export default function Color() {
                return (
                   <Box>
                      <CoreTableActionEdit callback={() => navigate(subject?._id)} />
-                     <CoreTableActionDelete
-                        callback={() =>
-                           mutation.mutate({
-                              id: subject?._id
-                           })
-                        }
-                        content='Bạn có chắc chắn muốn xoá?'
-                     />
+                     <PermissionRestricted roleNames={ROLE[1]}>
+                        <CoreTableActionDelete
+                           callback={() =>
+                              mutation.mutate({
+                                 id: subject?._id
+                              })
+                           }
+                           content='Bạn có muốn xoá màu này?'
+                        />
+                     </PermissionRestricted>
                   </Box>
                );
             }
