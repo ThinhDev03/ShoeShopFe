@@ -18,7 +18,7 @@ function Cart() {
       ['getCart'],
       async () => {
          const res = await cartService.getCart(user._id);
-         return res.data;
+         return res.data.cart;
       },
       {
          onSuccess(data) {
@@ -26,6 +26,8 @@ function Cart() {
          }
       }
    );
+
+   console.log(carts);
 
    const totalPrice = useMemo(() => {
       const newCart = carts ? carts?.filter((item) => cart.includes(item.product_id)) : [];
