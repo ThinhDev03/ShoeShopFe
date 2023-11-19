@@ -49,7 +49,7 @@ function BillPage() {
    );
    const { mutate: onChangeStatus } = useMutation({
       mutationFn: async ({ id, status }) => {
-         return await billService.updateStatus(id, status);
+         return await billService.updateStatusPending(id, status);
       },
       onSuccess: () => {
          fetchBill();
@@ -94,7 +94,6 @@ function BillPage() {
             },
             cell({ getValue }) {
                const status = getValue();
-               console.log(status);
                return (
                   <Chip
                      color={'PAID' === status ? 'secondary' : 'primary'}
