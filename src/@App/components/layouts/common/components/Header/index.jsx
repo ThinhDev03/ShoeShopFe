@@ -71,7 +71,7 @@ export default function Header() {
                         </Box>
                      );
                   })}
-                  <Link to=''>
+                  <Link to='/latest'>
                      <img src={discoveryou} alt='' />
                   </Link>
                </Box>

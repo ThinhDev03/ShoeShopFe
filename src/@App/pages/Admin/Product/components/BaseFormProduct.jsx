@@ -67,6 +67,7 @@ function BaseFormProduct(props) {
 
    const { isLoading: createLoading, mutate: createProduct } = useMutation({
       mutationFn: async (data) => {
+         console.log(data);
          return await productService.createProduct(data);
       },
       onSuccess: (data) => {

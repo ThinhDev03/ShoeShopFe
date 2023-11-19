@@ -5,9 +5,34 @@ import { Link } from 'react-router-dom';
 import LazyLoadingImage from '../../LazyLoadingImage';
 import toFormatMoney from '@Core/Helper/Price';
 
-function ProductCard({ data }) {
+function ProductCard({ data, sale }) {
+   console.log(sale);
    return (
-      <Stack sx={{ overflow: 'hidden', backgroundColor: '#FFFFFF', textAlign: 'left !important' }}>
+      <Stack
+         sx={{ overflow: 'hidden', backgroundColor: '#FFFFFF', textAlign: 'left !important', position: 'relative' }}>
+         {sale && sale !== 0 ? (
+            <Box
+               sx={({ palette }) => {
+                  return {
+                     height: '36px',
+                     width: '36px',
+                     display: 'flex',
+                     justifyContent: 'center',
+                     alignItems: 'center',
+                     borderRadius: '50%',
+                     position: 'relative',
+                     top: '45px',
+                     left: '10px',
+                     color: '#fff',
+                     fontWeight: 500,
+                     fontSize: '13px',
+                     backgroundColor: palette.primary.main,
+                     zIndex: 50
+                  };
+               }}>
+               -{sale}%
+            </Box>
+         ) : null}
          <Box
             component={Link}
             to={'/' + routerPath.PRODUCTS + '/' + data?._id}
