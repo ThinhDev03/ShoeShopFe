@@ -32,6 +32,7 @@ import { useForm } from 'react-hook-form';
 import BillDetailItem from './components/BillDetailItem';
 import { Link } from 'react-router-dom';
 import { routerPath } from '@App/configs/routerConfig';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 function Bill() {
    const [open, setOpen] = React.useState(false);
@@ -93,9 +94,14 @@ function Bill() {
 
    const { mutate: cancelBill } = useMutation({
       mutationFn: (id) => {
-         return billService.updateStatus(id, BILL_STATUS[4]);
+         return billService.updateStatusPending(id, BILL_STATUS[4]);
       },
       onSuccess: () => {
+         successMessage('Hủy đơn hàng thành công');
+         return getbills();
+      },
+      onError: () => {
+         errorMessage('Hủy đơn hàng không thành công');
          return getbills();
       }
    });
