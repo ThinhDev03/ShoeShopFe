@@ -7,8 +7,6 @@ import { gender } from '@App/pages/Admin/User/utils';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 
 const BaseFormUpdateProfile = ({ form, ...props }) => {
-   const { user } = useAuth();
-
    const { handleSubmit, control } = form;
    const { isUpdate, onSubmit } = props;
 
