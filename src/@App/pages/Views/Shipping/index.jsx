@@ -36,7 +36,7 @@ function Shipping() {
       refetch: getCart
    } = useQuery(['getCart'], async () => {
       const res = await cartService.getCart(user._id);
-      return res.data;
+      return res.data.cart;
    });
 
    const newCart = carts ? carts.filter((item) => cart.includes(item.product_id)) : [];
