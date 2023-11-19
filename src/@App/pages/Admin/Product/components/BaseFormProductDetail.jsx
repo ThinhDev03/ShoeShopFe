@@ -16,7 +16,6 @@ import SelectImageDetail from './SelectImageDetail';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import { ListTitle } from '../utils';
 
-
 const valueDefault = {
    size_id: '',
    color_id: '',
@@ -32,6 +31,7 @@ function BaseFormProductDetail(props) {
       handleSubmit,
       control,
       reset,
+      watch,
       formState: { errors }
    } = useForm({
       mode: 'onSubmit',
@@ -40,7 +40,6 @@ function BaseFormProductDetail(props) {
          details: [valueDefault]
       }
    });
-
    const { fields, prepend, append, remove } = useFieldArray({
       control,
       name: 'details'
@@ -72,6 +71,10 @@ function BaseFormProductDetail(props) {
          errorMessage(error);
       }
    });
+
+   console.log(fields);
+   console.log(watch('details'));
+   const originDetail = watch('details');
 
    const { data: productDetails, refetch: getProductDetail } = useQuery(
       ['getProductDetail', { product_id }],
@@ -115,16 +118,9 @@ function BaseFormProductDetail(props) {
       createProductDetail(data?.details);
    };
 
-   const newColors = useMemo(() => {
-      const newDetails = productDetails ? productDetails.map((item) => item.color_id._id) : [];
-
-      return (colors?.data?.length > 0 && colors.data.filter((color) => !newDetails.includes(color._id))) || [];
-   }, [colors.isLoading, productDetails]);
-   const newSizes = useMemo(() => {
-      const newDetails = productDetails ? productDetails.map((item) => item.size_id._id) : [];
-
-      return (sizes?.data?.length > 0 && sizes?.data.filter((size) => !newDetails.includes(size._id))) || [];
-   }, [sizes.isLoading, productDetails]);
+   const handleGetValue = (value) => {
+      console.log(value);
+   };
 
    return (
       <>
@@ -159,8 +155,10 @@ function BaseFormProductDetail(props) {
                               }}>
                               <Box sx={{ height: '60px' }}>
                                  <ControllerSelect
+                                    indexDisabled = {true}
+                                    getChangeValue={handleGetValue}
                                     name={`details.${index}.size_id`}
-                                    options={item._id ? sizes.data || [] : newSizes}
+                                    options={item._id ? sizes.data || [] : sizes?.data}
                                     _value='_id'
                                     _title='size_name'
                                     control={control}
@@ -182,8 +180,9 @@ function BaseFormProductDetail(props) {
                            </Grid>
                            <Grid item xs={2} sx={{ height: '100px' }}>
                               <ControllerSelect
+                                 getChangeValue={handleGetValue}
                                  name={`details.${index}.color_id`}
-                                 options={item._id ? colors.data || [] : newColors}
+                                 options={item._id ? colors.data || [] : colors?.data}
                                  _value='_id'
                                  _title='color_name'
                                  control={control}
