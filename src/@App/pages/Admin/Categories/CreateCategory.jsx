@@ -3,11 +3,11 @@ import { routerPath } from '@App/configs/routerConfig';
 import React from 'react';
 import BaseFormCategory from './components/BaseFormCategory';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import yupCategory from './utils/yupCategory';
 import { useMutation } from '@tanstack/react-query';
 import categoryService from '@App/services/category.service';
 import { successMessage } from '@Core/Helper/Message';
+import yupCategory from './utils/yupCategory';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const breadcrumbs = [
    {
@@ -38,6 +38,7 @@ function CreateCategory() {
    });
 
    const onSubmit = async (data) => {
+      console.log(data);
       mutate(data);
    };
 
