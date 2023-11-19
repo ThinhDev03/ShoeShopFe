@@ -47,7 +47,12 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                await productService.createImage({ images: res, product_id });
                refetchImages();
             } else {
-               onChange([...res, ...imageOrImages]);
+               console.log(res);
+               if (typeof res === 'string') {
+                  onChange([res, ...imageOrImages]);
+               } else {
+                  onChange([...res, ...imageOrImages]);
+               }
             }
             setIsChangeImages((prev) => !prev);
          } else {
@@ -83,7 +88,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
    });
 
    const handleChangeInputFile = (event) => callbackUploadImage(event);
-   
+
    return (
       <React.Fragment>
          <WrapperUploadThumbnail error={Boolean(error)} multiple={multiple}>
