@@ -1,9 +1,7 @@
-import colorService from '@App/services/color.service';
-import sizeService from '@App/services/size.service';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Grid } from '@mui/material';
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
-import React, { useMemo } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import yupDetail from '../utils/yupProductDetail';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
@@ -27,11 +25,14 @@ const valueDefault = {
 
 function BaseFormProductDetail(props) {
    const { title, product_id, isChangeImages, sizes, colors } = props;
+   const [rerender, setRerender] = useState(false);
    const {
       handleSubmit,
       control,
       reset,
       watch,
+      setError,
+      clearErrors,
       formState: { errors }
    } = useForm({
       mode: 'onSubmit',
@@ -40,7 +41,7 @@ function BaseFormProductDetail(props) {
          details: [valueDefault]
       }
    });
-   const { fields, prepend, append, remove } = useFieldArray({
+   const { fields, append, remove } = useFieldArray({
       control,
       name: 'details'
    });
@@ -72,11 +73,7 @@ function BaseFormProductDetail(props) {
       }
    });
 
-   console.log(fields);
-   console.log(watch('details'));
-   const originDetail = watch('details');
-
-   const { data: productDetails, refetch: getProductDetail } = useQuery(
+   const { refetch: getProductDetail } = useQuery(
       ['getProductDetail', { product_id }],
       async () => {
          const res = await productDetailService.getOne(product_id);
@@ -109,7 +106,28 @@ function BaseFormProductDetail(props) {
       }
    });
 
+   const seen = new Set();
+   const calcColor = (originDetails) => {
+      for (let i = 0; i < originDetails.length; i++) {
+         const { color_id, size_id } = originDetails[i];
+
+         const key = `${color_id}-${size_id}`;
+         if (seen.has(key)) {
+            setError(`details.${i}.size_id`, { message: 'Trùng màu và size' });
+            setError(`details.${i}.color_id`, { message: 'Trùng màu và size' });
+         } else {
+            clearErrors(`details.${i}.size_id`);
+            clearErrors(`details.${i}.color_id`);
+         }
+         seen.add(key);
+      }
+   };
+
    const onSubmit = (data) => {
+      calcColor(data.details);
+      if (errors?.details) {
+         return;
+      }
       // /update-detail
       if (product_id) {
          updateProductDetail(data?.details);
@@ -118,9 +136,14 @@ function BaseFormProductDetail(props) {
       createProductDetail(data?.details);
    };
 
-   const handleGetValue = (value) => {
-      console.log(value);
+   const handleGetColor = (value) => {
+      setRerender((prev) => !prev);
    };
+
+   const originDetails = watch('details');
+   useEffect(() => {
+      calcColor(originDetails);
+   }, [rerender]);
 
    return (
       <>
@@ -155,10 +178,9 @@ function BaseFormProductDetail(props) {
                               }}>
                               <Box sx={{ height: '60px' }}>
                                  <ControllerSelect
-                                    indexDisabled = {true}
-                                    getChangeValue={handleGetValue}
+                                    getChangeValue={handleGetColor}
                                     name={`details.${index}.size_id`}
-                                    options={item._id ? sizes.data || [] : sizes?.data}
+                                    options={item._id ? sizes || [] : sizes}
                                     _value='_id'
                                     _title='size_name'
                                     control={control}
@@ -180,9 +202,9 @@ function BaseFormProductDetail(props) {
                            </Grid>
                            <Grid item xs={2} sx={{ height: '100px' }}>
                               <ControllerSelect
-                                 getChangeValue={handleGetValue}
+                                 getChangeValue={handleGetColor}
                                  name={`details.${index}.color_id`}
-                                 options={item._id ? colors.data || [] : colors?.data}
+                                 options={item._id ? colors || [] : colors}
                                  _value='_id'
                                  _title='color_name'
                                  control={control}

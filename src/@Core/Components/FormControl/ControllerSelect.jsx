@@ -13,8 +13,21 @@ import FormHelperText from '@mui/material/FormHelperText';
  */
 
 const ControllerSelect = (props) => {
-   const { options, _value, _title, children } = props;
-   const { control, name, placeholder, disabled, defaultValue, label, getChangeValue, ...rest } = props;
+   const {
+      control,
+      name,
+      placeholder,
+      disabled,
+      defaultValue,
+      label,
+      getChangeValue,
+      indexDisabled,
+      options,
+      _value,
+      _title,
+      children,
+      ...rest
+   } = props;
    return (
       <Controller
          render={({ field, fieldState: { error } }) => (
@@ -36,8 +49,8 @@ const ControllerSelect = (props) => {
                         <MenuItem
                            key={index}
                            value={item?.[_value]}
-                           
-                           onClick={() => getChangeValue({ name, value: item?.[_value] })} >
+                           indexDisabled={name === indexDisabled}
+                           onClick={() => getChangeValue({ name, value: item?.[_value] })}>
                            {item?.[_title]}
                         </MenuItem>
                      ))}
@@ -57,7 +70,8 @@ const ControllerSelect = (props) => {
 };
 ControllerSelect.defaultProps = {
    _value: 'value',
-   _title: 'label'
+   _title: 'label',
+   getChangeValue: () => {}
 };
 
 export default ControllerSelect;
