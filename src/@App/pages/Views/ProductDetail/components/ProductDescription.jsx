@@ -25,6 +25,10 @@ function ProductDescription({ productDetails, details, product }) {
          .number()
          .strict(true)
          .test('max_quantity', (value, ctx) => {
+            if (Number(value) <= 0) {
+               return ctx.createError({ message: 'Vui lòng chọn lại số lượng.' });
+            }
+
             if (Number(value) > MAX_QUANTITY) {
                return ctx.createError({ message: 'Số lượng sản phẩm vượt quá giới hạn cho phép' });
             }
