@@ -159,7 +159,7 @@ function Bill() {
          label: 'Thời gian đặt hàng',
          minWidth: 170,
          align: 'center',
-         format: (v) => format(new Date(v.createdAt), 'dd-mm-yyyy')
+         format: (v) => format(new Date(v.createdAt), 'dd/MM/yyyy')
       },
       {
          path_1: '',
@@ -374,7 +374,7 @@ function Bill() {
                            {bill?.note || ''}
                         </Grid>
                      </Grid>
-                     {/* <Box>Thời gian đặt hàng: {format(new Date(bill?.createdAt), 'dd-mm-yyyy')}</Box> */}
+                     {/* <Box>Thời gian đặt hàng: {format(new Date(bill?.createdAt), 'dd/MM/yyyy')}</Box> */}
                   </Stack>
                   <Divider />
                   <Box

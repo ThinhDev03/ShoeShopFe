@@ -1,5 +1,5 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import SwiperSlider from './components/SwiperSlider';
 import ProductDescription from './components/ProductDescription';
 import RelatedProducts from './components/RelatedProducts';
@@ -18,11 +18,13 @@ import CoreRating from '@Core/Components/Input/CoreRating';
 function ProductDetail() {
    const { id } = useParams();
    const { isAuththentication, user } = useAuth();
-   const { control, handleSubmit, reset, setError } = useForm({
+   const { ratting, setRatting } = useState(0);
+
+   const { control, handleSubmit, reset, setValue } = useForm({
       resolver: yupResolver(
          yup.object().shape({
             description: yup.string().required('Vui lòng nhập bình luận'),
-            rate: yup.string().required('Vui lòng chọn số sao')
+            rate: yup.number().required('Vui lòng chọn số sao')
          })
       )
    });
@@ -66,7 +68,9 @@ function ProductDetail() {
 
    const onSubmit = async (data) => {
       await commentService.createComment({ ...data, user_id: user._id, product_id: id });
+      setValue("rate", 0)
       await refetchComment();
+
       reset({ description: '' });
    };
 
@@ -78,15 +82,15 @@ function ProductDetail() {
                   <Grid item xs={12} md={7}>
                      <SwiperSlider productDetails={productDetails} />
                   </Grid>
-                  <Grid item md={5}>
+                  <Grid item md={5} xs={12}>
                      <ProductDescription product={product} productDetails={productDetails} details={details} />
                   </Grid>
                </Grid>
                <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
                <Box p={3}>
                   {comments &&
-                     comments.map((comment) => {
-                        return <CommentItem {...comment} />;
+                     comments.map((comment, index) => {
+                        return <CommentItem key={index} {...comment} />;
                      })}
                   {isAuththentication && (
                      <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Chip, Stack, Typography, styled } from '@mui/material';
-
+import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import toFormatMoney, { toDiscountedPrice } from '@Core/Helper/Price';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
-import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
 import ColorButton from './ColorButton';
 import AccordionDescription from './AccordionDescription';
 import cartService from '@App/services/cart.service';
@@ -13,10 +11,9 @@ import useAuth from '@App/hooks/useAuth';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import * as yup from 'yup';
 import ControllerInputNumber from '@Core/Components/FormControl/ControllerInputNumber';
+import { MAX_QUANTITY, Divider } from './ProductDescription';
 
-export const MAX_QUANTITY = 5;
-
-function ProductDescription({ productDetails, details, product }) {
+export function ProductDescription({ productDetails, details, product }) {
    const [quantity, setQuantity] = useState(0);
    const [loading, setLoading] = useState(false);
    const yupCart = yup.object().shape({
@@ -94,7 +91,7 @@ function ProductDescription({ productDetails, details, product }) {
    useEffect(() => {
       setQuantity(currentProduct?.quantity);
    }, [currentProductId]);
-
+   console.log(currentProduct);
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '18px' }}>
@@ -105,10 +102,10 @@ function ProductDescription({ productDetails, details, product }) {
                      <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.category_id?.category_name}</Box>
                      <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.brand_id?.brand_name}</Box>
                   </Box>
-                  {currentProduct?.quantity === 0 ? (
-                     <Chip color='secondary' variant='outlined' label='Còn hàng' />
-                  ) : (
-                     <Chip variant='outlined' color='primary' label='Hết hàng' />
+                  {currentProduct?.quantity && (
+                     <Box sx={{ color: '#707072' }}>
+                        {currentProduct?.quantity > 0 ? <Chip>Còn hàng</Chip> : <Chip>Hết hàng</Chip>}
+                     </Box>
                   )}
                </Box>
             </Box>
@@ -223,12 +220,3 @@ function ProductDescription({ productDetails, details, product }) {
       </React.Fragment>
    );
 }
-
-const Divider = styled(Box)(({ theme }) => ({
-   margin: '12px 0px 15px 0',
-   backgroundColor: theme.palette.education.text.white,
-   background: 'url(https://ananas.vn/wp-content/themes/ananas/fe-assets/images/bg_divider.png) repeat-x 7px',
-   height: '2px'
-}));
-
-export default React.memo(ProductDescription);
