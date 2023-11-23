@@ -96,7 +96,7 @@ function SelectImageDetail({ name, control, defaultValue, multiple = false, sx, 
                   {data?.map((image) => {
                      return (
                         <Grid item xs={3} key={image._id}>
-                           <Box onClick={() => handleChangeImage(image)}>
+                           <Box onClick={() => handleChangeImage(image)} sx={{ height: '150px', width: '100%' }}>
                               <LazyLoadingImage src={image.image_url} />
                            </Box>
                         </Grid>
