@@ -3,6 +3,7 @@ import Loadable from './components/Loadable';
 import { lazy } from 'react';
 import PublicRouter from './components/PublicRouter';
 import CheckLoginUser from './components/CheckLoginUser';
+import ChangePassword from '@App/pages/Views/ChangePassword';
 
 const Profile = Loadable(lazy(() => import('@App/pages/Views/Profile')));
 const Signin = Loadable(lazy(() => import('@App/pages/Auth/Signin')));
@@ -52,6 +53,10 @@ const clientRoute = [
          {
             path: routerPath.PROFILE,
             element: <Profile />
+         },
+         {
+            path: routerPath.CHANGE_PASSWORD,
+            element: <ChangePassword />
          }
       ]
    },

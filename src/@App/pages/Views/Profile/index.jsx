@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Modal, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { schemaProfile } from './utils/yup.schema';
@@ -10,6 +10,7 @@ import BaseFormUpdateProfile from './components/BaseFormUpdateProfile';
 import authService from '@App/services/auth.service';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import UploadImage from './components/UploadImage';
+import ControllerTextFieldPassword from '@Core/Components/FormControl/ControllerTextFieldPassword';
 
 const Profile = () => {
    const { user, getUser } = useAuth();
@@ -25,6 +26,7 @@ const Profile = () => {
       try {
          await authService.updateUser(user._id, data);
          getUser();
+         setIsUpdate(false);
          successMessage('Cập nhật thành công.');
       } catch (error) {
          errorMessage('Cập nhật thất bại.');
@@ -74,8 +76,22 @@ const Profile = () => {
                </Grid>
             </Box>
          </Box>
+
+        
       </Container>
    );
+};
+
+const style = {
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: 400,
+   bgcolor: 'background.paper',
+   boxShadow: 24,
+   borderRadius: 1,
+   p: 4
 };
 
 export default Profile;

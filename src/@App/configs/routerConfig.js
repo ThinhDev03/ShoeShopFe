@@ -11,5 +11,6 @@ export const routerPath = {
    SHIPPING: 'shipping',
    BILL: 'bill',
    PROFILE: 'profile',
-   VOUCHER: 'voucher'
+   VOUCHER: 'voucher',
+   CHANGE_PASSWORD: 'change-password'
 };
