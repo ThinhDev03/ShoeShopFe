@@ -14,6 +14,7 @@ import userRouter from './user.router';
 import billRouter from './admin/bill.router';
 import clientRoute from './client';
 import Loadable from './components/Loadable';
+import voucherRouter from './admin/voucher';
 
 const Payment = Loadable(lazy(() => import('@App/pages/Views/Payment')));
 const Home = Loadable(lazy(() => import('@App/pages/Views/Home')));
@@ -47,7 +48,8 @@ const routers = [
          brandRouter,
          productRouter,
          userRouter,
-         billRouter
+         billRouter,
+         voucherRouter
       ]
    },
    {
