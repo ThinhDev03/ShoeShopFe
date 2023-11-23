@@ -18,6 +18,14 @@ const menuCofig = [
       path: ''
    },
    {
+      id: 1,
+      role: [ROLE[2]],
+      title: 'Trang Chủ',
+      aceptPermission: true,
+      icon: DashboardOutlinedIcon,
+      path: '/admin/home'
+   },
+   {
       id: 2,
       role: [ROLE[1], ROLE[2]],
       title: 'Danh mục sản phẩm',

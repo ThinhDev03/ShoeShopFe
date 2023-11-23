@@ -54,7 +54,7 @@ function ProductPage() {
       },
       onSuccess: () => {
          successMessage('Xóa sản phẩm thành công');
-         getCategory();
+         getProduct();
       }
    });
 
@@ -152,11 +152,11 @@ function ProductPage() {
 
                      <PermissionRestricted roleNames={ROLE[1]}>
                         <CoreTableActionDelete
-                           callback={() =>
+                           callback={() => {
                               mutation.mutate({
                                  id: product?._id
-                              })
-                           }
+                              });
+                           }}
                            content='Bạn có muốn xoá sản phẩm?'
                         />
                      </PermissionRestricted>

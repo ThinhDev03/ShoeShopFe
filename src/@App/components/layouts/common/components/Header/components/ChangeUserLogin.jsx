@@ -22,7 +22,7 @@ function ChangeUserLogin() {
                   textDecoration: 'none'
                }}
                component={NavLink}
-               to='admin'>
+               to={userPermission === ROLE[1] ? 'admin' : 'admin/home'}>
                <PersonIcon sx={{ width: '14px', height: '14px' }} />
                <Box component='span'>Trang Quản trị</Box>
             </Stack>

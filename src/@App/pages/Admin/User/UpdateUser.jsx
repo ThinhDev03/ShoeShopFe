@@ -9,6 +9,7 @@ import BasicPage from '@App/components/customs/BasicPage';
 import userService from '@App/services/user.service';
 import authService from '@App/services/auth.service';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 export default function UpdateUser() {
    const { id } = useParams();
@@ -36,8 +37,10 @@ export default function UpdateUser() {
    const onSubmit = async (data) => {
       try {
          await authService.update(data, id);
+         successMessage('Sửa thông tin thành công');
          navigate('/admin/user');
       } catch (error) {
+         errorMessage('Sửa thông tin thất bại');
          console.error(error?.message);
       }
    };
