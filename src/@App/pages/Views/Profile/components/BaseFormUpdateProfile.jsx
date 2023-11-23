@@ -2,10 +2,11 @@ import React from 'react';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
 import { Box, Button, FormControlLabel, Grid, Radio, RadioGroup, styled } from '@mui/material';
 import useAuth from '@App/hooks/useAuth';
+import CoreRadioGroup from '@Core/Components/Input/CoreRadioGroup';
+import { gender } from '@App/pages/Admin/User/utils';
+import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 
 const BaseFormUpdateProfile = ({ form, ...props }) => {
-   const { user } = useAuth();
-
    const { handleSubmit, control } = form;
    const { isUpdate, onSubmit } = props;
 
@@ -16,7 +17,13 @@ const BaseFormUpdateProfile = ({ form, ...props }) => {
                <LabelTileProfileInfo>Tên đăng nhập:</LabelTileProfileInfo>
             </Grid>
             <Grid item xs={8} sx={{ minHeight: '80px' }}>
-               <ControllerTextField fullWidth name='username' placeholder='Tên đăng nhập' control={control} disabled={!isUpdate} />
+               <ControllerTextField
+                  fullWidth
+                  name='username'
+                  placeholder='Tên đăng nhập'
+                  control={control}
+                  disabled={!isUpdate}
+               />
             </Grid>
          </Grid>
          <Grid container sx={2}>
@@ -24,7 +31,13 @@ const BaseFormUpdateProfile = ({ form, ...props }) => {
                <LabelTileProfileInfo>Tên người dùng:</LabelTileProfileInfo>
             </Grid>
             <Grid item xs={8} sx={{ minHeight: '80px' }}>
-               <ControllerTextField fullWidth name='fullname' placeholder='Tên người dùng' control={control} disabled={!isUpdate} />
+               <ControllerTextField
+                  fullWidth
+                  name='fullname'
+                  placeholder='Tên người dùng'
+                  control={control}
+                  disabled={!isUpdate}
+               />
             </Grid>
          </Grid>
          <Grid container sx={2}>
@@ -32,7 +45,13 @@ const BaseFormUpdateProfile = ({ form, ...props }) => {
                <LabelTileProfileInfo>Số điện thoại:</LabelTileProfileInfo>
             </Grid>
             <Grid item xs={8} sx={{ minHeight: '80px' }}>
-               <ControllerTextField fullWidth name='phone' placeholder='Số điện thoại' control={control} disabled={!isUpdate} />
+               <ControllerTextField
+                  fullWidth
+                  name='phone'
+                  placeholder='Số điện thoại'
+                  control={control}
+                  disabled={!isUpdate}
+               />
             </Grid>
          </Grid>
          <Grid container sx={2}>
@@ -48,13 +67,7 @@ const BaseFormUpdateProfile = ({ form, ...props }) => {
                <LabelTileProfileInfo sx={{ mb: 0 }}>Giới tính:</LabelTileProfileInfo>
             </Grid>
             <Grid item xs={8} sx={{ minHeight: '80px' }}>
-               <RadioGroup
-                  defaultValue={user?.gender}
-                  name='gender'
-                  sx={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                  <FormControlLabel value='MAN' control={<Radio />} label='Nam' />
-                  <FormControlLabel value='FEMAN' control={<Radio />} label='Nữ' />
-               </RadioGroup>
+               <ControllerSelect options={gender} name='gender' control={control} disabled={!isUpdate} />
             </Grid>
          </Grid>
          <Grid container sx={2}>
@@ -62,7 +75,13 @@ const BaseFormUpdateProfile = ({ form, ...props }) => {
                <LabelTileProfileInfo>Địa chỉ:</LabelTileProfileInfo>
             </Grid>
             <Grid item xs={8} sx={{ minHeight: '80px' }}>
-               <ControllerTextField fullWidth name='address' placeholder='Địa chỉ' control={control} disabled={!isUpdate} />
+               <ControllerTextField
+                  fullWidth
+                  name='address'
+                  placeholder='Địa chỉ'
+                  control={control}
+                  disabled={!isUpdate}
+               />
             </Grid>
          </Grid>
          {isUpdate && (

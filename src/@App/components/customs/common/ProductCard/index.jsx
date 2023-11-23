@@ -6,7 +6,7 @@ import LazyLoadingImage from '../../LazyLoadingImage';
 import toFormatMoney from '@Core/Helper/Price';
 
 function ProductCard({ data, sale }) {
-   console.log(sale);
+
    return (
       <Stack
          sx={{ overflow: 'hidden', backgroundColor: '#FFFFFF', textAlign: 'left !important', position: 'relative' }}>

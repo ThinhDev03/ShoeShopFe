@@ -10,6 +10,10 @@ class BillService extends BaseService {
    async updateStatus(id, body) {
       return this.request.post(this.BASE_ENDPOINT + '/update' + '/' + id, body);
    }
+
+   async updateStatusPending(id, status) {
+      return this.request.put(this.BASE_ENDPOINT + '/update-status' + '/' + id, { status });
+   }
 }
 
 const billService = new BillService();

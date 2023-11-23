@@ -7,10 +7,11 @@ import Brand from '@App/assets/svg/brand';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import PersonIcon from '@mui/icons-material/Person';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import DiscountIcon from '@mui/icons-material/Discount';
 const menuCofig = [
    {
       id: 1,
-      role: [ROLE[1], ROLE[2]],
+      role: [ROLE[1]],
       title: 'Trang Chủ',
       aceptPermission: true,
       icon: DashboardOutlinedIcon,
@@ -69,6 +70,14 @@ const menuCofig = [
       icon: ReceiptLongIcon,
       path: routerPath.BILL,
       children: [{ title: 'Tổng quan', path: routerPath.BILL }]
+   },
+   {
+      id: 9,
+      role: [ROLE[1]],
+      title: 'Voucher giảm giá',
+      icon: DiscountIcon,
+      path: routerPath.VOUCHER,
+      children: [{ title: 'Tổng quan', path: routerPath.VOUCHER }]
    }
    // {
    //    id: 4,

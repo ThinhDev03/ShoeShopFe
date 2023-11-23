@@ -28,7 +28,13 @@ const CoreRating = (props) => {
             return (
                <Box className='flex items-center gap-x-20'>
                   <Box className={className}>
-                     <Rating defaultValue={defaultValue} value={value} onChange={onChange} ref={ref} {...restProps} />
+                     <Rating
+                        defaultValue={defaultValue}
+                        value={value || 0}
+                        onChange={onChange}
+                        ref={ref}
+                        {...restProps}
+                     />
                      {error && error.message ? <FormHelperText error>{error.message}</FormHelperText> : null}
                   </Box>
                </Box>

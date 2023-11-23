@@ -39,9 +39,9 @@ function SwiperSlider({ productDetails, slideIndex }) {
                thumbs={{ swiper: thumbsSwiper }}
                modules={[FreeMode, Navigation, Thumbs]}
                className='mySwiper2'>
-               {productImage?.map((item) => {
+               {productImage?.map((item, index) => {
                   return (
-                     <SwiperSlide key={item._id}>
+                     <SwiperSlide key={index}>
                         <LazyLoadingImage src={item.image_url} />
                      </SwiperSlide>
                   );
@@ -59,7 +59,7 @@ function SwiperSlider({ productDetails, slideIndex }) {
                   className='mySwiper'>
                   {productImage?.map((item, index) => {
                      return (
-                        <SwiperSlide key={item._id} virtualIndex={index} style={{ width: '100px', height: '100px' }}>
+                        <SwiperSlide key={index} virtualIndex={index} style={{ width: '100px', height: '100px' }}>
                            <LazyLoadingImage src={item.image_url} />
                         </SwiperSlide>
                      );

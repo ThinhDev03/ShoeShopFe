@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-import Regex from '@Core/Helper/Regex';
 
 yup.setLocale({
     mixed: {

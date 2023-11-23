@@ -32,6 +32,7 @@ import { useForm } from 'react-hook-form';
 import BillDetailItem from './components/BillDetailItem';
 import { Link } from 'react-router-dom';
 import { routerPath } from '@App/configs/routerConfig';
+import { errorMessage, successMessage } from '@Core/Helper/Message';
 
 function Bill() {
    const [open, setOpen] = React.useState(false);
@@ -93,9 +94,14 @@ function Bill() {
 
    const { mutate: cancelBill } = useMutation({
       mutationFn: (id) => {
-         return billService.updateStatus(id, BILL_STATUS[4]);
+         return billService.updateStatusPending(id, BILL_STATUS[4]);
       },
       onSuccess: () => {
+         successMessage('Hủy đơn hàng thành công');
+         return getbills();
+      },
+      onError: () => {
+         errorMessage('Hủy đơn hàng không thành công');
          return getbills();
       }
    });
@@ -153,7 +159,7 @@ function Bill() {
          label: 'Thời gian đặt hàng',
          minWidth: 170,
          align: 'center',
-         format: (v) => format(new Date(v.createdAt), 'dd-mm-yyyy')
+         format: (v) => format(new Date(v.createdAt), 'dd/MM/yyyy')
       },
       {
          path_1: '',
@@ -368,7 +374,7 @@ function Bill() {
                            {bill?.note || ''}
                         </Grid>
                      </Grid>
-                     {/* <Box>Thời gian đặt hàng: {format(new Date(bill?.createdAt), 'dd-mm-yyyy')}</Box> */}
+                     {/* <Box>Thời gian đặt hàng: {format(new Date(bill?.createdAt), 'dd/MM/yyyy')}</Box> */}
                   </Stack>
                   <Divider />
                   <Box

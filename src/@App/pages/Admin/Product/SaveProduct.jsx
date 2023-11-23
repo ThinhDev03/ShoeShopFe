@@ -34,7 +34,8 @@ function SaveProduct() {
                } catch (error) {
                   errorMessage();
                }
-            }
+            },
+            initialData: []
          },
          {
             queryKey: ['getColor'],
@@ -45,7 +46,8 @@ function SaveProduct() {
                } catch (error) {
                   errorMessage();
                }
-            }
+            },
+            initialData: []
          }
       ]
    });
@@ -64,8 +66,8 @@ function SaveProduct() {
                <BaseFormProductDetail
                   isChangeImages={isChangeImages}
                   product_id={product_id}
-                  sizes={sizes || []}
-                  colors={colors || []}
+                  sizes={sizes.data}
+                  colors={colors.data}
                />
             </React.Fragment>
          )}

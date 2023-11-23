@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
 function ColorButton({ color, colorSelected, setColorSelected }) {
-   console.log(color);
    return (
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 1 }}>
          <Box

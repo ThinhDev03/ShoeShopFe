@@ -30,6 +30,10 @@ class AuthService extends BaseService {
       return this.request.post(this.BASE_ENDPOINT + '/' + authEndpoint.register, data);
    }
 
+   createEmployee(data) {
+      return this.request.post(this.BASE_ENDPOINT + '/' + authEndpoint.register, { ...data, role: 'EMPLOYEE' });
+   }
+
    signout() {
       return this.find(authEndpoint.signout);
    }
@@ -47,7 +51,7 @@ class AuthService extends BaseService {
    }
 
    updateUser(id, data) {
-      return this.request.put(this.BASE_ENDPOINT + '/' + authEndpoint.locked + '/' + id, data);
+      return this.request.post(this.BASE_ENDPOINT + '/' + 'update' + '/' + id, data);
    }
 }
 

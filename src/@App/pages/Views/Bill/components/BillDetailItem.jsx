@@ -30,7 +30,7 @@ const BillDetailItem = ({ data }) => {
                   <Flex>
                      <TitleCartItemDetail sx={{ fontSize: '12px' }}>Ngày đặt: </TitleCartItemDetail>
                      <TitleCartItemDetail sx={{ fontSize: '12px' }}>
-                        {format(new Date(data.createdAt), 'mm-dd-yyyy')}
+                        {format(new Date(data.createdAt), 'dd/MM/yyyy')}
                      </TitleCartItemDetail>
                   </Flex>
                </Flex>

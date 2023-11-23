@@ -24,7 +24,7 @@ export default function CreateUser() {
             role: ROLE[3],
             ...data
          };
-         await authService.register(body);
+         await authService.createEmployee(body);
          successMessage('Đăng ký thành công nhân viên!');
          navigate('/admin/user');
       } catch (error) {
