@@ -50,17 +50,18 @@ export default function UpdateBill() {
       }
    });
 
-   const onSubmit = (data) => {
+   const onSubmit = (body) => {
       confirm({
          title: 'Cập nhật trạng thái đơn hàng.',
          content: 'Bạn có chắc muốn cập nhật trạng thái của đơn hàng?',
          okText: 'Cập nhật',
          onOk: () => {
             onChangeStatus({
-               id: data._id,
-               status: data.status,
-               payment_id: data.payment_id,
-               payment_status: data.payment_status
+               id: body._id,
+               status: body.status,
+               payment_id: body.payment_id,
+               payment_status: body.payment_status,
+               products: data.billDetail
             });
          }
       });

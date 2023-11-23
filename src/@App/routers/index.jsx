@@ -19,6 +19,7 @@ import voucherRouter from './admin/voucher';
 const Payment = Loadable(lazy(() => import('@App/pages/Views/Payment')));
 const Home = Loadable(lazy(() => import('@App/pages/Views/Home')));
 const Dashboard = Loadable(lazy(() => import('@App/pages/Admin/Dashboard')));
+const HomeAdmin = Loadable(lazy(() => import('@App/pages/Admin/Home')));
 
 const routers = [
    {
@@ -32,6 +33,7 @@ const routers = [
          ...clientRoute
       ]
    },
+
    {
       path: '/admin',
       element: (
@@ -43,6 +45,10 @@ const routers = [
          {
             index: true,
             element: <Dashboard />
+         },
+         {
+            path: 'home',
+            element: <HomeAdmin />
          },
          categoryRouter,
          brandRouter,
