@@ -81,14 +81,22 @@ function UserMenu() {
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                   getContentAnchorEl={null}>
                   <MenuItem key={'Profile'} component={Link} to={routerPath.PROFILE} onClick={handleClose}>
-                     <Avatar /> Profile
+                     <Avatar /> Trang cá nhân
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem
+                     key={'change-password'}
+                     component={Link}
+                     to={routerPath.CHANGE_PASSWORD}
+                     onClick={handleClose}>
+                     Đổi mật khẩu
                   </MenuItem>
                   <Divider />
                   <MenuItem key={'Logout'} onClick={handleLogout}>
                      <ListItemIcon>
                         <Logout fontSize='small' />
                      </ListItemIcon>
-                     Logout
+                     Đăng xuất
                   </MenuItem>
                </Menu>
             </Box>

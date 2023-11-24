@@ -7,11 +7,13 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import useAuth from '@App/hooks/useAuth';
 import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header(props) {
    const { setOpenSidebar } = props;
    const { user, logout } = useAuth();
    const [anchorEl, setAnchorEl] = useState(null);
+   const navigate = useNavigate();
    const open = Boolean(anchorEl);
 
    const handleOptionClick = (option) => {
@@ -33,6 +35,11 @@ export default function Header(props) {
 
    const handleClose = () => {
       setAnchorEl(null);
+   };
+
+   const handleRedirectProfile = () => {
+      handleClose();
+      navigate('/profile');
    };
 
    const confirm = useConfirm();
@@ -68,21 +75,15 @@ export default function Header(props) {
                      getContentAnchorEl={null}
                      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
-                     <MenuItem key={'Profile'} onClick={handleClose}>
-                        <Avatar /> Profile
+                     <MenuItem key={'Profile'} onClick={handleRedirectProfile}>
+                        <Avatar /> Trang cá nhân
                      </MenuItem>
                      <Divider />
-                     <MenuItem key={'Settings'} onClick={handleOptionClick}>
-                        <ListItemIcon>
-                           <Settings fontSize='small' />
-                        </ListItemIcon>
-                        Settings
-                     </MenuItem>
                      <MenuItem key={'Logout'} onClick={handleLogout}>
                         <ListItemIcon>
                            <Logout fontSize='small' />
                         </ListItemIcon>
-                        Logout
+                        Đăng xuất
                      </MenuItem>
                   </Menu>
                </Box>

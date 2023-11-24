@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 const STATUS_PRODUCT = ['Còn hàng', 'Hết hàng'];
 
 const BillDetailItem = ({ data }) => {
-   console.log(data);
    return (
       <React.Fragment>
          <Flex sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
@@ -31,7 +30,7 @@ const BillDetailItem = ({ data }) => {
                   <Flex>
                      <TitleCartItemDetail sx={{ fontSize: '12px' }}>Ngày đặt: </TitleCartItemDetail>
                      <TitleCartItemDetail sx={{ fontSize: '12px' }}>
-                        {format(new Date(data.createdAt), 'mm-dd-yyyy')}
+                        {format(new Date(data.createdAt), 'dd/MM/yyyy')}
                      </TitleCartItemDetail>
                   </Flex>
                </Flex>

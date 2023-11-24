@@ -3,7 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useState } from 'react';
 
 function AccordionDescription({ product }) {
-   const [expanded, setExpanded] = useState(false);
+   const [expanded, setExpanded] = useState(true);
 
    const handleChange = (panel) => (_, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
@@ -11,12 +11,10 @@ function AccordionDescription({ product }) {
 
    return (
       <React.Fragment>
-         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')} sx={{ boxShadow: 'none' }}>
+         <Accordion expanded={expanded} onChange={handleChange('panel1')} sx={{ boxShadow: 'none' }}>
             <AccordionSummary
                expandIcon={
-                  <ExpandMoreIcon
-                     sx={({ palette }) => ({ color: expanded === 'panel1' && palette.education.text.main })}
-                  />
+                  <ExpandMoreIcon sx={({ palette }) => ({ color: expanded && palette.education.text.main })} />
                }
                aria-controls='panel1bh-content'
                id='panel1bh-header'>
@@ -24,7 +22,7 @@ function AccordionDescription({ product }) {
                   variant='h6'
                   sx={({ palette }) => ({
                      fontWeight: 600,
-                     color: expanded === 'panel1' ? palette.education.text.main : palette.education.text.black
+                     color: expanded ? palette.education.text.main : palette.education.text.black
                   })}>
                   THÔNG TIN SẢN PHẨM
                </Typography>

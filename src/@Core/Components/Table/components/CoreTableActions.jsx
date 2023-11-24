@@ -52,6 +52,7 @@ export const CoreTableReplay = ({ callback = () => {}, content = '' }) => {
          content: content,
          isIcon: true,
          color: 'error',
+         okText: 'Hủy đơn hàng',
          onOk: callback
       });
    };

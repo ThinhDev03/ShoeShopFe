@@ -11,9 +11,18 @@ import { FreeMode, Navigation, Thumbs, Virtual } from 'swiper/modules';
 import LazyLoadingImage from '@App/components/customs/LazyLoadingImage';
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { useSwiper } from 'swiper/react';
+import { useQuery } from '@tanstack/react-query';
+import productService from '@App/services/product.service';
+
 function SwiperSlider({ productDetails, slideIndex }) {
+   const { id } = useParams();
+
    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+   const { data: productImage } = useQuery(['getImageProduct', id], async () => {
+      const res = await productService.getImageProduct(id);
+      return res.data;
+   });
 
    return (
       <>
@@ -30,15 +39,15 @@ function SwiperSlider({ productDetails, slideIndex }) {
                thumbs={{ swiper: thumbsSwiper }}
                modules={[FreeMode, Navigation, Thumbs]}
                className='mySwiper2'>
-               {productDetails.map((item) => {
+               {productImage?.map((item, index) => {
                   return (
-                     <SwiperSlide key={item._id}>
-                        <LazyLoadingImage src={item.image_id.image_url} />
+                     <SwiperSlide key={index}>
+                        <LazyLoadingImage src={item.image_url} />
                      </SwiperSlide>
                   );
                })}
             </Swiper>
-            {productDetails && productDetails.length > 0 && (
+            {productImage?.length > 0 && (
                <Swiper
                   spaceBetween={10}
                   onSwiper={setThumbsSwiper}
@@ -48,10 +57,10 @@ function SwiperSlider({ productDetails, slideIndex }) {
                   pagination={true}
                   navigation={true}
                   className='mySwiper'>
-                  {productDetails.map((item, index) => {
+                  {productImage?.map((item, index) => {
                      return (
-                        <SwiperSlide key={item._id} virtualIndex={index} style={{ width: '100px', height: '100px' }}>
-                           <LazyLoadingImage src={item.image_id.image_url} />
+                        <SwiperSlide key={index} virtualIndex={index} style={{ width: '100px', height: '100px' }}>
+                           <LazyLoadingImage src={item.image_url} />
                         </SwiperSlide>
                      );
                   })}

@@ -42,7 +42,7 @@ const UploadImage = () => {
                <Box
                   component={LazyLoadingImage}
                   sx={{ borderRadius: '50%', border: '1px solid rgba(0,0,0,.09)' }}
-                  src={image || 'https://down-vn.img.susercontent.com/file/0a494d106438b0336245629afea92b95'}
+                  src={image || 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'}
                />
                {loading && (
                   <Box
@@ -78,6 +78,5 @@ const UploadImage = () => {
       </Box>
    );
 };
-
 
 export default UploadImage;

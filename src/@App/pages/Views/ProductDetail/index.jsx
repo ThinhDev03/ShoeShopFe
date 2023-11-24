@@ -1,4 +1,4 @@
-import { Box, Breadcrumbs, Button, Container, Grid, Link, Rating, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import SwiperSlider from './components/SwiperSlider';
 import ProductDescription from './components/ProductDescription';
@@ -17,16 +17,18 @@ import * as yup from 'yup';
 import CoreRating from '@Core/Components/Input/CoreRating';
 function ProductDetail() {
    const { id } = useParams();
-   const { isAuththentication } = useAuth();
-   const { control, handleSubmit } = useForm({
+   const { isAuththentication, user } = useAuth();
+   const { ratting, setRatting } = useState(0);
+
+   const { control, handleSubmit, reset, setValue } = useForm({
       resolver: yupResolver(
          yup.object().shape({
-            comment: yup.string().required('Vui lòng nhập bình luận'),
-            rate: yup.string().required('Vui lòng chọn số sao')
+            description: yup.string().required('Vui lòng nhập bình luận'),
+            rate: yup.number().required('Vui lòng chọn số sao')
          })
       )
    });
-   const [{ data: product }, { data: details }, { data: comments }] = useQueries({
+   const [{ data: product }, { data: details }, { data: comments, refetch: refetchComment }] = useQueries({
       queries: [
          {
             queryKey: 'products',
@@ -65,58 +67,58 @@ function ProductDetail() {
    const productDetails = getUniqueProductWithColor(details);
 
    const onSubmit = async (data) => {
-      console.log(data);
+      await commentService.createComment({ ...data, user_id: user._id, product_id: id });
+      setValue("rate", 0)
+      await refetchComment();
+
+      reset({ description: '' });
    };
+
    return (
-      <Container maxWidth='lg' sx={{ py: 3 }}>
-         <Box sx={{ borderBottom: '3.5px solid #000', pb: 0.5 }}>
-            <Breadcrumbs aria-label='breadcrumb'>
-               <Link underline='hover' color='inherit' href='/'>
-                  Sản phẩm
-               </Link>
-               <Link underline='hover' color='inherit' href='/material-ui/getting-started/installation/'>
-                  ???
-               </Link>
-               <Typography color='text.primary' sx={{ fontWeight: 500 }}>
-                  ???
-               </Typography>
-            </Breadcrumbs>
-         </Box>
-         <Grid container spacing={2} mt={3}>
-            <Grid item xs={12} md={7}>
-               <SwiperSlider productDetails={productDetails} />
-            </Grid>
-            <Grid item md={5}>
-               <ProductDescription product={product} productDetails={productDetails} details={details} />
-            </Grid>
-         </Grid>
-         <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
-         <Box p={3}>
-            {comments &&
-               comments.map((comment) => {
-                  return <CommentItem {...comment} />;
-               })}
-            {isAuththentication && (
-               <form onSubmit={handleSubmit(onSubmit)}>
-                  <Box mt={4} mb={1}>
-                     <CoreRating control={control} name='rate' />
-                     <ControllerTextField
-                        control={control}
-                        name='comment'
-                        id='outlined-multiline-static'
-                        label='Bình luận'
-                        multiline
-                        rows={4}
-                        variant='outlined'
-                     />
-                  </Box>
-                  <Button>Bình luận</Button>
-               </form>
-            )}
-            <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
-         </Box>
-         <RelatedProducts />
-      </Container>
+      <>
+         {product ? (
+            <Container maxWidth='lg' sx={{ py: 3 }}>
+               <Grid container spacing={2} mt={3}>
+                  <Grid item xs={12} md={7}>
+                     <SwiperSlider productDetails={productDetails} />
+                  </Grid>
+                  <Grid item md={5} xs={12}>
+                     <ProductDescription product={product} productDetails={productDetails} details={details} />
+                  </Grid>
+               </Grid>
+               <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
+               <Box p={3}>
+                  {comments &&
+                     comments.map((comment, index) => {
+                        return <CommentItem key={index} {...comment} />;
+                     })}
+                  {isAuththentication && (
+                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <Box mt={4} mb={1}>
+                           <CoreRating control={control} name='rate' />
+                           <ControllerTextField
+                              control={control}
+                              name='description'
+                              id='outlined-multiline-static'
+                              label='Bình luận'
+                              multiline
+                              rows={4}
+                              variant='outlined'
+                           />
+                        </Box>
+                        <Button type='submit'>Bình luận</Button>
+                     </form>
+                  )}
+                  <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
+               </Box>
+               <RelatedProducts />
+            </Container>
+         ) : (
+            <Typography variant='h3' sx={{ mt: 5, color: '#555555', textAlign: 'center' }}>
+               Sản phẩm không tồn tại!!!
+            </Typography>
+         )}
+      </>
    );
 }
 

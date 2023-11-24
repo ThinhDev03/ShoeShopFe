@@ -14,9 +14,9 @@ const User = Loadable(lazy(() => import('@App/pages/Admin/User')));
 const userRouter = {
    path: routerPath.USER,
    element: (
-      // <PermissionRestricted roleNames={[ROLE[1], ROLE[2]]} path={routerPath.USER}>
-      <Outlet />
-      // </PermissionRestricted>
+      <PermissionRestricted roleNames={[ROLE[1], ROLE[2]]}>
+         <Outlet />
+      </PermissionRestricted>
    ),
    children: [
       {

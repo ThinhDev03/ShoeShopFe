@@ -7,14 +7,23 @@ import Brand from '@App/assets/svg/brand';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import PersonIcon from '@mui/icons-material/Person';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import DiscountIcon from '@mui/icons-material/Discount';
 const menuCofig = [
    {
       id: 1,
-      role: ['*'],
+      role: [ROLE[1]],
       title: 'Trang Chủ',
       aceptPermission: true,
       icon: DashboardOutlinedIcon,
       path: ''
+   },
+   {
+      id: 1,
+      role: [ROLE[2]],
+      title: 'Trang Chủ',
+      aceptPermission: true,
+      icon: DashboardOutlinedIcon,
+      path: '/admin/home'
    },
    {
       id: 2,
@@ -47,13 +56,13 @@ const menuCofig = [
       children: [
          { title: 'Tổng quan', path: routerPath.PRODUCTS },
          { title: 'Tạo mới', path: routerPath.PRODUCTS + '/save' },
-         { title: 'Màu sắc', path: routerPath.PRODUCTS + "/" + routerPath.COLOR },
-         { title: 'Kích thước', path: routerPath.PRODUCTS + "/" + routerPath.SIZE },
+         { title: 'Màu sắc', path: routerPath.PRODUCTS + '/' + routerPath.COLOR },
+         { title: 'Kích thước', path: routerPath.PRODUCTS + '/' + routerPath.SIZE }
       ]
    },
    {
       id: 7,
-      role: [ROLE[1], ROLE[2]],
+      role: [ROLE[1]],
       title: 'Người dùng',
       icon: PersonIcon,
       path: routerPath.USER,
@@ -69,6 +78,14 @@ const menuCofig = [
       icon: ReceiptLongIcon,
       path: routerPath.BILL,
       children: [{ title: 'Tổng quan', path: routerPath.BILL }]
+   },
+   {
+      id: 9,
+      role: [ROLE[1]],
+      title: 'Voucher giảm giá',
+      icon: DiscountIcon,
+      path: routerPath.VOUCHER,
+      children: [{ title: 'Tổng quan', path: routerPath.VOUCHER }]
    }
    // {
    //    id: 4,

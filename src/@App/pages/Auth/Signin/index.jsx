@@ -25,7 +25,7 @@ function Signin() {
    const [loading, setLoading] = useState(false);
    const { authLogin } = useAuth();
    const {} = useLocalStorage();
-   const { handleSubmit, control } = useForm({
+   const { handleSubmit, control, setError, setValue } = useForm({
       resolver: yupResolver(schemaLogin)
    });
 
@@ -38,6 +38,8 @@ function Signin() {
          successMessage('Đăng nhập thành công!');
       } catch (error) {
          errorMessage('Đăng nhập thất bại!');
+         setError('username', { type: 'custom', message: 'Tài khoản hoặc mật khẩu không chính xác.' });
+         setValue('password', '');
       }
       setLoading(false);
    };
