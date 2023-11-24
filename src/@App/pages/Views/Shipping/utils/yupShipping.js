@@ -11,7 +11,7 @@ yup.setLocale({
 const schemaShipping = yup.object({
    receiver: yup.string().required('Tài khoản đăng nhập không được để trống').default(''),
    phone_number: yup
-      .number()
+      .string()
       .required('Số điện thoại không được để trống')
       .matches(Regex.phone, 'Số điện thoại không hợp lệ')
       .default(''),
