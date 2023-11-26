@@ -106,9 +106,9 @@ function ProductDescription({ productDetails, details, product }) {
                      <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.brand_id?.brand_name}</Box>
                   </Box>
                   {currentProduct?.quantity === 0 ? (
-                     <Chip color='secondary' variant='outlined' label='Còn hàng' />
-                  ) : (
                      <Chip variant='outlined' color='primary' label='Hết hàng' />
+                  ) : (
+                     <Chip color='secondary' variant='outlined' label='Còn hàng' />
                   )}
                </Box>
             </Box>
