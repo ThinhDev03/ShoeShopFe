@@ -5,7 +5,7 @@ import ProductDescription from './components/ProductDescription';
 import RelatedProducts from './components/RelatedProducts';
 import productService from '@App/services/product.service';
 import productDetailService from '@App/services/product-detail.service';
-import { useQueries } from '@tanstack/react-query';
+import { useMutation, useQueries } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import CommentItem from './components/CommentItem';
 import commentService from '@App/services/commnet.service';
@@ -28,6 +28,7 @@ function ProductDetail() {
          })
       )
    });
+
    const [{ data: product }, { data: details }, { data: comments, refetch: refetchComment }] = useQueries({
       queries: [
          {
@@ -54,6 +55,17 @@ function ProductDetail() {
       ]
    });
 
+   const { mutate: onCreateComment } = useMutation({
+      mutationFn: async (data) => {
+         return await commentService.createComment({ ...data, user_id: user._id, product_id: id });
+      },
+      onSuccess() {
+         refetchComment();
+         setValue('rate', 0);
+         reset({ description: '' });
+      }
+   });
+
    const getUniqueProductWithColor = (productOrigin) => {
       if (!productOrigin) return [];
       const newSet = new Map();
@@ -67,11 +79,7 @@ function ProductDetail() {
    const productDetails = getUniqueProductWithColor(details);
 
    const onSubmit = async (data) => {
-      await commentService.createComment({ ...data, user_id: user._id, product_id: id });
-      setValue("rate", 0)
-      await refetchComment();
-
-      reset({ description: '' });
+      onCreateComment(data);
    };
 
    return (
