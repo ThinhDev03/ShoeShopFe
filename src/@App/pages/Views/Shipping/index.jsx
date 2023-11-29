@@ -13,14 +13,17 @@ import billService from '@App/services/bill.service';
 import { successMessage } from '@Core/Helper/Message';
 import paymentService from '@App/services/payment.service';
 import { payment_methods } from './utils';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useCart } from '@App/redux/slices/cart.slice';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 function Shipping() {
    const { user } = useAuth();
    const { cart } = useCart();
+   let [searchParams, setSearchParams] = useSearchParams();
+   const isDiscount = searchParams.get('ship') === 's';
 
+   const priceDiscount = isDiscount ? localStorage.getItem('shose_voucher') : 0;
    const button = useRef();
    const navigate = useNavigate();
    const refOrderId = useRef();
@@ -30,21 +33,18 @@ function Shipping() {
       defaultValues: schemaShipping.getDefault()
    });
 
-   const {
-      data: carts,
-      isLoading: loading,
-      refetch: getCart
-   } = useQuery(['getCart'], async () => {
+   const { data: carts, refetch: getCart } = useQuery(['getCart'], async () => {
       const res = await cartService.getCart(user._id);
       return res.data.cart;
    });
 
    const newCart = carts ? carts.filter((item) => cart.includes(item.product_id)) : [];
-
    const totalPrice = useMemo(() => {
-      return newCart?.reduce((currentPrice, item) => {
-         return currentPrice + toDiscountedPrice(item.price, item.sale) * item.quantity;
-      }, 0);
+      return (
+         newCart?.reduce((currentPrice, item) => {
+            return currentPrice + toDiscountedPrice(item.price, item.sale) * item.quantity;
+         }, 0) - priceDiscount
+      );
    }, [carts, cart]);
    if (!refPrice.current) {
       refPrice.current = !refPrice.current && totalPrice;
@@ -92,45 +92,34 @@ function Shipping() {
 
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
-         {loading && (
-            <Box sx={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
+         <Grid container spacing={2}>
+            <Grid item xs={12}>
                <Box
+                  component={Link}
+                  to='/cart'
                   sx={{
                      display: 'flex',
-                     height: '100%',
-                     width: '100%',
                      alignItems: 'center',
-                     justifyContent: 'center',
-                     backgroundColor: '#DADADA1A'
+                     gap: 1,
+                     color: '#111',
+                     '&:hover': { textDecoration: 'underline' }
                   }}>
-                  <CircularProgress />
+                  <KeyboardArrowLeftIcon /> Về giỏ hàng
                </Box>
-            </Box>
-         )}
-         {!loading && (
-            <Grid container spacing={2}>
-               <Grid item xs={12}>
-                  <Box
-                     component={Link}
-                     to='/cart'
-                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        color: '#111',
-                        '&:hover': { textDecoration: 'underline' }
-                     }}>
-                     <KeyboardArrowLeftIcon /> Về giỏ hàng
-                  </Box>
-               </Grid>
-               <Grid item xs={7}>
-                  <FormShipping form={form} />
-               </Grid>
-               <Grid item xs={5}>
-                  <Invoice handleSubmit={handleSubmit} onSubmit={onSubmit} cart={newCart} totalPrice={totalPrice} />
-               </Grid>
             </Grid>
-         )}
+            <Grid item xs={7}>
+               <FormShipping form={form} />
+            </Grid>
+            <Grid item xs={5}>
+               <Invoice
+                  discount={isDiscount ? priceDiscount : 0}
+                  handleSubmit={handleSubmit}
+                  onSubmit={onSubmit}
+                  cart={newCart}
+                  totalPrice={totalPrice}
+               />
+            </Grid>
+         </Grid>
          <Box
             component='form'
             sx={{ visibility: 'hidden', opacity: 0 }}
