@@ -85,7 +85,10 @@ const menuCofig = [
       title: 'Voucher giảm giá',
       icon: DiscountIcon,
       path: routerPath.VOUCHER,
-      children: [{ title: 'Tổng quan', path: routerPath.VOUCHER }]
+      children: [
+         { title: 'Tổng quan', path: routerPath.VOUCHER },
+         { title: 'Tạo voucher', path: routerPath.VOUCHER + '/create' }
+      ]
    }
    // {
    //    id: 4,

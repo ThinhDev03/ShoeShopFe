@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { CART_ACTION, useCart } from '@App/redux/slices/cart.slice';
 import { compareArrays } from './helper';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+
 function Cart() {
    const { user } = useAuth();
    const { cart, updateCart } = useCart();
@@ -26,8 +27,6 @@ function Cart() {
          }
       }
    );
-
-   console.log(carts);
 
    const totalPrice = useMemo(() => {
       const newCart = carts ? carts?.filter((item) => cart.includes(item.product_id)) : [];
