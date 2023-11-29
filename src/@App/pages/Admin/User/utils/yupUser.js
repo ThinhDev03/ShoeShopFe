@@ -17,11 +17,8 @@ const yupUser = yup.object().shape({
    phone: yup.string().trim().matches(Regex.phone, 'Số điện thoại không hợp lệ').required('Vui lòng nhập số ĐT'),
    fullname: yup.string().trim().required('Vui lòng nhập tên hiển thị'),
    username: yup.string().trim().required('Vui lòng nhập tên đăng nhập'),
-   password: yup
-      .string()
-      .trim()
-      .required('Vui lòng nhập mật khẩu')
-      .matches(Regex.password, 'Vui lòng nhập số, chữ hoa, chữ thường, ký tự đặc biệt'),
+   password: yup.string().trim().required('Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải lớn hơn 6 ký tự'),
+   // .matches(Regex.password, 'Vui lòng nhập số, chữ hoa, chữ thường, ký tự đặc biệt'),
    confirmPassword: yup
       .string()
       .trim()

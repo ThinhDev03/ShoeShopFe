@@ -52,7 +52,7 @@ function ProductCard({ data, sale }) {
                      fontWeight: 600
                   }}
                   component={Link}
-                  to={data?._id}>
+                  to={'/' + routerPath.PRODUCTS + '/' + data?._id}>
                   {data?.name}
                </Box>
                <Box sx={{ color: '#707072' }}>{data?.brand_id?.brand_name}</Box>

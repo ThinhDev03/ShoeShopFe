@@ -3,7 +3,7 @@ import { Box, Button, Stack, Typography, styled } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Invoice({ handleSubmit, onSubmit, cart, totalPrice }) {
+function Invoice({ handleSubmit, onSubmit, cart, totalPrice, discount }) {
    return (
       <Stack gap={3} sx={{ bgcolor: '#f1f1f1', pb: '20px', pt: '5px', px: 3 }}>
          <Typography
@@ -53,7 +53,11 @@ function Invoice({ handleSubmit, onSubmit, cart, totalPrice }) {
          <Stack sx={{ fontSize: '18px', color: '#808080' }} gap={2}>
             <FlexBetween>
                <span>Đơn hàng:</span>
-               <span>{toFormatMoney(totalPrice)} </span>
+               <span>{toFormatMoney(totalPrice + parseInt(discount))} </span>
+            </FlexBetween>
+            <FlexBetween>
+               <span>Giảm giá:</span>
+               <span>- {toFormatMoney(discount)} </span>
             </FlexBetween>
             {/* <FlexBetween>
                <span>Giảm:</span>
