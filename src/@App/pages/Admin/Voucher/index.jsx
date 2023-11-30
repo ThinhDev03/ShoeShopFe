@@ -8,7 +8,6 @@ import { Box } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 function Voucher() {
    const { data, refetch, isFetching } = useQuery(['getVoucher'], async () => {
       const res = await voucherService.list();
