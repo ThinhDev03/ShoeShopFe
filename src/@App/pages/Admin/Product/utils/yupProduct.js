@@ -2,13 +2,23 @@ import * as yup from 'yup';
 import Regex from '@Core/Helper/Regex';
 
 const yupProduct = yup.object().shape({
-   name: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Vui lòng nhập tên màu').default(''),
-   category_id: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Không được để trống').default(''),
-   brand_id: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Vui lòng nhập mã màu').default(''),
+   name: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Vui lòng nhập tên sản phẩm').default(''),
+   category_id: yup
+      .string()
+      .trim('Vui lòng bỏ khoảng trống')
+      .strict(true)
+      .required('Vui lòng chọn danh mục')
+      .default(''),
+   brand_id: yup
+      .string()
+      .trim('Vui lòng bỏ khoảng trống')
+      .strict(true)
+      .required('Vui lòng chọn thương hiệu')
+      .default(''),
    description: yup
       .string()
       .required()
-      .trim('Vui lòng bỏ khoảng trống')
+      .trim('Vui lòng nhập mô tả')
       .strict(true)
       .required('Không được để trống')
       .default(''),
