@@ -13,7 +13,7 @@ function BaseFormBrand({ form, onSubmit, isLoading, title }) {
       <Box component='form' onSubmit={handleSubmit(onSubmit)}>
          <Grid container spacing={2}>
             <Grid item xs={6} sx={{ minHeight: '120px' }}>
-               <FormLabel required title='Tên danh mục' name='brand_name' gutterBottom />
+               <FormLabel required title='Tên thương hiệu' name='brand_name' gutterBottom />
                <ControllerTextField name='brand_name' control={control} />
             </Grid>
             <Grid item xs={6} sx={{ minHeight: '120px' }}>

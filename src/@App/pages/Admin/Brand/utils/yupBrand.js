@@ -10,7 +10,7 @@ const yupBrand = yup.object().shape({
       .string()
       .trim('Vui lòng bỏ khoảng trống')
       .strict(true)
-      .required('Vui lòng nhập tên danh mục')
+      .required('Vui lòng nhập tên thương hiệu')
       .default(''),
    origin: yup
       .string()
