@@ -1,7 +1,7 @@
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 import { Box, Button, Grid, Stack, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import toFormatMoney, { toDiscountedPrice } from '@Core/Helper/Price';
 import { errorMessage } from '@Core/Helper/Message';
 import { useMutation } from '@tanstack/react-query';
@@ -18,6 +18,7 @@ import { error } from 'highcharts';
 function CartProductItem({ data, getCart }) {
    const { user } = useAuth();
    const [errorQuantity, setErrorQuantity] = useState('');
+   const refInit = useRef(false);
 
    const { control, watch } = useForm({
       defaultValues: {
@@ -53,7 +54,12 @@ function CartProductItem({ data, getCart }) {
       }
    });
 
-   useEffect(() => updateCart(), [quantityProduct]);
+   useEffect(() => {
+      refInit.current && updateCart();
+      if (!refInit.current) {
+         refInit.current = true;
+      }
+   }, [quantityProduct]);
 
    const { mutate: deleteCart } = useMutation({
       mutationFn: async () => {
