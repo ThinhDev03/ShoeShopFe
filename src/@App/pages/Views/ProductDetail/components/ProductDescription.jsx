@@ -24,6 +24,7 @@ function ProductDescription({ productDetails, details, product }) {
       quantity: yup
          .number()
          .strict(true)
+         .required('Vui lòng chọn số lượng')
          .test('max_quantity', (value, ctx) => {
             if (Number(value) <= 0) {
                return ctx.createError({ message: 'Vui lòng chọn lại số lượng.' });

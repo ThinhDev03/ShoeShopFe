@@ -7,15 +7,20 @@ const yupProduct = yup.object().shape({
       .string()
       .trim('Vui lòng bỏ khoảng trống')
       .strict(true)
-      .required('Vui lòng nhập danh mục')
+      .required('Vui lòng chọn danh mục')
       .default(''),
    brand_id: yup
       .string()
       .trim('Vui lòng bỏ khoảng trống')
       .strict(true)
-      .required('Vui lòng nhập thương hiệu')
+      .required('Vui lòng chọn thương hiệu')
       .default(''),
-   description: yup.string().trim('Vui lòng bỏ khoảng trống').strict(true).required('Không được để trống').default(''),
+   description: yup
+      .string()
+      .trim('Vui lòng bỏ khoảng trống')
+      .strict(true)
+      .required('Vui lòng nhập mô tả')
+      .default(''),
    thumbnail: yup.string().trim('Vui lòng bỏ khoảng trống').required('Không được để trống').default(''),
    images: yup.array().required('Không được để trống').default([]),
    newImages: yup.array().default([])

@@ -1,7 +1,14 @@
 import Scrollbar from '@App/components/customs/Scrollbar';
 import useAuth from '@App/hooks/useAuth';
 import useDebounceInput from '@App/hooks/useDebounceInput';
-import { BILL_STATUS, billStatus, paymentMethod, paymentStatus, transferStatus } from '@App/pages/Admin/Bill/utils';
+import {
+   BILL_STATUS,
+   billStatus,
+   billStatusUser,
+   paymentMethod,
+   paymentStatus,
+   transferStatus
+} from '@App/pages/Admin/Bill/utils';
 import billService from '@App/services/bill.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import ControllerTextField from '@Core/Components/FormControl/ControllerTextField';
@@ -37,7 +44,7 @@ import { errorMessage, successMessage } from '@Core/Helper/Message';
 function Bill() {
    const [open, setOpen] = React.useState(false);
    const { user, isAuththentication } = useAuth();
-   const { control, watch } = useForm({ mode: 'onChange', defaultValues: { status: 'PENDING' } });
+   const { control, watch } = useForm({ mode: 'onChange', defaultValues: { status: 'all' } });
    const [bill, setBill] = useState({});
    const [page, setPage] = useState(1);
 
@@ -53,10 +60,11 @@ function Bill() {
    } = useQuery(
       ['getBill', { page, statusSelected, search }],
       async () => {
+         const status = statusSelected === 'all' ? '' : statusSelected;
          const rest = await billService.list(
             {
                page,
-               status: statusSelected,
+               status,
                search
             },
             '/' + user?._id
@@ -185,7 +193,7 @@ function Bill() {
          sx={{ py: 3, backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid  #D1D5DB' }}>
          <Stack direction='row' gap={3}>
             <Box width={200} mb={3}>
-               <ControllerSelect label='Trạng thái đơn hàng' options={billStatus} name='status' control={control} />
+               <ControllerSelect label='Trạng thái đơn hàng' options={billStatusUser} name='status' control={control} />
             </Box>
             <Box width={200} mb={3}>
                <ControllerTextField placeholder='Tìm tên người nhận' name='search' control={control} />

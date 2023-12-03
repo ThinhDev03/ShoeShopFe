@@ -24,7 +24,9 @@ function Cart() {
       {
          onSuccess(data) {
             updateCart(CART_ACTION[2], data);
-         }
+         },
+         cacheTime: 0,
+         staleTime: 0
       }
    );
 

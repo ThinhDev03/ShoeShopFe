@@ -47,7 +47,12 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                await productService.createImage({ images: res, product_id });
                refetchImages();
             } else {
-               onChange([...res, ...imageOrImages]);
+               console.log(res);
+               if (typeof res === 'string') {
+                  onChange([res, ...imageOrImages]);
+               } else {
+                  onChange([...res, ...imageOrImages]);
+               }
             }
             setIsChangeImages((prev) => !prev);
          } else {
@@ -62,19 +67,25 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
    const { mutate: callbackDeleteImage, isLoading: deleteLoading } = useMutation({
       mutationKey: 'uploadImage',
       mutationFn: async ({ image, id }) => {
-         if (product_id && multiple) {
-            const res = await productService.deleteImage(id);
-            if (res.success) {
-               await deleteFirebaseImage(image);
-               setIsChangeImages((prev) => !prev);
-               refetchImages();
-            } else {
-               errorMessage('Hình ảnh đang được sử dụng.');
+         if (product_id) {
+            if (multiple) {
+               console.log(image, id);
+               const res = await productService.deleteImage(id);
+               if (res.success) {
+                  await deleteFirebaseImage(image);
+                  setIsChangeImages((prev) => !prev);
+                  refetchImages();
+               } else {
+                  errorMessage('Hình ảnh đang được sử dụng.');
+               }
             }
-         } else if (!multiple) {
+         } else {
             await deleteFirebaseImage(image);
             product_id && (await productService.deleteThumbnail(product_id));
-            onChange('');
+
+            const newValue = imageOrImages.filter((item) => item !== image);
+
+            onChange(newValue);
          }
       },
       onError: (error) => {
@@ -107,14 +118,14 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                      imageOrImages.map((image, index) => {
                         return (
                            <ImageItem key={index} xs={sx}>
-                              <LazyLoadingImage src={image.image_url || image} style={{ borderRadius: '5px', height: '180px' }} />
+                              <LazyLoadingImage src={image.image_url || image} style={{ borderRadius: '5px' }} />
                               <DeleteImage
-                                 onClick={() =>
+                                 onClick={() => {
                                     callbackDeleteImage({
                                        image: image.image_url ? image.image_url : image,
                                        id: image?._id
-                                    })
-                                 }
+                                    });
+                                 }}
                               />
                            </ImageItem>
                         );
@@ -155,6 +166,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
 const ImageItem = styled('label')({
    position: 'relative',
    width: '155.227px',
+   height: '178.400px',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',

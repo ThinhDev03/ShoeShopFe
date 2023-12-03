@@ -23,6 +23,22 @@ export const billStatus = [
    }
 ];
 
+export const billStatusUser = [
+   {
+      label: 'Tất cả',
+      value: 'all'
+   },
+
+   {
+      label: 'Đã giao',
+      value: 'RECEIVED'
+   },
+   {
+      label: 'Hủy đơn hàng',
+      value: 'CANCELED'
+   }
+];
+
 export const paymentMethodOptions = [
    {
       label: 'Thanh toán khi nhận hàng',
