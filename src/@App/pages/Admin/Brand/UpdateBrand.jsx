@@ -58,7 +58,7 @@ function UpdateBrand() {
    };
 
    return (
-      <BasicPage currentPage='Thêm danh mục sản phẩm' breadcrumbs={breadcrumbs}>
+      <BasicPage currentPage='Thêm thương hiệu sản phẩm' breadcrumbs={breadcrumbs}>
          <BaseFormBrand form={form} onSubmit={onSubmit} isLoading={isLoading} title='Cập nhật' />
       </BasicPage>
    );
