@@ -86,7 +86,7 @@ function BillPage() {
             }
          }),
          columnHelper.accessor('phone_number', {
-            header: 'Sô điện thoại'
+            header: 'Số điện thoại'
          }),
          columnHelper.accessor('payment_id.status', {
             header() {
