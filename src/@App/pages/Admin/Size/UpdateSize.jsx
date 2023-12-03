@@ -54,7 +54,6 @@ export default function UpdateSize() {
    });
 
    const onSubmit = async (data) => {
-      console.log(data);
       mutate(data);
    };
 

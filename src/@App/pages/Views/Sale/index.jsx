@@ -19,7 +19,6 @@ function Sale() {
       ['getProduct-sale', search, category, brand, currentPage],
       async () => {
          const res = await productService.find('get-sale');
-         console.log(res);
          return res;
       }
    );

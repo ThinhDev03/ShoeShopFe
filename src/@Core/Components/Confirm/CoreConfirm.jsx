@@ -46,7 +46,6 @@ const CoreConfirmProvider = (props) => {
          setOpen(false);
          await configs?.onOk();
       } catch (error) {
-         console.log(error);
       }
       setLoading(false);
    };
