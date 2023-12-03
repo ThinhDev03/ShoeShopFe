@@ -24,7 +24,9 @@ function Cart() {
       {
          onSuccess(data) {
             updateCart(CART_ACTION[2], data);
-         }
+         },
+         cacheTime: 0,
+         staleTime: 0
       }
    );
 
@@ -40,7 +42,6 @@ function Cart() {
       if (cart.includes(product_id)) {
          updateCart(CART_ACTION[1], product_id);
       } else {
-         console.log(product_id);
          updateCart(CART_ACTION[0], product_id);
       }
    };

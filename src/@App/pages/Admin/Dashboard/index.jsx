@@ -23,7 +23,6 @@ function Dashboard() {
          initialData: { total_money: 0, total_quantity: 0, total_user: 0, total_bill: 0 }
       }
    );
-   console.log(data);
    return (
       <BasicPage currentPage='Thống kê' sx={{ backgroundColor: '#f5f6f7' }} paperProps={{ elevation: 0 }}>
          <Grid container spacing={4}>

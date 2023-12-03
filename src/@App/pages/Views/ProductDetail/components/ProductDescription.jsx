@@ -24,6 +24,7 @@ function ProductDescription({ productDetails, details, product }) {
       quantity: yup
          .number()
          .strict(true)
+         .required('Vui lòng chọn số lượng')
          .test('max_quantity', (value, ctx) => {
             if (Number(value) <= 0) {
                return ctx.createError({ message: 'Vui lòng chọn lại số lượng.' });
@@ -66,7 +67,6 @@ function ProductDescription({ productDetails, details, product }) {
          });
          successMessage('Thêm vào giỏ hàng thành công');
       } catch (error) {
-         console.log(error);
          if (error.response.status === 400) {
             setError('quantity', { message: 'Sản phẩm trong giỏ hàng đã đạt quá giới hạn cho phép.' });
          }
@@ -93,7 +93,7 @@ function ProductDescription({ productDetails, details, product }) {
 
    useEffect(() => {
       setQuantity(currentProduct?.quantity);
-   }, [currentProductId]);
+   }, [currentProductId, product]);
 
    return (
       <React.Fragment>
@@ -105,7 +105,7 @@ function ProductDescription({ productDetails, details, product }) {
                      <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.category_id?.category_name}</Box>
                      <Box sx={{ fontSize: '18px', color: '#707072', mb: 1 }}>{product?.brand_id?.brand_name}</Box>
                   </Box>
-                  {currentProduct?.quantity === 0 ? (
+                  {currentProduct?.quantity <= 0 ? (
                      <Chip variant='outlined' color='primary' label='Hết hàng' />
                   ) : (
                      <Chip color='secondary' variant='outlined' label='Còn hàng' />
@@ -231,4 +231,4 @@ const Divider = styled(Box)(({ theme }) => ({
    height: '2px'
 }));
 
-export default React.memo(ProductDescription);
+export default ProductDescription;
