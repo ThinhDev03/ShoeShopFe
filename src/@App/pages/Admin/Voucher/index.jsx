@@ -14,8 +14,6 @@ function Voucher() {
       return res.data;
    });
 
-
-   
    const { mutate: deleteVoucher } = useMutation({
       mutationFn: async (voucherId) => {
          return await voucherService.delete(voucherId);

@@ -9,8 +9,6 @@ import { errorMessage, successMessage } from '@Core/Helper/Message';
 import voucherService from '@App/services/voucher.service';
 import { useNavigate, useParams } from 'react-router-dom';
 
-
-
 function UpdateVoucher() {
    const { id } = useParams();
    const navigate = useNavigate();
@@ -19,6 +17,7 @@ function UpdateVoucher() {
       resolver: yupResolver(yupVoucher),
       defaultValues: yupVoucher.getDefault()
    });
+
 
    useQuery(
       ['getVoucherDetail', { id }],
