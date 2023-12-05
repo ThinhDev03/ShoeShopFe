@@ -14,7 +14,6 @@ class PaymentService extends BaseService {
    savePayment(params) {
       return this.request.get(this.BASE_URL + '/' + this.BASE_ENDPOINT + '/save', { params });
    }
-}
-
+};
 const paymentService = new PaymentService();
 export default paymentService;
