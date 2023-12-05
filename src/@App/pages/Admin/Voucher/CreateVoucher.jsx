@@ -23,14 +23,13 @@ function CreateVoucher() {
       },
       onSuccess: () => {
          form.reset();
-         successMessage('Thêm voucher thành công.');
+         successMessage('Thêm voucher thành công ');
          navigate('/admin/voucher');
       },
       onError: (error) => {
          errorMessage(error);
       }
    });
-
    const onSubmit = async (data) => {
       console.log(data);
       mutate(data);
