@@ -23,7 +23,7 @@ function CreateVoucher() {
       },
       onSuccess: () => {
          form.reset();
-         successMessage('Thêm voucher thành công ');
+         successMessage('Thêm voucher thành công !');
          navigate('/admin/voucher');
       },
       onError: (error) => {
