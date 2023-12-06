@@ -46,6 +46,7 @@ function CreateVoucher() {
          link: '/voucher'
       }
    ];
+   
    const props = { onSubmit, form };
    return (
       <BasicPage currentPage='Thêm voucher' breadcrumbs={breadcrumbs}>

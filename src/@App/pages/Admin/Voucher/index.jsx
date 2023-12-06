@@ -23,7 +23,9 @@ function Voucher() {
          successMessage('Xóa voucher thành công');
       }
    });
+   
    const navigate = useNavigate();
+
    const columns = useMemo(() => {
       return [
          columnHelper.accessor((row, index) => index + 1, {

@@ -65,6 +65,7 @@ function UpdateVoucher() {
          link: '/voucher'
       }
    ];
+   
    const props = { onSubmit, form, title: 'Cập nhật' };
    return (
       <BasicPage currentPage='Thêm voucher' breadcrumbs={breadcrumbs}>
