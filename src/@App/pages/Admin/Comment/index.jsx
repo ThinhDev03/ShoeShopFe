@@ -23,7 +23,7 @@ function Comment() {
    const deleteComment = async (id) => {
       try {
          await commentService.delete(id);
-         successMessage('Xóa bình luận thành công ');
+         successMessage('Xóa bình luận thành công');
          refetch();
       } catch (error) {
          errorMessage('Xóa bình luận thất bại ');
@@ -66,6 +66,7 @@ function Comment() {
          })
       ];
    }, []);
+   
    console.log(data);
    return (
       <BasicPage currentPage='Products'>

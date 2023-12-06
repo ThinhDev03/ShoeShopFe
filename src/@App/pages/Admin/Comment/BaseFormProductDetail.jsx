@@ -16,6 +16,7 @@ import SelectImageDetail from './SelectImageDetail';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import CoreInput from '@Core/Components/Input/CoreInput';
 
+
 const ListTitle = [
    {
       title: 'Kích thước',
