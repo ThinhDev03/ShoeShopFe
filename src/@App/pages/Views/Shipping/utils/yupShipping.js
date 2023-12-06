@@ -9,7 +9,11 @@ yup.setLocale({
 });
 
 const schemaShipping = yup.object({
-   receiver: yup.string().required('Tài khoản đăng nhập không được để trống').default(''),
+   receiver: yup
+      .string()
+      .required('Tài khoản đăng nhập không được để trống')
+      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi')
+      .default(''),
    phone_number: yup
       .string()
       .required('Số điện thoại không được để trống')
@@ -18,7 +22,11 @@ const schemaShipping = yup.object({
    province: yup.string().required('Tỉnh / thành phố không được để trống').default(''),
    district: yup.string().required('Quận / huyện không được để trống').default(''),
    ward: yup.string().required('Xã phường không được để trống').default(''),
-   address: yup.string().required('Địa chỉ không được để trống').default(''),
+   address: yup
+      .string()
+      .required('Địa chỉ không được để trống')
+      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi')
+      .default(''),
    payment_method: yup.string().required('Hình thức thanh toán không được để trống').default(payment_methods[0].value),
    note: yup.string().default('')
 });
