@@ -63,9 +63,11 @@ function Dashboard() {
             <Grid item xs={6}>
                <ChartColumn />
             </Grid>
+
             <Grid item xs={6}>
                <ChartPie />
             </Grid>
+            
             <Grid item xs={12}>
                <ChartLine />
             </Grid>

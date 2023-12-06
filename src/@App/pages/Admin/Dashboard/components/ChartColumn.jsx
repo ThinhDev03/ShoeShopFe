@@ -108,6 +108,7 @@ function ChartColumn() {
          <Typography mt={4} textAlign='center'>
             Biểu đồ thống kê sản phẩm có đánh giá cao
          </Typography>
+         
       </Paper>
    );
 }
