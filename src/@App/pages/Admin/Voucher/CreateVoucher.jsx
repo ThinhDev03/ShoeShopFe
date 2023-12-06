@@ -29,7 +29,7 @@ function CreateVoucher() {
       onError: (error) => {
          errorMessage(error);
       }
-   });
+   }); 
    
    const onSubmit = async (data) => {
       console.log(data);

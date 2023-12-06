@@ -5,7 +5,6 @@ import React from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import FormLabel from '@Core/Components/FormControl/FormLabel';
 
-
 function BaseFormVoucher(props) {
    const { form, onSubmit } = props;
    const { control, handleSubmit } = form;
