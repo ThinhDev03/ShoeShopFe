@@ -13,8 +13,8 @@ import { useParams } from 'react-router-dom';
 
 function Comment() {
    const { id } = useParams();
-   const confirm = useConfirm();
 
+   const confirm = useConfirm();
    const { data, isFetching, refetch } = useQuery(['comment', id], async () => {
       const data = await commentService.find(id);
       return data.data;
@@ -66,7 +66,7 @@ function Comment() {
          })
       ];
    }, []);
-   
+
    console.log(data);
    return (
       <BasicPage currentPage='Products'>
@@ -74,5 +74,4 @@ function Comment() {
       </BasicPage>
    );
 }
-
 export default Comment;
