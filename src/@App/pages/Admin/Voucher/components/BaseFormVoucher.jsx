@@ -10,7 +10,7 @@ function BaseFormVoucher(props) {
    const { control, handleSubmit } = form;
 
    return (
-      <Box component='form' onSubmit={handleSubmit(onSubmit)}>
+      <Box component='form' onSubmit={handleSubmit( onSubmit )}>
          <Grid container spacing={3}>
             <Grid item xs={6}>
                <FormLabel required title='Tên voucher' name='voucher_name' gutterBottom />

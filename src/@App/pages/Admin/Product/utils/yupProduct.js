@@ -20,7 +20,7 @@ const yupProduct = yup.object().shape({
       .required()
       .trim('Vui lòng nhập mô tả')
       .strict(true)
-      .required('Không được để trống')
+      .required('Vui lòng nhập mô tả')
       .default(''),
    thumbnail: yup.string().trim('Vui lòng bỏ khoảng trống').required('Không được để trống').default(''),
    images: yup.array().required('Không được để trống').default([]),
