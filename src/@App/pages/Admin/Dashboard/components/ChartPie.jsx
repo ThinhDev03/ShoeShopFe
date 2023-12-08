@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
-import { Paper, Typography } from '@mui/material';
+import { Paper, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import statisticService from '@App/services/statistic.service';
 import '../index.css';
-function ChartPie() {
+import moment from 'moment';
+
+function ChartPie({ startDate, endDate }) {
+   const start = moment(startDate).format('YYYY/MM/DD');
+   const end = moment(endDate).format('YYYY/MM/DD');
+
    const { data } = useQuery(
-      ['get-best-seller'],
+      ['get-best-seller', start, end],
       async () => {
-         const res = await statisticService.getBestSeller();
+         const res = await statisticService.getBestSeller({ params: { start, end } });
          const newData = res.data.map((item, index) => {
             if (index === 1) {
                return { name: item.product_name, y: item.quantity, sliced: true, selected: true };
@@ -19,7 +24,9 @@ function ChartPie() {
          return newData;
       },
       {
-         initialData: []
+         initialData: [],
+         staleTime: 0,
+         cacheTime: 0
       }
    );
    const options = {
@@ -103,17 +110,14 @@ function ChartPie() {
       },
       chart: {
          type: 'pie',
-         height: 380,
-         events: {
-            drillup: function (e) {}
-         }
+         height: 380
       }
    };
    return (
       <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
 
-         <Typography mt={4} textAlign='center'>
+         <Typography mt={4} textAli gn='center'>
             Biểu đồ thống kê sản phẩm bán chạy
          </Typography>
       </Paper>

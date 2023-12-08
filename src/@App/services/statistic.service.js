@@ -8,14 +8,14 @@ class StatisticService extends BaseService {
       this.setRequest();
    }
 
-   getBestSeller() {
-      return this.find('best-seller');
+   getBestSeller(params) {
+      return this.find('best-seller', params);
    }
    getRevenueAll() {
       return this.find('revenue-all');
    }
-   getTopRate() {
-      return this.find('top-rate');
+   getTopRate(params) {
+      return this.find('top-rate', params);
    }
    getRevenue() {
       return this.find('revenue');
