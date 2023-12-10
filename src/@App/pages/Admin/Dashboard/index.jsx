@@ -1,5 +1,5 @@
 import BasicPage from '@App/components/customs/BasicPage';
-import { Grid } from '@mui/material';
+import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 import ChartPie from './components/ChartPie';
 import ChartLine from './components/ChartLine';
@@ -11,8 +11,36 @@ import img4 from '@App/assets/glass/ic_glass_message.png';
 import statisticService from '@App/services/statistic.service';
 import { useQuery } from '@tanstack/react-query';
 import ChartColumn from './components/ChartColumn';
-
+import CoreDatePicker from '@Core/Components/Input/CoreDatePicker';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 function Dashboard() {
+   const { control, watch } = useForm({
+      mode: 'onChange',
+      defaultValues: {
+         startDate: new Date('2023/01/01'),
+         endDate: new Date()
+      },
+      resolver: yupResolver(
+         Yup.object().shape({
+            startDate: Yup.string()
+               .notOneOf([Yup.ref('endDate')], 'error not one of')
+               .required(),
+            endDate: Yup.date()
+               .notOneOf([Yup.ref('startDate')], 'error not one of')
+               .when(
+                  'startDate',
+                  (publishStart, schema) => new Date(publishStart) && schema.min(new Date(publishStart))
+               )
+               .required()
+         })
+      )
+   });
+
+   const startDate = watch('startDate');
+   const endDate = watch('endDate');
+
    const { data } = useQuery(
       ['get-revenue'],
       async () => {
@@ -23,7 +51,6 @@ function Dashboard() {
          initialData: { total_money: 0, total_quantity: 0, total_user: 0, total_bill: 0 }
       }
    );
-   console.log(data);
    return (
       <BasicPage currentPage='Thống kê' sx={{ backgroundColor: '#f5f6f7' }} paperProps={{ elevation: 0 }}>
          <Grid container spacing={4}>
@@ -63,6 +90,7 @@ function Dashboard() {
             <Grid item xs={6}>
                <ChartColumn />
             </Grid>
+
             <Grid item xs={6}>
                <ChartPie />
             </Grid>

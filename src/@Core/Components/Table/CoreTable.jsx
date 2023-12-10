@@ -24,7 +24,6 @@ export const columnHelper = createColumnHelper();
 
 const CoreTable = (props) => {
    const { data, columns, pageSize, handleSetCurrentPage, loading, isPagination, query } = props;
-   console.log(pageSize);
    const pagination = React.useMemo(
       () => ({
          pageIndex: 1,
@@ -57,7 +56,7 @@ const CoreTable = (props) => {
          <Scrollbar
             sx={{
                flex: 1,
-               height: '100%'
+               height: '100%' 
             }}>
             <Table stickyHeader sx={{ minWidth: 'max-content', width: '100%' }} size='small'>
                <CoreTableHeader columns={columns} table={table} />

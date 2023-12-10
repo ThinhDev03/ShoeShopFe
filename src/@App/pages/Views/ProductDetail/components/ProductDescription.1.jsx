@@ -63,7 +63,6 @@ export function ProductDescription({ productDetails, details, product }) {
          });
          successMessage('Thêm vào giỏ hàng thành công');
       } catch (error) {
-         console.log(error);
          if (error.response.status === 400) {
             setError('quantity', { message: 'Sản phẩm trong giỏ hàng đã đạt quá giới hạn cho phép.' });
          }
@@ -91,7 +90,6 @@ export function ProductDescription({ productDetails, details, product }) {
    useEffect(() => {
       setQuantity(currentProduct?.quantity);
    }, [currentProductId]);
-   console.log(currentProduct);
    return (
       <React.Fragment>
          <Stack sx={{ padding: '0 24px', gap: '18px' }}>
@@ -104,7 +102,7 @@ export function ProductDescription({ productDetails, details, product }) {
                   </Box>
                   {currentProduct?.quantity && (
                      <Box sx={{ color: '#707072' }}>
-                        {currentProduct?.quantity > 0 ? <Chip>Còn hàng</Chip> : <Chip>Hết hàng</Chip>}
+                        {currentProduct?.quantity <= 0 ? <Chip>Còn hàng</Chip> : <Chip>Hết hàng</Chip>}
                      </Box>
                   )}
                </Box>

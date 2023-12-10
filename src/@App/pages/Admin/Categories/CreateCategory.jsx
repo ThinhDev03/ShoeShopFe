@@ -38,7 +38,6 @@ function CreateCategory() {
    });
 
    const onSubmit = async (data) => {
-      console.log(data);
       mutate(data);
    };
 

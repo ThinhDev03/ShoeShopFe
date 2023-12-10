@@ -67,7 +67,6 @@ function Comment() {
       ];
    }, []);
 
-   console.log(data);
    return (
       <BasicPage currentPage='Products'>
          <CoreTable columns={columns} data={data} handleFetchData={refetch} isPagination={true} loading={isFetching} />
