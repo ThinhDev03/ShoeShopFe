@@ -38,14 +38,14 @@ function ProductDetail() {
             }
          },
          {
-            queryKey: 'product-detail',
+            queryKey: ['product-detail', id],
             queryFn: async () => {
                const res = await productDetailService.getOne(id);
                return res.data;
             }
          },
          {
-            queryKey: 'comment',
+            queryKey: ['comment', id],
             queryFn: async () => {
                const res = await commentService.find(id);
                return res.data;

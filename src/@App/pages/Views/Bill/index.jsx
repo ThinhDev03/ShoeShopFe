@@ -125,7 +125,7 @@ function Bill() {
          format: (v) => v.receiver
       },
       {
-         label: 'Só điện thoại',
+         label: 'Số điện thoại',
          minWidth: 170,
          align: 'left',
          format: (v) => v.phone_number
