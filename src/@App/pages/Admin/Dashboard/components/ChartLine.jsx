@@ -14,7 +14,9 @@ function ChartLine() {
          return res.data;
       },
       {
-         initialData: []
+         initialData: [],
+         staleTime: 0,
+         cacheTime: 0
       }
    );
 
@@ -79,7 +81,9 @@ function ChartLine() {
    return (
       <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
-         <Typography mt={4} textAlign='center'>Biểu đồ thống kê doanh số</Typography>
+         <Typography mt={4} textAlign='center'>
+            Biểu đồ thống kê doanh số
+         </Typography>
       </Paper>
    );
 }
