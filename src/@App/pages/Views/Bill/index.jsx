@@ -95,7 +95,6 @@ function Bill() {
       getBillDetail(bill_id);
       if (bills.data) {
          const bill = bills.data.find((item) => item._id === bill_id);
-         console.log(bill);
          setBill(bill);
       }
    };
@@ -126,7 +125,7 @@ function Bill() {
          format: (v) => v.receiver
       },
       {
-         label: 'Só điện thoại',
+         label: 'Số điện thoại',
          minWidth: 170,
          align: 'left',
          format: (v) => v.phone_number

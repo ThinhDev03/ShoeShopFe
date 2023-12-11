@@ -11,12 +11,10 @@ function Payment() {
       ['payment', params],
       async () => {
          const res = await paymentService.savePayment(params);
-         console.log(res);
          return res;
       },
       {
          onSuccess(data) {
-            console.log(data);
             navigate('/bill');
          },
          onError(err) {

@@ -44,7 +44,7 @@ export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => 
    );
 };
 
-export const CoreTableReplay = ({ callback = () => {}, content = '' }) => {
+export const CoreTableReplay = ({ callback = () => {}, content = '', okText = 'Hủy đơn hàng' }) => {
    const confirm = useConfirm();
 
    const handleDelete = () => {
@@ -52,13 +52,13 @@ export const CoreTableReplay = ({ callback = () => {}, content = '' }) => {
          content: content,
          isIcon: true,
          color: 'error',
-         okText: 'Hủy đơn hàng',
+         okText,
          onOk: callback
       });
    };
 
    return (
-      <Tooltip title='Hủy'>
+      <Tooltip title={okText}>
          <IconButton onClick={handleDelete}>
             <ReplayIcon fontSize='small' />
          </IconButton>

@@ -49,7 +49,6 @@ function Home() {
       return res.data;
    });
 
-   console.log(bestSales);
    return (
       <React.Fragment>
          <SwiperSlider />
