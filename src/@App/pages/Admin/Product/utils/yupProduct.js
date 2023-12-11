@@ -17,7 +17,6 @@ const yupProduct = yup.object().shape({
       .default(''),
    description: yup
       .string()
-      .required()
       .trim('Vui lòng bỏ khoảng trống')
       .strict(true)
       .required('Vui lòng nhập mô tả')

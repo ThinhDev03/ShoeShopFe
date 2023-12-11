@@ -23,7 +23,6 @@ function Dashboard() {
          initialData: { total_money: 0, total_quantity: 0, total_user: 0, total_bill: 0 }
       }
    );
-   console.log(data);
    return (
       <BasicPage currentPage='Thống kê' sx={{ backgroundColor: '#f5f6f7' }} paperProps={{ elevation: 0 }}>
          <Grid container spacing={4}>
@@ -62,8 +61,13 @@ function Dashboard() {
 
             <Grid item xs={6}>
                <ChartColumn />
+<<<<<<< HEAD
+=======
             </Grid>
-
+            <Grid item xs={6}>
+               <ChartPie />
+>>>>>>> parent of 8c65f29 (fix: chart vouchervoucher)
+            </Grid>
             <Grid item xs={6}>
                <ChartPie />
             </Grid>

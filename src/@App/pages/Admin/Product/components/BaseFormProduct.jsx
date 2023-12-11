@@ -67,7 +67,6 @@ function BaseFormProduct(props) {
 
    const { isLoading: createLoading, mutate: createProduct } = useMutation({
       mutationFn: async (data) => {
-         console.log(data);
          return await productService.createProduct(data);
       },
       onSuccess: (data) => {
@@ -92,7 +91,6 @@ function BaseFormProduct(props) {
    });
 
    const onSubmit = async (data) => {
-      console.log(data);
       product_id ? updateProduct(data) : createProduct(data);
    };
 

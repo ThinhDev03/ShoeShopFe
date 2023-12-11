@@ -60,7 +60,7 @@ function Brand() {
                                  id: subject._id
                               })
                            }
-                           content='Bạn có muốn xoá môn học này?'
+                           content='Bạn có muốn xoá?'
                         />
                      </PermissionRestricted>
                   </Box>

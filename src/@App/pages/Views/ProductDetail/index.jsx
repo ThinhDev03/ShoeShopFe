@@ -18,7 +18,6 @@ import CoreRating from '@Core/Components/Input/CoreRating';
 function ProductDetail() {
    const { id } = useParams();
    const { isAuththentication, user } = useAuth();
-   const { ratting, setRatting } = useState(0);
 
    const { control, handleSubmit, reset, setValue } = useForm({
       resolver: yupResolver(
@@ -32,21 +31,21 @@ function ProductDetail() {
    const [{ data: product }, { data: details }, { data: comments, refetch: refetchComment }] = useQueries({
       queries: [
          {
-            queryKey: 'products',
+            queryKey: ['products', id],
             queryFn: async () => {
                const res = await productService.getOne(id);
                return res.data;
             }
          },
          {
-            queryKey: 'product-detail',
+            queryKey: ['product-detail', id],
             queryFn: async () => {
                const res = await productDetailService.getOne(id);
                return res.data;
             }
          },
          {
-            queryKey: 'comment',
+            queryKey: ['comment', id],
             queryFn: async () => {
                const res = await commentService.find(id);
                return res.data;
@@ -84,48 +83,42 @@ function ProductDetail() {
 
    return (
       <>
-         {product ? (
-            <Container maxWidth='lg' sx={{ py: 3 }}>
-               <Grid container spacing={2} mt={3}>
-                  <Grid item xs={12} md={7}>
-                     <SwiperSlider productDetails={productDetails} />
-                  </Grid>
-                  <Grid item md={5} xs={12}>
-                     <ProductDescription product={product} productDetails={productDetails} details={details} />
-                  </Grid>
+         <Container maxWidth='lg' sx={{ py: 3 }}>
+            <Grid container spacing={2} mt={3}>
+               <Grid item xs={12} md={7}>
+                  <SwiperSlider productDetails={productDetails} />
                </Grid>
+               <Grid item md={5} xs={12}>
+                  <ProductDescription product={product} productDetails={productDetails} details={details} />
+               </Grid>
+            </Grid>
+            <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
+            <Box p={3}>
+               {comments &&
+                  comments.map((comment, index) => {
+                     return <CommentItem key={index} {...comment} />;
+                  })}
+               {isAuththentication && (
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                     <Box mt={4} mb={1}>
+                        <CoreRating control={control} name='rate' />
+                        <ControllerTextField
+                           control={control}
+                           name='description'
+                           id='outlined-multiline-static'
+                           label='Bình luận'
+                           multiline
+                           rows={4}
+                           variant='outlined'
+                        />
+                     </Box>
+                     <Button type='submit'>Bình luận</Button>
+                  </form>
+               )}
                <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
-               <Box p={3}>
-                  {comments &&
-                     comments.map((comment, index) => {
-                        return <CommentItem key={index} {...comment} />;
-                     })}
-                  {isAuththentication && (
-                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Box mt={4} mb={1}>
-                           <CoreRating control={control} name='rate' />
-                           <ControllerTextField
-                              control={control}
-                              name='description'
-                              id='outlined-multiline-static'
-                              label='Bình luận'
-                              multiline
-                              rows={4}
-                              variant='outlined'
-                           />
-                        </Box>
-                        <Button type='submit'>Bình luận</Button>
-                     </form>
-                  )}
-                  <Box sx={{ borderTop: '1px dashed #333', my: 5 }}></Box>
-               </Box>
-               <RelatedProducts />
-            </Container>
-         ) : (
-            <Typography variant='h3' sx={{ mt: 5, color: '#555555', textAlign: 'center' }}>
-               Sản phẩm không tồn tại!!!
-            </Typography>
-         )}
+            </Box>
+            <RelatedProducts />
+         </Container>
       </>
    );
 }

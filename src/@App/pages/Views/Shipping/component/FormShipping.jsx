@@ -18,11 +18,9 @@ function FormShipping({ form }) {
       const res = await getProvinces();
       return res.map((item) => ({ value: item.code + '-' + item.name, title: item.name }));
    });
-   console.log(watchProvince);
    const { data: districts, mutate: queryDistricts } = useMutation({
       mutationFn: async (code) => {
          const res = await getDistricts(code);
-         console.log(res);
          return res.map((item) => ({ value: item.code + '-' + item.name, title: item.name }));
       }
    });
