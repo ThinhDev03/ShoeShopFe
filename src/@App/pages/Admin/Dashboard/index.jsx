@@ -1,5 +1,5 @@
 import BasicPage from '@App/components/customs/BasicPage';
-import { Grid } from '@mui/material';
+import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 import ChartPie from './components/ChartPie';
 import ChartLine from './components/ChartLine';
@@ -11,8 +11,36 @@ import img4 from '@App/assets/glass/ic_glass_message.png';
 import statisticService from '@App/services/statistic.service';
 import { useQuery } from '@tanstack/react-query';
 import ChartColumn from './components/ChartColumn';
-
+import CoreDatePicker from '@Core/Components/Input/CoreDatePicker';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 function Dashboard() {
+   const { control, watch } = useForm({
+      mode: 'onChange',
+      defaultValues: {
+         startDate: new Date('2023/01/01'),
+         endDate: new Date()
+      },
+      resolver: yupResolver(
+         Yup.object().shape({
+            startDate: Yup.string()
+               .notOneOf([Yup.ref('endDate')], 'error not one of')
+               .required(),
+            endDate: Yup.date()
+               .notOneOf([Yup.ref('startDate')], 'error not one of')
+               .when(
+                  'startDate',
+                  (publishStart, schema) => new Date(publishStart) && schema.min(new Date(publishStart))
+               )
+               .required()
+         })
+      )
+   });
+
+   const startDate = watch('startDate');
+   const endDate = watch('endDate');
+
    const { data } = useQuery(
       ['get-revenue'],
       async () => {
@@ -59,19 +87,25 @@ function Dashboard() {
                />
             </Grid>
 
-            <Grid item xs={6}>
-               <ChartColumn />
-<<<<<<< HEAD
-=======
+            <Grid item xs={12}>
+               <Paper sx={{ padding: 3, borderRadius: '6px' }}>
+                  <Box sx={{ display: 'flex', gap: 3 }}>
+                     <Box sx={{ flex: 1 }}>
+                        <ChartColumn startDate={startDate} endDate={endDate} />
+                     </Box>
+                     <Box sx={{ flex: 1 }}>
+                        <ChartPie startDate={startDate} endDate={endDate} />
+                     </Box>
+                  </Box>
+                  <Box mt={4}>
+                     <Typography>Chọn thời gian</Typography>
+                     <Stack component='form' direction='row' gap={2}>
+                        <CoreDatePicker control={control} placeholder='Từ ngày' name='startDate' />
+                        <CoreDatePicker control={control} placeholder='Đến ngày' name='endDate' />
+                     </Stack>
+                  </Box>
+               </Paper>
             </Grid>
-            <Grid item xs={6}>
-               <ChartPie />
->>>>>>> parent of 8c65f29 (fix: chart vouchervoucher)
-            </Grid>
-            <Grid item xs={6}>
-               <ChartPie />
-            </Grid>
-            
             <Grid item xs={12}>
                <ChartLine />
             </Grid>

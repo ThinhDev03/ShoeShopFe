@@ -81,6 +81,7 @@ class BaseService {
     */
    find = (id, query = {}) => {
       const url = `${this.BASE_ENDPOINT}/${id}`;
+      console.log(query);
       return this.request.get(url, query);
    };
 
