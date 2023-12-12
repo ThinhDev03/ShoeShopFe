@@ -19,12 +19,12 @@ const yupUser = yup.object().shape({
       .string()
       .trim()
       .required('Vui lòng nhập tên hiển thị')
-      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi'),
+      .matches(/^\S.*\S$/, 'Nhập ít nhất 2 chữ cái, không nhập khoảng trắng ở đầu hoặc cuối.'),
    username: yup
       .string()
       .trim()
       .required('Vui lòng nhập tên đăng nhập')
-      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi'),
+      .matches(/^\S.*\S$/, 'Nhập ít nhất 2 chữ cái, không nhập khoảng trắng ở đầu hoặc cuối.'),
    password: yup.string().trim().required('Vui lòng nhập mật khẩu').min(6, 'Mật khẩu phải lớn hơn 6 ký tự'),
    // .matches(Regex.password, 'Vui lòng nhập số, chữ hoa, chữ thường, ký tự đặc biệt'),
    confirmPassword: yup
@@ -37,7 +37,7 @@ const yupUser = yup.object().shape({
       .string()
       .trim()
       .required('Vui lòng nhập địa chỉ')
-      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi'),
+      .matches(/^\S.*\S$/, 'Nhập ít nhất 2 chữ cái, không nhập khoảng trắng ở đầu hoặc cuối.'),
    gender: yup.string().trim().required('Vui lòng chọn giới tính')
 });
 export default yupUser;

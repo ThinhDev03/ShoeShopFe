@@ -12,7 +12,7 @@ const schemaShipping = yup.object({
    receiver: yup
       .string()
       .required('Tài khoản đăng nhập không được để trống')
-      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi')
+      .matches(/^\S.*\S$/, 'Nhập ít nhất 2 chữ cái, không nhập khoảng trắng ở đầu hoặc cuối.')
       .default(''),
    phone_number: yup
       .string()
@@ -25,7 +25,7 @@ const schemaShipping = yup.object({
    address: yup
       .string()
       .required('Địa chỉ không được để trống')
-      .matches(/^\S.*\S$/, 'Không được nhập khoảng trắng ở đầu hoặc cuối chuỗi')
+      .matches(/^\S.*\S$/, 'Nhập ít nhất 2 chữ cái, không nhập khoảng trắng ở đầu hoặc cuối.')
       .default(''),
    payment_method: yup.string().required('Hình thức thanh toán không được để trống').default(payment_methods[0].value),
    note: yup.string().default('')
