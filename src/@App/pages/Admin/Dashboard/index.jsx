@@ -87,12 +87,24 @@ function Dashboard() {
                />
             </Grid>
 
-            <Grid item xs={6}>
-               <ChartColumn />
-            </Grid>
-
-            <Grid item xs={6}>
-               <ChartPie />
+            <Grid item xs={12}>
+               <Paper sx={{ padding: 3, borderRadius: '6px' }}>
+                  <Box sx={{ display: 'flex', gap: 3 }}>
+                     <Box sx={{ flex: 1 }}>
+                        <ChartColumn startDate={startDate} endDate={endDate} />
+                     </Box>
+                     <Box sx={{ flex: 1 }}>
+                        <ChartPie startDate={startDate} endDate={endDate} />
+                     </Box>
+                  </Box>
+                  <Box mt={4}>
+                     <Typography>Chọn thời gian</Typography>
+                     <Stack component='form' direction='row' gap={2}>
+                        <CoreDatePicker control={control} placeholder='Từ ngày' name='startDate' />
+                        <CoreDatePicker control={control} placeholder='Đến ngày' name='endDate' />
+                     </Stack>
+                  </Box>
+               </Paper>
             </Grid>
             <Grid item xs={12}>
                <ChartLine />
