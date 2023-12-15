@@ -106,7 +106,7 @@ function Dashboard() {
                   </Box>
                </Paper>
             </Grid>
-            
+
             <Grid item xs={12}>
                <ChartLine />
             </Grid>
