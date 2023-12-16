@@ -14,7 +14,7 @@ function UpdateVoucher() {
    const navigate = useNavigate();
    const form = useForm({
       mode: 'onChange',
-      resolver: yupResolver(yupVoucher),
+      resolver: yupResolver( yupVoucher ),
       defaultValues: yupVoucher.getDefault()
    });
 
