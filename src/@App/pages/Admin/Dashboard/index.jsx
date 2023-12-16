@@ -15,6 +15,7 @@ import CoreDatePicker from '@Core/Components/Input/CoreDatePicker';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import moment from 'moment';
 function Dashboard() {
    const { control, watch } = useForm({
       mode: 'onChange',
@@ -42,9 +43,11 @@ function Dashboard() {
    const endDate = watch('endDate');
 
    const { data } = useQuery(
-      ['get-revenue'],
+      ['get-revenue', startDate, endDate],
       async () => {
-         const res = await statisticService.getRevenue();
+         const start = moment(startDate).format('YYYY/MM/DD');
+         const end = moment(endDate).format('YYYY/MM/DD');
+         const res = await statisticService.getRevenue({ params: { start, end } });
          return res;
       },
       {
@@ -54,6 +57,15 @@ function Dashboard() {
    return (
       <BasicPage currentPage='Thống kê' sx={{ backgroundColor: '#f5f6f7' }} paperProps={{ elevation: 0 }}>
          <Grid container spacing={4}>
+            <Grid item xs={12}>
+               <Box>
+                  <Typography>Chọn thời gian</Typography>
+                  <Stack component='form' direction='row' gap={2}>
+                     <CoreDatePicker control={control} placeholder='Từ ngày' name='startDate' />
+                     <CoreDatePicker control={control} placeholder='Đến ngày' name='endDate' />
+                  </Stack>
+               </Box>
+            </Grid>
             <Grid item xs={3}>
                <WidgetSummary
                   title='Doanh số'
@@ -87,24 +99,11 @@ function Dashboard() {
                />
             </Grid>
 
-            <Grid item xs={12}>
-               <Paper sx={{ padding: 3, borderRadius: '6px' }}>
-                  <Box sx={{ display: 'flex', gap: 3 }}>
-                     <Box sx={{ flex: 1 }}>
-                        <ChartColumn startDate={startDate} endDate={endDate} />
-                     </Box>
-                     <Box sx={{ flex: 1 }}>
-                        <ChartPie startDate={startDate} endDate={endDate} />
-                     </Box>
-                  </Box>
-                  <Box mt={4}>
-                     <Typography>Chọn thời gian</Typography>
-                     <Stack component='form' direction='row' gap={2}>
-                        <CoreDatePicker control={control} placeholder='Từ ngày' name='startDate' />
-                        <CoreDatePicker control={control} placeholder='Đến ngày' name='endDate' />
-                     </Stack>
-                  </Box>
-               </Paper>
+            <Grid item xs={6}>
+               <ChartColumn startDate={startDate} endDate={endDate} />
+            </Grid>
+            <Grid item xs={6}>
+               <ChartPie startDate={startDate} endDate={endDate} />
             </Grid>
             <Grid item xs={12}>
                <ChartLine />

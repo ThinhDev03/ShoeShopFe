@@ -68,6 +68,9 @@ function BillPage() {
                return <Box width={100}>{row.index + 1}</Box>;
             }
          }),
+         columnHelper.accessor('_id', {
+            header: 'Mã đơn hàng'
+         }),
          columnHelper.accessor('receiver', {
             header: 'Người nhận'
          }),

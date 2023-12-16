@@ -40,12 +40,16 @@ const CartBill = ({ totalPrice }) => {
    };
 
    const handlePurchase = () => {
-      if (!vouchers.some((v) => v.discount === currentVoucher.discount)) {
-         setCurrentVoucher(null);
-         setIsApplyVoucher(false);
-         return;
+      if (currentVoucher) {
+         if (!vouchers.some((v) => v.discount === currentVoucher.discount)) {
+            setCurrentVoucher(null);
+            setIsApplyVoucher(false);
+            return;
+         }
+         navigate(isApplyVoucher ? '/shipping?ship=s' : '/shipping');
+      } else {
+         navigate('/shipping');
       }
-      navigate(isApplyVoucher ? '/shipping?ship=s' : '/shipping');
    };
    const price = isApplyVoucher ? totalPrice - parseFloat(currentVoucher?.discount) : totalPrice;
 
@@ -151,10 +155,11 @@ const CartBill = ({ totalPrice }) => {
                <Typography textAlign='center' color='primary.main' mb={3}>
                   Danh sách voucher
                </Typography>
-               {vouchers.map((voucher) => {
+               {vouchers.map((voucher, index) => {
                   return (
                      <Stack
                         gap={2}
+                        key={index}
                         direction='row'
                         mb={3}
                         sx={{ boxShadow: '.125rem .125rem .3125rem rgba(0,0,0,.07)' }}>
