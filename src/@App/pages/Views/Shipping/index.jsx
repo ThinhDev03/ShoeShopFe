@@ -29,6 +29,7 @@ function Shipping() {
    const refOrderId = useRef();
    const refPrice = useRef();
    const { handleSubmit, ...form } = useForm({
+      mode: 'onChange',
       resolver: yupResolver(schemaShipping),
       defaultValues: schemaShipping.getDefault()
    });
