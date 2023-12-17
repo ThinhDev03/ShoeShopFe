@@ -28,7 +28,7 @@ const handleCartUpdate = (state, { action, cart_id }) => {
    }
 };
 
-export const {  } = cartSlice.actions;
+export const { updateCartReducer } = cartSlice.actions;
 
 export const useCart = () => {
    const dispatch = useDispatch();
