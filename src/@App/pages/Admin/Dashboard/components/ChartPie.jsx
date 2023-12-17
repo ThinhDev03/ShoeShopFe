@@ -114,7 +114,7 @@ function ChartPie({ startDate, endDate }) {
       }
    };
    return (
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
+      <Paper sx={{ borderRadius: 2, overflow: 'hidden', padding: '10px' }}>
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
 
          <Typography mt={4} textAli gn='center'>

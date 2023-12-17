@@ -22,6 +22,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import HttpsIcon from '@mui/icons-material/Https';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ReplayIcon from '@mui/icons-material/Replay';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => {
    const confirm = useConfirm();
@@ -36,9 +37,9 @@ export const CoreTableActionDelete = ({ callback = () => {}, content = '' }) => 
    };
 
    return (
-      <Tooltip title='Xoá'>
+      <Tooltip title='Ẩn'>
          <IconButton onClick={handleDelete}>
-            <DeleteIcon fontSize='small' />
+            <RemoveCircleIcon fontSize='small' />
          </IconButton>
       </Tooltip>
    );
