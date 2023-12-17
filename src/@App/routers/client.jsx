@@ -15,6 +15,7 @@ const Shipping = Loadable(lazy(() => import('@App/pages/Views/Shipping')));
 const Cart = Loadable(lazy(() => import('@App/pages/Views/Cart')));
 const LatestProduct = Loadable(lazy(() => import('@App/pages/Views/LatestProduct')));
 const Sale = Loadable(lazy(() => import('@App/pages/Views/Sale')));
+const WishlishPage = Loadable(lazy(() => import('@App/pages/Views/Wishlist')));
 
 const clientRoute = [
    {
@@ -32,6 +33,10 @@ const clientRoute = [
    {
       path: '/latest',
       element: <LatestProduct />
+   },
+   {
+      path: '/wishlist',
+      element: <WishlishPage />
    },
 
    {

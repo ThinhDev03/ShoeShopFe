@@ -10,5 +10,6 @@ export const gender = [
 
 export const userRole = [
    { value: 'USER', label: 'Người dùng' },
-   { value: 'EMPLOYEE', label: 'Nhân viên' }
+   { value: 'EMPLOYEE', label: 'Nhân viên' },
+   { value: 'LOCK', label: 'Tài khoản đã khóa' }
 ];

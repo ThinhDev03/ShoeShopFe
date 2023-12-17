@@ -62,6 +62,10 @@ function FormShipping({ form }) {
             <ControllerTextField name='receiver' control={control} />
          </Box>
          <Box mb={2}>
+            <FormLabel title='Email' gutterBottom required />
+            <ControllerTextField name='email' control={control} />
+         </Box>
+         <Box mb={2}>
             <FormLabel title='Số điện thoại' gutterBottom required />
             <ControllerTextField name='phone_number' control={control} />
          </Box>

@@ -2,7 +2,12 @@ import BasicPage from '@App/components/customs/BasicPage';
 import authService from '@App/services/auth.service';
 import ControllerSelect from '@Core/Components/FormControl/ControllerSelect';
 import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
-import { CoreTableActionEdit, CoreTableActionLock } from '@Core/Components/Table/components/CoreTableActions';
+import {
+   CoreTableActionEdit,
+   CoreTableActionLock,
+   CoreTableActionStatusChange,
+   CoreTableReplay
+} from '@Core/Components/Table/components/CoreTableActions';
 import { Box, Stack } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
@@ -28,9 +33,10 @@ function UserPage() {
    } = useQuery(
       ['getListUser', userRoleSelected, search, currentPage],
       async () => {
+         const isLockUser = userRoleSelected === userRole[2].value;
          const rest = await authService.list({
-            user_role: userRoleSelected,
-            is_locked: false,
+            user_role: isLockUser ? '' : userRoleSelected,
+            is_locked: isLockUser,
             search,
             page: currentPage
          });
@@ -44,8 +50,8 @@ function UserPage() {
       }
    );
    const { mutate: onLockUser } = useMutation({
-      mutationFn: async (id) => {
-         return await authService.locked(id, true);
+      mutationFn: async ({ id, isLocked }) => {
+         return await authService.locked(id, isLocked);
       },
       onSuccess: () => {
          fetchUser();
@@ -84,10 +90,24 @@ function UserPage() {
             header: 'Thao tác',
             cell: ({ row }) => {
                const user = row?.original;
+               const isLockUser = user.is_locked;
                return (
                   <Box sx={{ display: 'flex' }}>
                      <CoreTableActionEdit callback={() => navigate('update/' + user?._id)} />
-                     <CoreTableActionLock content='Bạn có muốn khóa tài khoản' callback={() => onLockUser(user?._id)} />
+
+                     {isLockUser && (
+                        <CoreTableReplay
+                           content='Bạn có muốn mở khóa tài khoản'
+                           okText='Mở khóa'
+                           callback={() => onLockUser({ id: user?._id, isLocked: false })}
+                        />
+                     )}
+                     {!isLockUser && (
+                        <CoreTableActionLock
+                           content='Bạn có muốn khóa tài khoản'
+                           callback={() => onLockUser({ id: user?._id, isLocked: true })}
+                        />
+                     )}
                   </Box>
                );
             }
