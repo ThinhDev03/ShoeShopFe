@@ -1,7 +1,6 @@
 import * as yup from 'yup';
 import Regex from '@Core/Helper/Regex';
 
-const seen = new Set();
 const yupProductDetail = yup.object().shape({
    size_id: yup.string().required('Vui lòng chọn').default(''),
    color_id: yup.string().required('Vui lòng chọn').default(''),
