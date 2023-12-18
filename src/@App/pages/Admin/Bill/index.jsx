@@ -142,7 +142,7 @@ function BillPage() {
    }, []);
 
    return (
-      <BasicPage currentPage='Người dùng'>
+      <BasicPage currentPage='Đơn hàng'>
          <Stack direction='row' gap={3}>
             <Box width={200} mb={3}>
                <ControllerSelect label='Trạng thái đơn hàng' options={billStatus} name='status' control={control} />
