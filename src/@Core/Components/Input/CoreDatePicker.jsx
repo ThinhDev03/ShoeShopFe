@@ -83,6 +83,7 @@ const CoreDatePicker = (props) => {
       <Box
          className={clsx('flex items-center gap-x-20', className)}
          sx={{
+            backgroundColor: '#fff',
             '& .react-datepicker': {
                fontSize: '0.8rem',
                '& .react-datepicker__month': {

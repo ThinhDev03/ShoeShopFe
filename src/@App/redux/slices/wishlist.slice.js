@@ -23,7 +23,6 @@ export const wishlistSlice = createSlice({
 
 const handleWishlistUpdate = (state, { action, payload }) => {
    const wishlist = getWishlist();
-   console.log(payload);
    switch (action) {
       case WISHLIST_ACTION.add:
          const list = [...wishlist, payload];
@@ -33,7 +32,6 @@ const handleWishlistUpdate = (state, { action, payload }) => {
 
       case WISHLIST_ACTION.remove:
          const newList = wishlist.filter((product) => product._id !== payload);
-         console.log(newList);
 
          localStorage.setItem('shoe_wishlist', JSON.stringify(newList));
          return state.filter((product) => product._id !== payload);
