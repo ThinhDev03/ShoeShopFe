@@ -198,7 +198,7 @@ function ProductPage() {
    }, []);
 
    return (
-      <BasicPage currentPage='Products'>
+      <BasicPage currentPage='Sản phẩm'>
          <Stack direction='row' gap={3}>
             <Box width={200} mb={3}>
                <ControllerSelect

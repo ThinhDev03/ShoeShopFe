@@ -15,7 +15,7 @@ const breadcrumbs = [
       link: '/'
    },
    {
-      name: 'Color',
+      name: 'Màu sắc',
       link: '/admin/' + routerPath.PRODUCTS + '/' + routerPath.COLOR
    }
 ];
@@ -33,7 +33,7 @@ export default function CreateColor() {
       },
       onSuccess: () => {
          form.reset();
-         successMessage('Thêm thương hiệu thành công.');
+         successMessage('Thêm màu thành công.');
       },
       onError: (error) => {
          errorMessage(error);
