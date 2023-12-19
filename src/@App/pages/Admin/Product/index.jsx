@@ -62,6 +62,7 @@ function ProductPage() {
          getProduct();
       }
    });
+
    const mutationUnlock = useMutation({
       mutationFn: async ({ id }) => {
          return await productService.updateOne({ is_locked: false }, id);
