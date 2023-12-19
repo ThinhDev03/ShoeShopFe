@@ -23,7 +23,6 @@ function Sale() {
       }
    );
 
-
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
          <Grid container spacing={3}>

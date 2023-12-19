@@ -12,7 +12,9 @@ import CoreTable, { columnHelper } from '@Core/Components/Table/CoreTable';
 import {
    CoreTableActionDelete,
    CoreTableActionEdit,
-   CoreTableActionView
+   CoreTableActionLock,
+   CoreTableActionView,
+   CoreTableReplay
 } from '@Core/Components/Table/components/CoreTableActions';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import toFormatPrice from '@Core/Helper/Price';
@@ -21,6 +23,7 @@ import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { accountTypes } from './utils';
 
 function ProductPage() {
    const navigate = useNavigate();
@@ -28,10 +31,11 @@ function ProductPage() {
 
    const { control, watch } = useForm({
       mode: 'onChange',
-      defaultValues: { categorySelected: '', status: '' }
+      defaultValues: { categorySelected: '', status: '', accountType: false }
    });
    const categorySelected = watch('category');
    const searchValue = watch('search');
+   const is_locked = watch('accountType');
 
    const search = useDebounceInput(searchValue);
 
@@ -39,21 +43,32 @@ function ProductPage() {
       data: dataProducts,
       refetch: getProduct,
       isFetching
-   } = useQuery(['getProduct', currentPage, categorySelected, search], async () => {
+   } = useQuery(['getProduct', currentPage, categorySelected, search, is_locked], async () => {
       const rest = await productService.list({
          search,
          category: categorySelected,
-         page: currentPage
+         page: currentPage,
+         is_locked
       });
       return rest;
    });
 
    const mutation = useMutation({
       mutationFn: async ({ id }) => {
-         return await productService.deleteProduct(id);
+         return await productService.updateOne({ is_locked: true }, id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phẩm thành công');
+         successMessage('Khóa sản phẩm thành công');
+         getProduct();
+      }
+   });
+
+   const mutationUnlock = useMutation({
+      mutationFn: async ({ id }) => {
+         return await productService.updateOne({ is_locked: false }, id);
+      },
+      onSuccess: () => {
+         successMessage('Khóa sản phẩm thành công');
          getProduct();
       }
    });
@@ -145,21 +160,37 @@ function ProductPage() {
             header: 'Thao tác',
             cell: ({ row }) => {
                const product = row?.original;
+               const isLocked = product?.is_locked;
                return (
                   <Box sx={{ display: 'flex' }}>
                      <CoreTableActionEdit callback={() => navigate('save?id=' + product?._id)} />
                      <CoreTableActionView callback={() => navigate('comment/' + product?._id)} title='Xem Bình luận' />
 
-                     <PermissionRestricted roleNames={ROLE[1]}>
-                        <CoreTableActionDelete
-                           callback={() => {
-                              mutation.mutate({
-                                 id: product?._id
-                              });
-                           }}
-                           content='Bạn có muốn xoá sản phẩm?'
-                        />
-                     </PermissionRestricted>
+                     {!isLocked && (
+                        <PermissionRestricted roleNames={ROLE[1]}>
+                           <CoreTableActionLock
+                              callback={() => {
+                                 mutation.mutate({
+                                    id: product?._id
+                                 });
+                              }}
+                              content='Bạn có muốn khóa sản phẩm?'
+                           />
+                        </PermissionRestricted>
+                     )}
+                     {isLocked && (
+                        <PermissionRestricted roleNames={ROLE[1]}>
+                           <CoreTableReplay
+                              okText='Mở khóa'
+                              callback={() => {
+                                 mutationUnlock.mutate({
+                                    id: product?._id
+                                 });
+                              }}
+                              content='Bạn có muốn mở khóa sản phẩm?'
+                           />
+                        </PermissionRestricted>
+                     )}
                   </Box>
                );
             }
@@ -181,9 +212,18 @@ function ProductPage() {
                />
             </Box>
             <Box width={200} mb={3}>
+               <ControllerSelect
+                  label='Trạng thái hoạt động'
+                  options={accountTypes}
+                  name='accountType'
+                  control={control}
+               />
+            </Box>
+            <Box width={200} mb={3}>
                <ControllerTextField placeholder='Tìm tên sản phẩm' name='search' control={control} />
             </Box>
          </Stack>
+
          <CoreTable
             columns={columns}
             data={dataProducts?.data}

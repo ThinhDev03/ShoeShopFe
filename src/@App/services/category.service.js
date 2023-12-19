@@ -3,7 +3,7 @@ import BaseService from '@Core/Api/BaseService';
 class CategoryService extends BaseService {
    BASE_ENDPOINT = '/category';
 
-   constructor( params ) {
+   constructor(params) {
       super(params);
       this.setRequest();
    }

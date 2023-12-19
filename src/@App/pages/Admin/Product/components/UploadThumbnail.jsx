@@ -47,7 +47,6 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
                await productService.createImage({ images: res, product_id });
                refetchImages();
             } else {
-               console.log(res);
                if (typeof res === 'string') {
                   onChange([res, ...imageOrImages]);
                } else {
@@ -67,9 +66,8 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
    const { mutate: callbackDeleteImage, isLoading: deleteLoading } = useMutation({
       mutationKey: 'uploadImage',
       mutationFn: async ({ image, id }) => {
-         if (product_id) {
+         if (product_id && id) {
             if (multiple) {
-               console.log(image, id);
                const res = await productService.deleteImage(id);
                if (res.success) {
                   await deleteFirebaseImage(image);
@@ -81,11 +79,8 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
             }
          } else {
             await deleteFirebaseImage(image);
-            product_id && (await productService.deleteThumbnail(product_id));
-
-            const newValue = imageOrImages.filter((item) => item !== image);
-
-            onChange(newValue);
+            await productService.deleteThumbnail(product_id);
+            onChange('');
          }
       },
       onError: (error) => {
