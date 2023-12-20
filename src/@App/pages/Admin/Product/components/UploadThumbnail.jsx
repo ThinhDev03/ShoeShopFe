@@ -79,7 +79,7 @@ function UploadThumbnail({ name, control, multiple = false, sx, title, product_i
             }
          } else {
             await deleteFirebaseImage(image);
-            await productService.deleteThumbnail(product_id);
+            product_id && (await productService.deleteThumbnail(product_id));
             onChange('');
          }
       },
