@@ -27,7 +27,7 @@ export default function Color() {
          return await colorService.deleteColor(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phẩm thành công');
+         successMessage('Xóa màu thành công');
          getCategory();
       }
    });
@@ -87,7 +87,7 @@ export default function Color() {
    }, []);
 
    return (
-      <BasicPage currentPage='Color' createTitle='Tạo mới'>
+      <BasicPage currentPage='Màu sắc' createTitle='Tạo mới'>
          <CoreTable columns={columns} data={dataColor} isPagination={false} loading={isFetching} />
       </BasicPage>
    );

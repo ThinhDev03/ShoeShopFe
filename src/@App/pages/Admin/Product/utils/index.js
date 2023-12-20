@@ -31,7 +31,7 @@ export const listLabelProductDetail = [
    { label: 'hình ảnh', required: true }
 ];
 export const accountTypes = [
-   { label: 'Đã khóa', value: true },
+   { label: 'Không hoạt động', value: true },
    { label: 'Đang hoạt động', value: false }
 ];
 

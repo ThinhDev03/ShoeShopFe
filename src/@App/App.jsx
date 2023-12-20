@@ -7,6 +7,7 @@ import useAuth from './hooks/useAuth';
 import LazyLoadingFullScreen from './components/customs/LazyLoadingFullScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AutoScrollToTop from './components/customs/AutoScrollToTop';
 
 function App() {
    const { isInitialized } = useAuth();
@@ -15,6 +16,7 @@ function App() {
       <CoreConfirmProvider>
          <Router>
             <Routers />
+            <AutoScrollToTop />
          </Router>
          <ToastContainer />
          <ToastMessage />
