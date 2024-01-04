@@ -11,6 +11,7 @@ import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
 
 export default function UpdateBill() {
    const { id } = useParams();
+   
    const navigate = useNavigate();
    const confirm = useConfirm();
 
