@@ -48,13 +48,13 @@ function UserMenu() {
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 0.5,
-                  color: '#FFFFFF',
+                  color: { md: '#FFFFFF', xs: '#000' },
                   fontSize: 14,
                   textDecoration: 'none'
                }}
                component={NavLink}
                to='sign-in'>
-               <LoginIcon sx={{ width: '14px', height: '14px' }} />
+               <LoginIcon sx={{ width: { md: '14px', xs: '20px' }, height: { md: '14px', xs: '20px' } }} />
                <Box component='span'>{isAuththentication ? user.username : 'Đăng nhập'}</Box>
             </Stack>
          ) : (
@@ -64,12 +64,12 @@ function UserMenu() {
                      flexDirection: 'row',
                      alignItems: 'center',
                      gap: 0.5,
-                     color: '#FFFFFF',
+                     color: { md: '#FFFFFF', xs: '#000' },
                      fontSize: 14,
                      textDecoration: 'none'
                   }}
                   onClick={handleClick}>
-                  <PersonIcon sx={{ width: '14px', height: '14px' }} />
+                  <PersonIcon sx={{ width: { md: '14px', xs: '20px' }, height: { md: '14px', xs: '20px' } }} />
                   <Box component='span'>{user.username}</Box>
                </Stack>
                <Menu
