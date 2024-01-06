@@ -34,6 +34,18 @@ function RelatedProducts() {
                pagination={{
                   clickable: true
                }}
+               breakpoints={{
+                  480: {
+                     slidesPerView: 1
+                  },
+                  600: {
+                     slidesPerView: 2
+                  },
+                  800: {
+                     slidesPerView: 4
+                  },
+
+               }}
                className='mySwiper'>
                {data &&
                   data.map((item, index) => {

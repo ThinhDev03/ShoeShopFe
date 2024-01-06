@@ -1,15 +1,40 @@
 import { routerPath } from '@App/configs/routerConfig';
-import { Box, Button, Stack, Typography, styled } from '@mui/material';
+import { Box, Button, IconButton, Stack, Tooltip, Typography, styled } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LazyLoadingImage from '../../LazyLoadingImage';
 import toFormatMoney from '@Core/Helper/Price';
-
+import { WISHLIST_ACTION, useWishlist } from '@App/redux/slices/wishlist.slice';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { successMessage } from '@Core/Helper/Message';
 function ProductCard({ data, sale }) {
+   const { wishlist, updateWishlist } = useWishlist();
+
+   const hasFavourite = wishlist.some((product) => product._id === data._id);
+
+   const handleUpdateWishlist = (body) => {
+      if (hasFavourite) {
+         updateWishlist(WISHLIST_ACTION.remove, body._id);
+         successMessage('Đã xóa khỏi danh sách yêu thích');
+         return;
+      }
+      updateWishlist(WISHLIST_ACTION.add, body);
+      successMessage('Đã thêm vào danh sách yêu thích');
+   };
 
    return (
       <Stack
-         sx={{ overflow: 'hidden', backgroundColor: '#FFFFFF', textAlign: 'left !important', position: 'relative' }}>
+         sx={{
+            '&:hover': {
+               '.favarite-icon': {
+                  right: '15px'
+               }
+            },
+            overflow: 'hidden',
+            backgroundColor: '#FFFFFF',
+            textAlign: 'left !important',
+            position: 'relative'
+         }}>
          {sale && sale !== 0 ? (
             <Box
                sx={({ palette }) => {
@@ -20,9 +45,9 @@ function ProductCard({ data, sale }) {
                      justifyContent: 'center',
                      alignItems: 'center',
                      borderRadius: '50%',
-                     position: 'relative',
-                     top: '45px',
-                     left: '10px',
+                     position: 'absolute',
+                     top: '15px',
+                     left: '15px',
                      color: '#fff',
                      fontWeight: 500,
                      fontSize: '13px',
@@ -33,6 +58,38 @@ function ProductCard({ data, sale }) {
                -{sale}%
             </Box>
          ) : null}
+         <Box
+            className='favarite-icon'
+            sx={() => {
+               return {
+                  height: '36px',
+                  width: '36px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: '50%',
+                  position: 'absolute',
+                  top: '15px',
+                  right: '-35px',
+                  color: '#fff',
+                  fontWeight: 500,
+                  fontSize: '13px',
+                  backgroundColor: '#fff',
+                  border: '1px solid #ccc',
+                  transition: 'all 0.15s ease-in-out',
+                  zIndex: 50
+               };
+            }}>
+            <Tooltip title='Thêm vào yêu thích'>
+               <IconButton onClick={() => handleUpdateWishlist(data)}>
+                  <FavoriteIcon
+                     sx={({ palette }) => {
+                        return { color: hasFavourite ? 'red' : palette.success.light };
+                     }}
+                  />
+               </IconButton>
+            </Tooltip>
+         </Box>
          <Box
             component={Link}
             to={'/' + routerPath.PRODUCTS + '/' + data?._id}

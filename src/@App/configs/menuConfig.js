@@ -32,7 +32,7 @@ const menuCofig = [
       icon: CategoryIcon,
       path: routerPath.CATEGORYPRODUCTS,
       children: [
-         { title: 'Tổng quan', path: routerPath.CATEGORYPRODUCTS },
+         { title: 'Danh sách danh mục', path: routerPath.CATEGORYPRODUCTS },
          { title: 'Tạo mới', path: routerPath.CATEGORYPRODUCTS + '/create' }
       ]
    },
@@ -43,7 +43,7 @@ const menuCofig = [
       icon: Brand,
       path: routerPath.BRAND,
       children: [
-         { title: 'Tổng quan', path: routerPath.BRAND },
+         { title: 'Danh sách thương hiệu', path: routerPath.BRAND },
          { title: 'Tạo mới', path: routerPath.BRAND + '/create' }
       ]
    },
@@ -54,7 +54,7 @@ const menuCofig = [
       icon: Inventory2Icon,
       path: routerPath.PRODUCTS,
       children: [
-         { title: 'Tổng quan', path: routerPath.PRODUCTS },
+         { title: 'Danh sách sản phẩm', path: routerPath.PRODUCTS },
          { title: 'Tạo mới', path: routerPath.PRODUCTS + '/save' },
          { title: 'Màu sắc', path: routerPath.PRODUCTS + '/' + routerPath.COLOR },
          { title: 'Kích thước', path: routerPath.PRODUCTS + '/' + routerPath.SIZE }
@@ -67,7 +67,7 @@ const menuCofig = [
       icon: PersonIcon,
       path: routerPath.USER,
       children: [
-         { title: 'Tổng quan', path: routerPath.USER },
+         { title: 'Danh sách người dùng', path: routerPath.USER },
          { title: 'Tạo nhân viên', path: routerPath.USER + '/create' }
       ]
    },
@@ -77,7 +77,7 @@ const menuCofig = [
       title: 'Đơn hàng',
       icon: ReceiptLongIcon,
       path: routerPath.BILL,
-      children: [{ title: 'Tổng quan', path: routerPath.BILL }]
+      children: [{ title: 'Danh sách đơn hàng', path: routerPath.BILL }]
    },
    {
       id: 9,
@@ -86,7 +86,7 @@ const menuCofig = [
       icon: DiscountIcon,
       path: routerPath.VOUCHER,
       children: [
-         { title: 'Tổng quan', path: routerPath.VOUCHER },
+         { title: 'Danh sách voucher', path: routerPath.VOUCHER },
          { title: 'Tạo voucher', path: routerPath.VOUCHER + '/create' }
       ]
    }

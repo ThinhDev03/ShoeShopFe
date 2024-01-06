@@ -35,43 +35,24 @@ export default function Footer() {
             py: 10,
             backgroundColor: '#4C4C4C',
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            px: 2
          }}>
          <Grid container maxWidth='lg' spacing={2} direction='row' alignItems='center'>
-            <Grid item xs={4}>
+            <Grid item xs={12} md={4}>
                <Box sx={{}}>
-                  {/* <img src={shopAnans} width='100%' alt='' />
-               <Box
-                  component={Link}
-                  to=''
-                  sx={{
-                     width: 'fit-content',
-                     backgroundColor: '#F15E2C',
-                     color: '#FFFFFF',
-                     mx: 'auto',
-                     padding: '6px 61.41px 4px 61.59px',
-                     display: 'flex',
-                     justifyContent: 'center',
-                     alignItems: 'center',
-                     textDecoration: 'none',
-                     textTransform: 'uppercase',
-                     fontWeight: 'bold'
-                  }}>
-                  Tìm cửa hàng
-               </Box> */}
                   <iframe
                      src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.8354772940993!2d105.72923707500655!3d21.03926798061272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31345550b525aa03%3A0x3fdefc40f69a023a!2zQ2FvIMSR4bqzbmcgRlBUIFBo4buRIFRy4buLbmggVsSDbiBCw7QgLCBQaMaw4budbmcgUGjGsMahbmcgQ2FuaCAsIHF14bqtbiBU4burIExpw6pt!5e0!3m2!1svi!2s!4v1699770551944!5m2!1svi!2s'
                      style={{ border: 0, width: '100%', height: '250px' }}
                      loading='lazy'
-                     referrerpolicy='no-referrer-when-downgrade'
-                     ></iframe>
+                     referrerPolicy='no-referrer-when-downgrade'></iframe>
                </Box>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
                <Grid container spacing={2}>
                   {footerListAcction.map((item) => {
                      return (
-                        <Grid item xs={3} key={item.id} component={Stack} gap={2} flexDirection='column'>
+                        <Grid item xs={12} sm={6} md={3} key={item.id} component={Stack} gap={2} flexDirection='column'>
                            <Typography variant='h6' sx={{ color: '#FFF' }}>
                               {item.head}
                            </Typography>

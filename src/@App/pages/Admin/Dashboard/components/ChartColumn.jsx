@@ -5,12 +5,16 @@ import { Paper, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import statisticService from '@App/services/statistic.service';
 import '../index.css';
+import moment from 'moment';
 
-function ChartColumn() {
+function ChartColumn({ startDate, endDate }) {
+   const start = moment(startDate, 'LLLL').startOf('day').format('YYYY-MM-DD HH:mm');
+   const end = moment(endDate, 'LLLL').endOf('day').format('YYYY-MM-DD HH:mm');
+
    const { data } = useQuery(
-      ['get-top-rate'],
+      ['get-top-rate', start, end],
       async () => {
-         const res = await statisticService.getTopRate();
+         const res = await statisticService.getTopRate({ params: { start, end } });
          const category = [];
          const newData = res.data.map((item, index) => {
             category.push(item.product_name);
@@ -31,7 +35,9 @@ function ChartColumn() {
          };
       },
       {
-         initialData: { data: [] }
+         initialData: { data: [] },
+         staleTime: 0,
+         cacheTime: 0
       }
    );
    const options = {
@@ -102,7 +108,7 @@ function ChartColumn() {
       }
    };
    return (
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
+      <Paper sx={{ borderRadius: 2, overflow: 'hidden', padding: '10px' }}>
          <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} />
 
          <Typography mt={4} textAlign='center'>

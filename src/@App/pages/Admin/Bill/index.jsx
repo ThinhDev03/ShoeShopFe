@@ -13,11 +13,13 @@ import useDebounceInput from '@App/hooks/useDebounceInput';
 import billService from '@App/services/bill.service';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { CoreTableActionEdit } from '@Core/Components/Table/components/CoreTableActions';
+import useAuth from '@App/hooks/useAuth';
 
 function BillPage() {
    const navigate = useNavigate();
    const { control, watch } = useForm({ mode: 'onChange', defaultValues: { status: 'PENDING' } });
    const [currentPage, setCurrentPage] = useState(1);
+   const { user } = useAuth();
    const statusSelected = watch('status');
    const searchValue = watch('search');
    const phoneValue = watch('phone');
@@ -48,8 +50,8 @@ function BillPage() {
       }
    );
    const { mutate: onChangeStatus } = useMutation({
-      mutationFn: async ({ id, status }) => {
-         return await billService.updateStatusPending(id, status);
+      mutationFn: async ({ id, status, payment_status }) => {
+         return await billService.updateStatusPending(id, { status, user_updated: user._id, payment_status });
       },
       onSuccess: () => {
          fetchBill();
@@ -67,6 +69,9 @@ function BillPage() {
             cell: ({ row }) => {
                return <Box width={100}>{row.index + 1}</Box>;
             }
+         }),
+         columnHelper.accessor('_id', {
+            header: 'Mã đơn hàng'
          }),
          columnHelper.accessor('receiver', {
             header: 'Người nhận'
@@ -86,7 +91,7 @@ function BillPage() {
             }
          }),
          columnHelper.accessor('phone_number', {
-            header: 'Sô điện thoại'
+            header: 'Số điện thoại'
          }),
          columnHelper.accessor('payment_id.status', {
             header() {
@@ -119,11 +124,19 @@ function BillPage() {
             header: 'Thao tác',
             cell: ({ row }) => {
                const bill = row?.original;
+               console.log(bill);
                return (
                   <Box sx={{ display: 'flex' }}>
                      {bill.status === BILL_STATUS[0] && (
                         <Tooltip title='Xác nhận'>
-                           <IconButton onClick={() => onChangeStatus({ id: bill._id, status: BILL_STATUS[1] })}>
+                           <IconButton
+                              onClick={() =>
+                                 onChangeStatus({
+                                    id: bill._id,
+                                    status: BILL_STATUS[1],
+                                    payment_status: bill.payment_id.status
+                                 })
+                              }>
                               <CheckCircleIcon />
                            </IconButton>
                         </Tooltip>
@@ -139,7 +152,7 @@ function BillPage() {
    }, []);
 
    return (
-      <BasicPage currentPage='Người dùng'>
+      <BasicPage currentPage='Đơn hàng'>
          <Stack direction='row' gap={3}>
             <Box width={200} mb={3}>
                <ControllerSelect label='Trạng thái đơn hàng' options={billStatus} name='status' control={control} />

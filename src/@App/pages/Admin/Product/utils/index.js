@@ -30,6 +30,10 @@ export const listLabelProductDetail = [
    { label: 'Khuyến mại', required: false },
    { label: 'hình ảnh', required: true }
 ];
+export const accountTypes = [
+   { label: 'Không hoạt động', value: true },
+   { label: 'Đang hoạt động', value: false }
+];
 
 export const ListTitle = [
    {

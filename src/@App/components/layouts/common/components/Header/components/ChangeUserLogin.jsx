@@ -1,5 +1,5 @@
 import useAuth from '@App/hooks/useAuth';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useMediaQuery } from '@mui/material';
 import React from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import { NavLink } from 'react-router-dom';
@@ -17,9 +17,10 @@ function ChangeUserLogin() {
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 0.5,
-                  color: '#FFFFFF',
                   fontSize: 14,
-                  textDecoration: 'none'
+                  textDecoration: 'none',
+                  color: { md: '#FFFFFF', xs: '#000' },
+                  display: { md: 'block', xs: 'none' }
                }}
                component={NavLink}
                to={userPermission === ROLE[1] ? 'admin' : 'admin/home'}>

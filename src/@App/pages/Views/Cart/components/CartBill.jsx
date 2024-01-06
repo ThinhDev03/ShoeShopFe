@@ -4,7 +4,7 @@ import toFormatMoney from '@Core/Helper/Price';
 import { Box, Button, Checkbox, FormLabel, Modal, Stack, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const style = {
    position: 'absolute',
@@ -21,7 +21,7 @@ const style = {
 };
 const CartBill = ({ totalPrice }) => {
    const [open, setOpen] = useState(false);
-
+   const navigate = useNavigate();
    const [checkBoxVoucher, setCheckBoxVoucher] = useState(null);
    const [currentVoucher, setCurrentVoucher] = useState(null);
    const [isApplyVoucher, setIsApplyVoucher] = useState(false);
@@ -39,6 +39,18 @@ const CartBill = ({ totalPrice }) => {
       setOpen(false);
    };
 
+   const handlePurchase = () => {
+      if (currentVoucher) {
+         if (!vouchers.some((v) => v.discount === currentVoucher.discount)) {
+            setCurrentVoucher(null);
+            setIsApplyVoucher(false);
+            return;
+         }
+         navigate(isApplyVoucher ? '/shipping?ship=s' : '/shipping');
+      } else {
+         navigate('/shipping');
+      }
+   };
    const price = isApplyVoucher ? totalPrice - parseFloat(currentVoucher?.discount) : totalPrice;
 
    return (
@@ -71,6 +83,11 @@ const CartBill = ({ totalPrice }) => {
                   </Box>
                   <Button
                      onClick={() => {
+                        if (!vouchers.some((v) => v.discount === currentVoucher.discount)) {
+                           setCurrentVoucher(null);
+                           setIsApplyVoucher(false);
+                           return;
+                        }
                         setIsApplyVoucher(true);
                         localStorage.setItem('shose_voucher', currentVoucher.discount);
                      }}
@@ -121,8 +138,7 @@ const CartBill = ({ totalPrice }) => {
                </Box>
             </Box>
             <Button
-               component={Link}
-               to={isApplyVoucher ? '/shipping?ship=s' : '/shipping'}
+               onClick={handlePurchase}
                fullWidth
                sx={{ textTransform: 'uppercase', py: '10px', fontWeight: 'bold' }}
                disabled={cart?.length === 0}>
@@ -139,10 +155,11 @@ const CartBill = ({ totalPrice }) => {
                <Typography textAlign='center' color='primary.main' mb={3}>
                   Danh sách voucher
                </Typography>
-               {vouchers.map((voucher) => {
+               {vouchers.map((voucher, index) => {
                   return (
                      <Stack
                         gap={2}
+                        key={index}
                         direction='row'
                         mb={3}
                         sx={{ boxShadow: '.125rem .125rem .3125rem rgba(0,0,0,.07)' }}>

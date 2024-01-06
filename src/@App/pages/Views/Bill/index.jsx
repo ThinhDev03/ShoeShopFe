@@ -100,8 +100,8 @@ function Bill() {
    };
 
    const { mutate: cancelBill } = useMutation({
-      mutationFn: (id) => {
-         return billService.updateStatusPending(id, BILL_STATUS[4]);
+      mutationFn: ({ id, ...body }) => {
+         return billService.updateStatusPending(id, body);
       },
       onSuccess: () => {
          successMessage('Hủy đơn hàng thành công');
@@ -125,7 +125,7 @@ function Bill() {
          format: (v) => v.receiver
       },
       {
-         label: 'Só điện thoại',
+         label: 'Số điện thoại',
          minWidth: 170,
          align: 'left',
          format: (v) => v.phone_number
@@ -178,7 +178,17 @@ function Bill() {
                <Box>
                   <CoreTableActionView callback={() => handleClickModal(v._id)} />
                   {v.status === BILL_STATUS[0] && 'UNPAID' === v?.payment_id?.status ? (
-                     <CoreTableReplay content='Bạn có muốn hủy đơn hàng này?' callback={() => cancelBill(v?._id)} />
+                     <CoreTableReplay
+                        content='Bạn có muốn hủy đơn hàng này?'
+                        callback={() =>
+                           cancelBill({
+                              id: v?._id,
+                              user_updated: user._id,
+                              payment_status: v?.payment_id?.status,
+                              status: BILL_STATUS[4]
+                           })
+                        }
+                     />
                   ) : (
                      <Box display='inline-block' width='37px' height='37px'></Box>
                   )}

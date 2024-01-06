@@ -17,8 +17,12 @@ class StatisticService extends BaseService {
    getTopRate() {
       return this.find('top-rate');
    }
-   getRevenue() {
-      return this.find('revenue');
+   getRevenue(params) {
+      return this.find('revenue', params);
+   }
+
+   getUserCancel(params) {
+      return this.find('user-cancel', params);
    }
 }
 

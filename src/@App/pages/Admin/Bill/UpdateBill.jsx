@@ -8,11 +8,14 @@ import billService from '@App/services/bill.service';
 import { billStatus } from './utils';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
+import useAuth from '@App/hooks/useAuth';
+import BillHistory from './components/BillHistory';
 
 export default function UpdateBill() {
    const { id } = useParams();
-   const navigate = useNavigate();
+   const { user } = useAuth();
    const confirm = useConfirm();
+   const navigate = useNavigate();
 
    const form = useForm({
       mode: 'onChange'
@@ -37,13 +40,22 @@ export default function UpdateBill() {
          initialData: { billDetail: [] }
       }
    );
+
+   const billhistory = useQuery(['bill-history'], async () => {
+      const res = await billService.find('bill-history/' + id);
+      return res.data;
+   });
+
+   console.log(billhistory.data);
+
    const { mutate: onChangeStatus } = useMutation({
       mutationFn: async ({ id, ...rest }) => {
          return await billService.updateStatus(id, rest);
       },
       onSuccess: () => {
-         successMessage('Cập nhật đơn hàng thành công');
+         billhistory.refetch();
          navigate('/admin/bill');
+         successMessage('Cập nhật đơn hàng thành công');
       },
       onError: (err) => {
          errorMessage('Cập nhật đơn hàng thất bại');
@@ -61,7 +73,8 @@ export default function UpdateBill() {
                status: body.status,
                payment_id: body.payment_id,
                payment_status: body.payment_status,
-               products: data.billDetail
+               products: data.billDetail,
+               user_updated: user._id
             });
          }
       });
@@ -70,6 +83,7 @@ export default function UpdateBill() {
       billDetail: data.billDetail,
       billStatus,
       form,
+
       onSubmit
    };
    const breadcrumbs = [
@@ -79,12 +93,14 @@ export default function UpdateBill() {
       },
       {
          name: 'Đơn hàng',
-         link: '/bill'
+         link: '/admin/bill'
       }
    ];
+
    return (
       <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
          <BaseFormBill {...props} />
+         {billhistory.data && <BillHistory billHistoryData={billhistory.data} />}
       </BasicPage>
    );
 }

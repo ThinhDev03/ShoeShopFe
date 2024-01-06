@@ -78,3 +78,8 @@ export const transferStatus = {
    RECEIVED: 'Đã giao',
    CANCELED: 'Hủy đơn hàng'
 };
+
+export const roleHistory = {
+   ADMIN: 'Admin',
+   EMPLOYEE: 'Nhân viên'
+};
