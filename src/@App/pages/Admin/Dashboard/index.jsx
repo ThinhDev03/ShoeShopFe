@@ -1,5 +1,5 @@
 import BasicPage from '@App/components/customs/BasicPage';
-import { Grid } from '@mui/material';
+import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material';
 import React from 'react';
 import ChartPie from './components/ChartPie';
 import ChartLine from './components/ChartLine';
@@ -18,6 +18,31 @@ import * as Yup from 'yup';
 import moment from 'moment';
 import TableUserCanceled from './components/TableUserCanceled';
 function Dashboard() {
+   const { control, watch } = useForm({
+      mode: 'onChange',
+      defaultValues: {
+         startDate: new Date('2023/01/01'),
+         endDate: new Date()
+      },
+      resolver: yupResolver(
+         Yup.object().shape({
+            startDate: Yup.string()
+               .notOneOf([Yup.ref('endDate')], 'error not one of')
+               .required(),
+            endDate: Yup.date()
+               .notOneOf([Yup.ref('startDate')], 'error not one of')
+               .when(
+                  'startDate',
+                  (publishStart, schema) => new Date(publishStart) && schema.min(new Date(publishStart))
+               )
+               .required()
+         })
+      )
+   });
+
+   const startDate = watch('startDate');
+   const endDate = watch('endDate');
+
    const { data } = useQuery(
       ['get-revenue', startDate, endDate],
       async () => {
