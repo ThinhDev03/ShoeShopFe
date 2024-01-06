@@ -45,8 +45,8 @@ function Dashboard() {
    const { data } = useQuery(
       ['get-revenue', startDate, endDate],
       async () => {
-         const start = moment(startDate).format('YYYY/MM/DD');
-         const end = moment(endDate).format('YYYY/MM/DD');
+         const start = moment(startDate, 'LLLL').startOf('day').format('YYYY-MM-DD HH:mm');
+         const end = moment(endDate, 'LLLL').endOf('day').format('YYYY-MM-DD HH:mm');
          const res = await statisticService.getRevenue({ params: { start, end } });
          return res;
       },
@@ -105,6 +105,7 @@ function Dashboard() {
             <Grid item xs={6}>
                <ChartPie startDate={startDate} endDate={endDate} />
             </Grid>
+
             <Grid item xs={12}>
                <ChartLine />
             </Grid>

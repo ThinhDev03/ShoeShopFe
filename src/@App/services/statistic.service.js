@@ -20,6 +20,10 @@ class StatisticService extends BaseService {
    getRevenue(params) {
       return this.find('revenue', params);
    }
+
+   getUserCancel(params) {
+      return this.find('user-cancel', params);
+   }
 }
 
 const statisticService = new StatisticService();
