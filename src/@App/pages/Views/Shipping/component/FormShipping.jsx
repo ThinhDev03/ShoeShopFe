@@ -62,12 +62,12 @@ function FormShipping({ form }) {
             <ControllerTextField name='receiver' control={control} />
          </Box>
          <Box mb={2}>
-            <FormLabel title='Email' gutterBottom required />
-            <ControllerTextField name='email' control={control} />
-         </Box>
-         <Box mb={2}>
             <FormLabel title='Số điện thoại' gutterBottom required />
             <ControllerTextField name='phone_number' control={control} />
+         </Box>
+         <Box mb={2}>
+            <FormLabel title='email' gutterBottom required />
+            <ControllerTextField name='email' control={control} />
          </Box>
          <Grid container spacing={2}>
             <Grid item xs={12} md={4}>

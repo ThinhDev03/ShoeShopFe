@@ -28,7 +28,7 @@ export default function Size() {
          return await sizeService.deleteSize(data.id);
       },
       onSuccess: () => {
-         successMessage('Xóa sản phẩm thành công!');
+         successMessage('Xóa kích thước thành công!');
          getCategory();
       },
       onError: (error) => {
@@ -42,7 +42,7 @@ export default function Size() {
             header: 'STT'
          }),
          columnHelper.accessor('size_name', {
-            header: 'Tên Size'
+            header: 'Tên kích thước'
          }),
          columnHelper.accessor('description', {
             header: 'Mô tả'

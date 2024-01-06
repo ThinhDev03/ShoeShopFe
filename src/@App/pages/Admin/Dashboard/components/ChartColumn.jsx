@@ -8,8 +8,8 @@ import '../index.css';
 import moment from 'moment';
 
 function ChartColumn({ startDate, endDate }) {
-   const start = moment(startDate).format('YYYY/MM/DD');
-   const end = moment(endDate).format('YYYY/MM/DD');
+   const start = moment(startDate, 'LLLL').startOf('day').format('YYYY-MM-DD HH:mm');
+   const end = moment(endDate, 'LLLL').endOf('day').format('YYYY-MM-DD HH:mm');
 
    const { data } = useQuery(
       ['get-top-rate', start, end],
