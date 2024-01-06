@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import moment from 'moment';
+import TableUserCanceled from './components/TableUserCanceled';
 function Dashboard() {
    const { control, watch } = useForm({
       mode: 'onChange',
@@ -45,8 +46,8 @@ function Dashboard() {
    const { data } = useQuery(
       ['get-revenue', startDate, endDate],
       async () => {
-         const start = moment(startDate, 'LLLL').startOf('day').format('YYYY-MM-DD HH:mm');
-         const end = moment(endDate, 'LLLL').endOf('day').format('YYYY-MM-DD HH:mm');
+         const start = moment(startDate).format('YYYY/MM/DD');
+         const end = moment(endDate).format('YYYY/MM/DD');
          const res = await statisticService.getRevenue({ params: { start, end } });
          return res;
       },
@@ -105,9 +106,11 @@ function Dashboard() {
             <Grid item xs={6}>
                <ChartPie startDate={startDate} endDate={endDate} />
             </Grid>
-
             <Grid item xs={12}>
                <ChartLine />
+            </Grid>
+            <Grid item xs={12}>
+               <TableUserCanceled />
             </Grid>
          </Grid>
       </BasicPage>
