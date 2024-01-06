@@ -105,6 +105,7 @@ function Dashboard() {
             <Grid item xs={6}>
                <ChartPie startDate={startDate} endDate={endDate} />
             </Grid>
+
             <Grid item xs={12}>
                <ChartLine />
             </Grid>
