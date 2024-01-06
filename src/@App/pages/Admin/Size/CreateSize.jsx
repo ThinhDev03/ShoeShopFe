@@ -47,7 +47,7 @@ export default function CreateSize() {
       mutate(data);
    };
    return (
-      <BasicPage currentPage='Thêm mới size sản phẩm' breadcrumbs={breadcrumbs}>
+      <BasicPage currentPage='Thêm mới kích thước sản phẩm' breadcrumbs={breadcrumbs}>
          <BaseFormClasses form={form} onSubmit={onSubmit} isLoading={isLoading} />
       </BasicPage>
    );
