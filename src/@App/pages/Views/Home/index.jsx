@@ -56,7 +56,7 @@ function Home() {
             <Grid container spacing={4}>
                {posts.map((item, index) => {
                   return (
-                     <Grid item xs={6} key={index}>
+                     <Grid item xs={12} md={6} key={index}>
                         <Box width='100%' height='308.470px'>
                            <img src={item.image} width='100%' height='100%' alt='' />
                         </Box>
@@ -91,7 +91,7 @@ function Home() {
                      bestSales?.map((item, index) => {
                         if (index <= 8) {
                            return (
-                              <Grid item xs={3} key={index}>
+                              <Grid item xs={12} sm={12} md={3} key={index}>
                                  <ProductCard data={item} />
                               </Grid>
                            );

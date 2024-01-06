@@ -108,10 +108,10 @@ function Shipping() {
                   <KeyboardArrowLeftIcon /> Về giỏ hàng
                </Box>
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={12} md={7}>
                <FormShipping form={form} />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item md={5} xs={12}>
                <Invoice
                   discount={isDiscount ? priceDiscount : 0}
                   handleSubmit={handleSubmit}

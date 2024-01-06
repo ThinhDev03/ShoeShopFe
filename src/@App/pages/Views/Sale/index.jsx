@@ -40,13 +40,13 @@ function Sale() {
 
                {isFetching
                   ? Array.from({ length: 6 }, (_, index) => index).map((item) => (
-                       <Grid item xs={6} md={3} key={item}>
+                       <Grid item xs={12} sm={6} md={3} key={item}>
                           <ProductCardSekeleton />
                        </Grid>
                     ))
                   : productList?.data?.map((product) => {
                        return (
-                          <Grid item xs={6} md={3} key={product._id}>
+                          <Grid item xs={12} sm={6} md={3} key={product._id}>
                              <ProductCard data={product} sale={product.max_sale} />
                           </Grid>
                        );

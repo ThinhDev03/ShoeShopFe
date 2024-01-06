@@ -28,12 +28,12 @@ function Product() {
    return (
       <Container maxWidth='lg' sx={{ py: 3 }}>
          <Grid container spacing={3}>
-            <Grid item xs={4} md={3}>
+            <Grid item xs={12} md={3}>
                <Box sx={{ backgroundColor: '#FFFFFF', py: 2, px: 1 }}>
                   <Filter form={form} category={category} brand={brand} />
                </Box>
             </Grid>
-            <Grid item xs={8} md={9}>
+            <Grid item xs={12} md={9}>
                <Grid container spacing={2}>
                   <Grid item xs={12}>
                      <Box sx={{ width: '100%', overflow: 'hidden', borderRadius: '5px', mb: 2 }}>
@@ -43,13 +43,13 @@ function Product() {
 
                   {isFetching
                      ? Array.from({ length: 6 }, (_, index) => index).map((item) => (
-                          <Grid item xs={6} md={4} key={item}>
+                          <Grid item xs={12} sm={6} md={4} key={item}>
                              <ProductCardSekeleton />
                           </Grid>
                        ))
                      : productList?.data?.map((product) => {
                           return (
-                             <Grid item xs={6} md={4} key={product._id}>
+                             <Grid item xs={12} sm={6} md={4} key={product._id}>
                                 <ProductCard data={product} />
                              </Grid>
                           );
