@@ -16,6 +16,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import moment from 'moment';
+import TableUserCanceled from './components/TableUserCanceled';
 function Dashboard() {
    const { control, watch } = useForm({
       mode: 'onChange',
@@ -107,6 +108,9 @@ function Dashboard() {
             </Grid>
             <Grid item xs={12}>
                <ChartLine />
+            </Grid>
+            <Grid item xs={12}>
+               <TableUserCanceled />
             </Grid>
          </Grid>
       </BasicPage>

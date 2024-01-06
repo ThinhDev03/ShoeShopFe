@@ -73,7 +73,7 @@ function Cart() {
                      <KeyboardArrowLeftIcon /> Tiếp tục mua hàng
                   </Box>
                </Grid>
-               <Grid item xs={8}>
+               <Grid item xs={12} lg={8}>
                   <Box sx={{ padding: '6px 12px', borderBottom: '2px solid black' }}>
                      <Typography variant='h5' fontWeight='bold' sx={{ lineHeight: '1.6' }}>
                         Giỏ hàng
@@ -86,29 +86,31 @@ function Cart() {
                      </Typography>
                   </Box>
 
-                  <Stack mt={2} gap={2}>
-                     {carts?.map((item, index) => {
-                        return (
-                           <Box
-                              key={item.product_id + index}
-                              sx={{ backgroundColor: item?.totalQuantity === 0 && '#f1f1f1', borderRadius: '5px' }}>
-                              <Box display='flex' alignItems='center' mb={1}>
-                                 <Box>
-                                    <Checkbox
-                                       disabled={item.totalQuantity === 0}
-                                       checked={item.totalQuantity > 0 && cart.includes(item.product_id)}
-                                       onChange={() => item.totalQuantity > 0 && handleChangeCart(item.product_id)}
-                                    />
+                  <Box overflow='auto'>
+                     <Stack mt={2} gap={2} minWidth={600}>
+                        {carts?.map((item, index) => {
+                           return (
+                              <Box
+                                 key={item.product_id + index}
+                                 sx={{ backgroundColor: item?.totalQuantity === 0 && '#f1f1f1', borderRadius: '5px' }}>
+                                 <Box display='flex' alignItems='center' mb={1}>
+                                    <Box>
+                                       <Checkbox
+                                          disabled={item.totalQuantity === 0}
+                                          checked={item.totalQuantity > 0 && cart.includes(item.product_id)}
+                                          onChange={() => item.totalQuantity > 0 && handleChangeCart(item.product_id)}
+                                       />
+                                    </Box>
+                                    <CartProductItem data={item} getCart={getCart} />
                                  </Box>
-                                 <CartProductItem data={item} getCart={getCart} />
+                                 <Divider />
                               </Box>
-                              <Divider />
-                           </Box>
-                        );
-                     })}
-                  </Stack>
+                           );
+                        })}
+                     </Stack>
+                  </Box>
                </Grid>
-               <Grid item xs={4}>
+               <Grid item xs={12} lg={4}>
                   <CartBill totalPrice={totalPrice} />
                </Grid>
             </Grid>
