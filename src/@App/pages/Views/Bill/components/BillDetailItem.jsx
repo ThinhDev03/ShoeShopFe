@@ -47,7 +47,7 @@ const BillDetailItem = ({ data }) => {
                      </Box>
                   </Box>
                </Flex>
-               <Box display='flex' alignItems='center' gap={4}>
+               <Box display='flex' alignItems='center' gap={4} >
                   <Flex>
                      <TitleCartItemDetail>Size: </TitleCartItemDetail>
                      <Typography>{data.size}</Typography>
