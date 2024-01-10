@@ -48,7 +48,7 @@ function LatestProduct() {
                           <ProductCardSekeleton />
                        </Grid>
                     ))
-                  : productList?.data?.map((product) => {
+                  : productList?.data?.map(( product ) => {
                        return (
                           <Grid item xs={6} md={3} key={product._id}>
                              <ProductCard data={product} sale={product.max_sale} />
