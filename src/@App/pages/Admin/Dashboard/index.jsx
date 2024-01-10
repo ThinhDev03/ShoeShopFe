@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import moment from 'moment';
-import TableUserCanceled from './components/TableUserCanceled';
+import TableUserCanceled from './components/TableUserCancel';
 function Dashboard() {
    const { control, watch } = useForm({
       mode: 'onChange',
