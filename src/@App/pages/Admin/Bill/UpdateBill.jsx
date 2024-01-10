@@ -9,7 +9,7 @@ import { billStatus } from './utils';
 import { errorMessage, successMessage } from '@Core/Helper/Message';
 import { useConfirm } from '@Core/Components/Confirm/CoreConfirm';
 import useAuth from '@App/hooks/useAuth';
-import BillHistory from './components/BillHistory';
+import BillHistories from './components/BillHistories';
 
 export default function UpdateBill() {
    const { id } = useParams();
@@ -100,7 +100,7 @@ export default function UpdateBill() {
    return (
       <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
          <BaseFormBill {...props} />
-         {billhistory.data && <BillHistory billHistoryData={billhistory.data} />}
+         {billhistory.data && <BillHistories billHistoryData={billhistory.data} />}
       </BasicPage>
    );
 }

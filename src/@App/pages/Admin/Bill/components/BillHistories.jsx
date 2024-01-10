@@ -3,7 +3,7 @@ import React from 'react';
 import { paymentStatus, roleHistory, transferStatus } from '../utils';
 import moment from 'moment';
 
-function BillHistory({ billHistoryData }) {
+function BillHistories({ billHistoryData }) {
    return (
       <Box my={6}>
          <Divider />
@@ -43,4 +43,4 @@ function BillHistory({ billHistoryData }) {
    );
 }
 
-export default BillHistory;
+export default BillHistories;
