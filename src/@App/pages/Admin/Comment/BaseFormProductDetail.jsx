@@ -260,4 +260,6 @@ function BaseFormProductDetail(props) {
    );
 }
 
+
+
 export default BaseFormProductDetail;
