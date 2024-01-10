@@ -98,8 +98,8 @@ export default function UpdateBill() {
    ];
 
    return (
-      <BasicPage currentPage='Cập nhật' breadcrumbs={breadcrumbs}>
-         <BaseFormBill {...props} />
+      <BasicPage currentPage='Cập nhật' breadcrumbs={ breadcrumbs }>
+         <BaseFormBill { ...props } />
          {billhistory.data && <BillHistories billHistoryData={billhistory.data} />}
       </BasicPage>
    );
