@@ -60,7 +60,6 @@ const valueDefault = {
 
 function BaseFormProductDetail(props) {
    const { title, product_id, isChangeImages } = props;
-
    const {
       handleSubmit,
       control,
