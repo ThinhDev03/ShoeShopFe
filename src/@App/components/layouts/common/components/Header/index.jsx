@@ -13,7 +13,7 @@ import {
    styled
 } from '@mui/material';
 import Nav from './components/Nav';
-import logo from '../../../../../assets/svg/logo.svg';
+import logo from '../../../../../assets/svg/logos.svg';
 import discoveryou from '../../../../../assets/svg/discoveryou.svg';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
@@ -68,7 +68,7 @@ export default function Header() {
             <Grid container margin={0}>
                <Grid item xs={2}>
                   <Box sx={{ display: 'flex', justifyContent: 'center', py: 1 }} component={Link} to='/'>
-                     <img src={logo} alt='' width='39.997px' height='52.92px' />
+                     <img src={logo} alt='' width='180px' height='52.92px' />
                   </Box>
                </Grid>
                <Grid item xs={8}>
