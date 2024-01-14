@@ -5,12 +5,12 @@ const footerListAcction = [
    {
       id: 1,
       head: 'SẢN PHẨM',
-      children: ['Giày Nam', 'Giày Nữ', 'Thời trang & Phụ kiện', 'Sale-off']
+      children: ['Giày Nam', 'Giày 7sneaker', 'Thời trang & Phụ kiện', 'Sale-off']
    },
    {
       id: 2,
       head: 'VỀ CÔNG TY',
-      children: ['Dứa tuyển dụng', 'Liên hệ nhượng quyền', 'Về Ananas']
+      children: ['7sneaker tuyển dụng', 'Liên hệ nhượng quyền', 'Về 7sneaker']
    },
    {
       id: 3,
