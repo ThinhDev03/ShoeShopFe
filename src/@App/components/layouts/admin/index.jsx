@@ -7,11 +7,13 @@ import Sidebar from './components/sidebar';
 import Header from './components/header';
 
 export default function AdminLayout() {
+
    const [openSidebar, setOpenSidebar] = useState(false);
    const props = {
       openSidebar,
       setOpenSidebar
    };
+
    return (
       <>
          <Header {...props} />
@@ -29,6 +31,7 @@ export default function AdminLayout() {
 const Flex = styled(Stack)(({ theme }) => ({
    marginTop: theme.palette.education.header.heightAdmin
 }));
+
 const Main = styled('main')(({ theme }) => ({
    flex: 1,
    display: 'flex',

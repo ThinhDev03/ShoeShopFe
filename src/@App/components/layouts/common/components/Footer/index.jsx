@@ -1,9 +1,6 @@
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import React from 'react';
 
-import shopAnans from '../../../../../assets/svg/shopAnans.svg';
-import { Link } from 'react-router-dom';
-
 const footerListAcction = [
    {
       id: 1,

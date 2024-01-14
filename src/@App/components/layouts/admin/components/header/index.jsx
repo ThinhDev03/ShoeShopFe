@@ -16,18 +16,6 @@ export default function Header(props) {
    const navigate = useNavigate();
    const open = Boolean(anchorEl);
 
-   const handleOptionClick = (option) => {
-      const selected = option.currentTarget.outerText;
-
-      switch (selected) {
-         case 'logout':
-            handleLogout;
-            break;
-         default:
-            break;
-      }
-      handleClose();
-   };
 
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget);

@@ -4,6 +4,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import SidebarItem from './SidebarItem';
 import { Drawer } from '@mui/material';
 import { styled } from '@mui/material/styles';
+
 export default function Sidebar({ openSidebar, setOpenSidebar }) {
    const theme = useTheme();
    const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
@@ -25,10 +26,12 @@ export default function Sidebar({ openSidebar, setOpenSidebar }) {
       </>
    );
 }
+
 const Wrap = styled('div')(({ theme }) => ({
    boxSizing: 'border-box',
    width: theme.palette.education.sidebar.width
 }));
+
 const Aside = styled('aside')(({ theme }) => ({
    position: 'fixed',
    top: theme.palette.education.header.heightAdmin,

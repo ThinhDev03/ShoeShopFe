@@ -26,10 +26,12 @@ export default function SidebarItem({ setOpenSidebar }) {
          return [...prev];
       });
    };
+   
    const handleCloseSidebar = (e) => {
       if (!setOpenSidebar) return;
       setOpenSidebar(false);
    };
+
    return (
       <WrapSidebar>
          <List>
