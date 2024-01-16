@@ -19,7 +19,7 @@ function ChartPie({ startDate, endDate }) {
             if (index === 1) {
                return { name: item.product_name, y: item.quantity, sliced: true, selected: true };
             }
-            return { name: item.product_name, y: item.quantity };
+            return { name: item.product_name, y: item.quantity * item.price };
          });
          return newData;
       },
@@ -46,7 +46,7 @@ function ChartPie({ startDate, endDate }) {
 
       series: [
          {
-            name: 'Đã bán',
+            name: 'Doanh số',
             colorByPoint: true,
             data: data
          }
