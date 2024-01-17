@@ -19,7 +19,7 @@ function ChartPie({ startDate, endDate }) {
             if (index === 1) {
                return { name: item.product_name, y: item.quantity, sliced: true, selected: true };
             }
-            return { name: item.product_name, y: item.quantity * item.price };
+            return { name:"Số lượng: "+ item.quantity, y: item.quantity * item.price };
          });
          return newData;
       },
